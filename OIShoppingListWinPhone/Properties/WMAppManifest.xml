@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2009/deployment" AppPlatformVersion="7.1">
-  <App xmlns="" ProductID="{b3fa2b7b-ae4f-4b82-9635-04d1022bcf30}" Title="OIShoppingListWinPhone" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal"  Author="OIShoppingListWinPhone author" Description="Sample description" Publisher="OIShoppingListWinPhone">
+  <App xmlns="" ProductID="{b3fa2b7b-ae4f-4b82-9635-04d1022bcf30}" Title="OI Shopping List" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal"  Author="OIShoppingListWinPhone author" Description="Sample description" Publisher="OIShoppingListWinPhone">
     <IconPath IsRelative="true" IsResource="false">ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_GAMERSERVICES"/>
@@ -27,7 +27,7 @@
         <TemplateType5>
           <BackgroundImageURI IsRelative="true" IsResource="false">Background.png</BackgroundImageURI>
           <Count>0</Count>
-          <Title>OIShoppingListWinPhone</Title>
+          <Title>OI Shopping List</Title>
         </TemplateType5>
       </PrimaryToken>
     </Tokens>

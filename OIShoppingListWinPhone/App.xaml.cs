@@ -13,6 +13,9 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 
+using LocalDatabaseSample.ViewModel;
+using LocalDatabaseSample.Model;
+
 namespace OIShoppingListWinPhone
 {
     public partial class App : Application
@@ -74,6 +77,22 @@ namespace OIShoppingListWinPhone
                 // and consume battery power when the user is not using the phone.
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
+
+            /*// Create the database if it does not exist.
+            using (ShoppingListDataContext db = new ShoppingListDataContext("Data Source=isostore:/ShoppingList.sdf"))
+            {
+                if (db.DatabaseExists() == false)
+                {
+                    // Create the local database.
+                    db.CreateDatabase();
+                }
+            }
+
+            // Create the ViewModel object.
+            viewModel = new ShoppingListViewModel("Data Source=isostore:/ShoppingList.sdf");
+
+            // Query the local database and load observable collections.
+            viewModel.LoadData();*/
         }
 
         // Code to execute when the application is launching (eg, from Start)
