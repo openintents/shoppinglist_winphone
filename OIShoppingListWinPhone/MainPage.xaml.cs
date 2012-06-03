@@ -11,6 +11,9 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 
+//using OIShoppingListWinPhone.DataModel;
+using OIShoppingListWinPhone.ViewModel;
+
 namespace OIShoppingListWinPhone
 {
     public partial class MainPage : PhoneApplicationPage
@@ -70,6 +73,12 @@ namespace OIShoppingListWinPhone
         private void ApplicationBarMenuCleanUpList_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void Button_Add_Click(object sender, RoutedEventArgs e)
+        {
+            ShoppingListViewModel vm = new ShoppingListViewModel(@"isostore:/OIShoppingListDB.sdf");
+            vm.LoadData();
         }
     }
 }

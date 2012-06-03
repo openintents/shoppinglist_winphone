@@ -46,7 +46,7 @@
         </Border>
         <Grid Height="72" VerticalAlignment="Bottom">
             <TextBox Text="newItemName" x:Name="newListItemName" Margin="0,0,125,0" TextWrapping="NoWrap" FontSize="24"/>
-            <Button Content="Add" HorizontalAlignment="Right" Width="130"/>
+            <Button Content="Add" HorizontalAlignment="Right" Width="130" Click="Button_Add_Click"/>
         </Grid>
     </Grid>
 
