@@ -22,13 +22,12 @@ namespace OIShoppingListWinPhone.ViewModel
         // Class constructor, create the data context object.
         public ShoppingListViewModel(string toDoDBConnectionString)
         {
-            using (listDB = new ShoppingListDataContext(toDoDBConnectionString))
-            {
-                if (listDB.DatabaseExists())
-                    listDB.DeleteDatabase();
-
-                listDB.CreateDatabase();
-            }
+            listDB = new ShoppingListDataContext(toDoDBConnectionString);
+            
+            if (listDB.DatabaseExists())
+                listDB.DeleteDatabase();
+            
+            listDB.CreateDatabase();
         }
         // All lists.
         private ObservableCollection<ShoppingList> _shoppingLists;
@@ -85,6 +84,9 @@ namespace OIShoppingListWinPhone.ViewModel
 
             // Specify a table for the Lists' stores.
             public Table<ShoppingListStore> ListStores;
+
+            // Specify a table for the Lists' itmes-stores.
+            public Table<ShoppingListItemsStores> ItemsStores;
         }
     }
 }

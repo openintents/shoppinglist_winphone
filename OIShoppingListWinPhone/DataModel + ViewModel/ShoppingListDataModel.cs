@@ -1,7 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-//using System.Collections.Generic;
-//using System.Collections.ObjectModel;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
 
@@ -16,7 +14,7 @@ namespace OIShoppingListWinPhone.DataModel
     {        
         private int _listId;
 
-        [Column(IsPrimaryKey = true, IsDbGenerated = false, DbType = "INT", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
+        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
         public int ListID
         {
             get { return this._listId; }
@@ -84,7 +82,7 @@ namespace OIShoppingListWinPhone.DataModel
                 
         private EntitySet<ShoppingListItem> _listItems;
 
-        [Association(Storage = "_listItems", OtherKey = "ListID", ThisKey = "ListID")]
+        [Association(Storage = "_listItems", OtherKey = "ListID", ThisKey = "ListID", DeleteRule="CASCADE")]
         public EntitySet<ShoppingListItem> ListItems
         {
             get { return this._listItems; }
@@ -93,7 +91,7 @@ namespace OIShoppingListWinPhone.DataModel
                 
         private EntitySet<ShoppingListStore> _listStores;
 
-        [Association(Storage = "_listStores", OtherKey = "ListID", ThisKey = "ListID")]
+        [Association(Storage = "_listStores", OtherKey = "ListID", ThisKey = "ListID", DeleteRule="CASCADE")]
         public EntitySet<ShoppingListStore> ListStores
         {
             get { return this._listStores; }
@@ -147,7 +145,7 @@ namespace OIShoppingListWinPhone.DataModel
     {        
         private int _itemId;
 
-        [Column(IsPrimaryKey = true, IsDbGenerated = false, DbType = "INT", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
+        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
         public int ItemID
         {
             get { return this._itemId; }
@@ -342,7 +340,7 @@ namespace OIShoppingListWinPhone.DataModel
 
         private EntityRef<ShoppingList> _list;
 
-        [Association (Storage="_list", ThisKey="ListID", OtherKey="ListID", IsForeignKey=true)]
+        [Association (Storage="_list", ThisKey="ListID", OtherKey="ListID", IsForeignKey=true, DeleteRule="CASCADE")]
         public ShoppingList List
         {
             get { return _list.Entity; }
@@ -352,6 +350,20 @@ namespace OIShoppingListWinPhone.DataModel
                 if (value != null)
                     this._listId = value.ListID;
             }
+        }
+
+        private EntitySet<ShoppingListItemsStores> _itemsStores;
+
+        [Association(Storage = "_itemsStores", OtherKey = "ItemID", ThisKey = "ItemID", DeleteRule="CASCADE")]
+        public EntitySet<ShoppingListItemsStores> ItemsStores
+        {
+            get { return this._itemsStores; }
+            set { this._itemsStores.Assign(value); }
+        }
+
+        public ShoppingListItem()
+        {
+            _itemsStores = new EntitySet<ShoppingListItemsStores>();
         }
 
         #region INotifyPropertyChanging members
@@ -393,9 +405,9 @@ namespace OIShoppingListWinPhone.DataModel
     [Table (Name="Stores")]
     public sealed class ShoppingListStore: INotifyPropertyChanging, INotifyPropertyChanged
     {
-        [Column (IsPrimaryKey=true, IsDbGenerated=false, DbType="INT", CanBeNull=false, AutoSync=AutoSync.OnInsert)]
         private int _storeId;
 
+        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
         public int StoreID
         {
             get { return this._storeId; }
@@ -471,7 +483,7 @@ namespace OIShoppingListWinPhone.DataModel
 
         private EntityRef<ShoppingList> _list;
 
-        [Association(Storage = "_list", ThisKey = "ListID", OtherKey = "ListID", IsForeignKey = true)]
+        [Association(Storage = "_list", ThisKey = "ListID", OtherKey = "ListID", IsForeignKey = true, DeleteRule="CASCADE")]
         public ShoppingList List
         {
             get { return _list.Entity; }
@@ -480,6 +492,121 @@ namespace OIShoppingListWinPhone.DataModel
                 this._list.Entity = value;
                 if (value != null)
                     this._listId = value.ListID;
+            }
+        }
+
+        private EntitySet<ShoppingListItemsStores> _storesItems;
+
+        [Association(Storage = "_storesItems", OtherKey = "StoreID", ThisKey = "StoreID", DeleteRule="CASCADE")]
+        public EntitySet<ShoppingListItemsStores> StoresItems
+        {
+            get { return this._storesItems; }
+            set { this._storesItems.Assign(value); }
+        }
+
+        public ShoppingListStore()
+        {
+            _storesItems = new EntitySet<ShoppingListItemsStores>();
+        }
+
+        #region INotifyPropertyChanging members
+
+        //Implementation for INotifyPropertyChanging interface
+        public event PropertyChangingEventHandler PropertyChanging;
+        private void NotifyPropertyChanging(String propertyName)
+        {
+            PropertyChangingEventHandler handler = PropertyChanging;
+            if (null != handler)
+            {
+                handler(this, new PropertyChangingEventArgs(propertyName));
+            }
+        }
+
+        #endregion
+
+        #region INotifyPropertyChanged members
+
+        //Implementation for INotifyPropertyChanged interface
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void NotifyPropertyChanged(String propertyName)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (null != handler)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        #endregion
+    }
+
+
+    /// <summary>
+    /// ShoppingListItemsStores database table class (for implementation many-to-many relationship).
+    /// Each ListItem can be copied many times to ItemsStores; each ListStore can be copied many times to ItemsStores.
+    /// </summary>
+    /// <returns></returns>
+    [Table(Name = "ItemsStores")]
+    public sealed class ShoppingListItemsStores : INotifyPropertyChanging, INotifyPropertyChanged
+    {
+        private int _Id;
+
+        [Column (IsPrimaryKey=true, IsDbGenerated=true, CanBeNull=false, DbType="INT", AutoSync=AutoSync.OnInsert)]
+        public int ID
+        {
+            get { return this._Id; }
+            set
+            {
+                if (this._Id != value)
+                {
+                    NotifyPropertyChanging("ItemsStoresID");
+                    this._Id = value;
+                    NotifyPropertyChanged("ItemsStoresID");
+                }
+            }
+        }
+
+        private int _itemId;
+
+        [Column]
+        public int ItemID
+        {
+            get { return this._itemId; }
+        }
+
+        private int _storeId;
+
+        [Column]
+        public int StoreID
+        {
+            get { return this._storeId; }
+        }
+
+        private EntityRef<ShoppingListItem> _item;
+
+        [Association(Name = "FK_ItemsStores_List", Storage = "_item", ThisKey = "ItemID", OtherKey = "ItemID", IsForeignKey = true, DeleteRule = "CASCADE")]
+        public ShoppingListItem List
+        {
+            get { return this._item.Entity; }
+            set
+            {
+                this._item.Entity = value;
+                if (value != null)
+                    this._itemId = value.ItemID;
+            }
+        }
+                
+        private EntityRef<ShoppingListStore> _store;
+
+        [Association(Name = "FK_StoresItems_List", Storage = "_store", ThisKey = "StoreID", OtherKey = "StoreID", IsForeignKey = true, DeleteRule = "CASCADE")]
+        public ShoppingListStore Store
+        {
+            get { return _store.Entity; }
+            set
+            {
+                this._store.Entity = value;
+                if (value != null)
+                    this._storeId = value.StoreID;
             }
         }
 
