@@ -5,59 +5,12 @@
 	xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
 	xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
-    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit" 
-    xmlns:panel="clr-namespace:WP7DockPanel;assembly=WP7DockPanel" 
     
     x:Class="OIShoppingListWinPhone.App">
 
     <!--Application Resources-->
     <Application.Resources>
-        <Style x:Key="PivotItemCustomControl" TargetType="controls:PivotItem">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="controls:PivotItem">
-                        <ListBox x:Name="itemsList" ItemsSource="{Binding Items}" Margin="0,0,0,125">
-                            <toolkit:ContextMenuService.ContextMenu>
-                                <toolkit:ContextMenu>
-                                    <toolkit:MenuItem Name="menuEditItem" Header="Edit item" Height="65"/>
-                                    <toolkit:MenuItem Name="menuMarkItem" Header="Mark item" Height="65"/>
-                                    <toolkit:MenuItem Name="menuStores" Header="Stores..." Height="65"/>
-                                    <toolkit:MenuItem Name="menuRemoveItem" Header="Remove item from list" Height="65"/>
-                                    <toolkit:MenuItem Name="menuCopyItem" Header="Copy item" Height="65"/>
-                                    <toolkit:MenuItem Name="menuDeletePermanently" Header="Delete item permanently" Height="65"/>
-                                    <toolkit:MenuItem Name="menuMoveItem" Header="Move item to other list" Height="65"/>
-                                </toolkit:ContextMenu>
-                            </toolkit:ContextMenuService.ContextMenu>
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <panel:DockPanel Width="480">
-                                        <!--<Border Margin="-5,0,-5,0" BorderThickness="1" BorderBrush="Gray"/>-->
-                                        <CheckBox Name="itemCheck" Width="70" panel:DockPanel.Dock="Left" IsChecked="{Binding Check}" Margin="10,5,5,0" RenderTransformOrigin="0.5,0.5">
-                                            <CheckBox.RenderTransform>
-                                                <ScaleTransform ScaleX="1.4" ScaleY="1.4"/>
-                                            </CheckBox.RenderTransform>
-                                        </CheckBox>
-                                        <panel:DockPanel  Margin="-10,0,0,0" Width="300">
-                                            <StackPanel Orientation="Horizontal" panel:DockPanel.Dock="Top">
-                                                <TextBlock Name="itemPriority" Text="{Binding Priority}" TextWrapping="Wrap" Margin="5,0,5,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
-                                                <TextBlock Name="itemQuantity" Text="{Binding Quantity}" TextWrapping="Wrap" Margin="5,0,5,0" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
-                                                <TextBlock Name="itemUnits" Text="{Binding Units}" TextWrapping="Wrap" Margin="5,0,5,0" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
-                                                <TextBlock Name="itemName" Text="{Binding ItemName}" TextWrapping="Wrap"  Margin="5,0,5,0" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
-                                            </StackPanel>
-                                            <TextBlock Name="itemTag" panel:DockPanel.Dock="Bottom" Text="{Binding Tag}" TextWrapping="Wrap" Margin="30,10,5,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
-                                        </panel:DockPanel>
-                                        <panel:DockPanel Width="70" panel:DockPanel.Dock="Right">
-                                            <Image Margin="0,10,0,0" panel:DockPanel.Dock="Top" Width="64" Height="64" Source="/Images/note_black.png" />
-                                            <TextBlock panel:DockPanel.Dock="Bottom" Text="{Binding Price}" VerticalAlignment="Bottom" HorizontalAlignment="Center" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}"/>
-                                        </panel:DockPanel>
-                                    </panel:DockPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+        
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>

@@ -14,7 +14,7 @@ namespace OIShoppingListWinPhone.DataModel
     {        
         private int _listId;
 
-        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
+        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = true, AutoSync = AutoSync.OnInsert)]
         public int ListID
         {
             get { return this._listId; }
@@ -31,7 +31,7 @@ namespace OIShoppingListWinPhone.DataModel
 
         private string _listName;
 
-        [Column(DbType = "NVARCHAR")]
+        [Column(DbType = "NVARCHAR(100)")]
         public string ListName
         {
             get { return this._listName; }
@@ -145,7 +145,7 @@ namespace OIShoppingListWinPhone.DataModel
     {        
         private int _itemId;
 
-        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
+        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
         public int ItemID
         {
             get { return this._itemId; }
@@ -170,7 +170,7 @@ namespace OIShoppingListWinPhone.DataModel
                 
         private string _itemName;
 
-        [Column(DbType = "NVARCHAR")]
+        [Column(DbType = "NVARCHAR(100)")]
         public string ItemName
         {
             get { return this._itemName; }
@@ -272,7 +272,7 @@ namespace OIShoppingListWinPhone.DataModel
 
         private string _tag;
 
-        [Column(DbType="NVARCHAR")]
+        [Column(DbType = "NVARCHAR(100)")]
         public string Tag
         {
             get { return this._tag; }
@@ -289,7 +289,7 @@ namespace OIShoppingListWinPhone.DataModel
 
         private string _note;
 
-        [Column(DbType = "NVARCHAR")]
+        [Column(DbType = "NVARCHAR(100)")]
         public string Note
         {
             get { return this._note; }
@@ -407,7 +407,7 @@ namespace OIShoppingListWinPhone.DataModel
     {
         private int _storeId;
 
-        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
+        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
         public int StoreID
         {
             get { return this._storeId; }
@@ -432,7 +432,7 @@ namespace OIShoppingListWinPhone.DataModel
 
         private string _storeName;
 
-        [Column(DbType = "NVARCHAR")]
+        [Column(DbType = "NVARCHAR(100)")]
         public string StoreName
         {
             get { return this._storeName; }
@@ -551,7 +551,7 @@ namespace OIShoppingListWinPhone.DataModel
     {
         private int _Id;
 
-        [Column (IsPrimaryKey=true, IsDbGenerated=true, CanBeNull=false, DbType="INT", AutoSync=AutoSync.OnInsert)]
+        [Column(IsPrimaryKey = true, IsDbGenerated = true, CanBeNull = false, DbType = "INT NOT NULL Identity", AutoSync = AutoSync.OnInsert)]
         public int ID
         {
             get { return this._Id; }

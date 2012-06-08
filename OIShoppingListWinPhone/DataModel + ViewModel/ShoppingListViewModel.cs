@@ -54,6 +54,14 @@ namespace OIShoppingListWinPhone.ViewModel
             this.IsDataLoaded = true;
         }
 
+        public void AddNewList(ShoppingList newList)
+        {
+            newList.CreatedDate = DateTime.Now;
+            newList.ModifiedDate = DateTime.Now;
+            listDB.Lists.InsertOnSubmit(newList);
+            listDB.SubmitChanges();
+        }
+
         #region INotifyPropertyChanged members
 
         //Implementation for INotifyPropertyChanged interface
@@ -68,25 +76,25 @@ namespace OIShoppingListWinPhone.ViewModel
         }
 
         #endregion
+    }
 
-        private sealed class ShoppingListDataContext : DataContext
-        {
-            // Pass the connection string to the base class.
-            public ShoppingListDataContext(string connectionString)
-                : base(connectionString)
-            { }
+    public sealed class ShoppingListDataContext : DataContext
+    {
+        // Pass the connection string to the base class.
+        public ShoppingListDataContext(string connectionString)
+            : base(connectionString)
+        { }
 
-            // Specify a table for the Lists.
-            public Table<ShoppingList> Lists;
+        // Specify a table for the Lists.
+        public Table<ShoppingList> Lists;
 
-            // Specify a table for the Lists' items.
-            public Table<ShoppingListItem> ListItems;
+        // Specify a table for the Lists' items.
+        public Table<ShoppingListItem> ListItems;
 
-            // Specify a table for the Lists' stores.
-            public Table<ShoppingListStore> ListStores;
+        // Specify a table for the Lists' stores.
+        public Table<ShoppingListStore> ListStores;
 
-            // Specify a table for the Lists' itmes-stores.
-            public Table<ShoppingListItemsStores> ItemsStores;
-        }
+        // Specify a table for the Lists' itmes-stores.
+        public Table<ShoppingListItemsStores> ItemsStores;
     }
 }

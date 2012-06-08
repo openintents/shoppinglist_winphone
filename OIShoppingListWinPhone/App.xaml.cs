@@ -13,26 +13,26 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 
-using LocalDatabaseSample.ViewModel;
-using LocalDatabaseSample.Model;
+using OIShoppingListWinPhone.DataModel;
+using OIShoppingListWinPhone.ViewModel;
 
 namespace OIShoppingListWinPhone
 {
     public partial class App : Application
     {
-        private static MainViewModel viewModel = null;
+        private static ShoppingListViewModel viewModel = null;
 
         /// <summary>
         /// A static ViewModel used by the views to bind against.
         /// </summary>
         /// <returns>The MainViewModel object.</returns>
-        public static MainViewModel ViewModel
+        public static ShoppingListViewModel ViewModel
         {
             get
             {
                 // Delay creation of the view model until necessary
                 if (viewModel == null)
-                    viewModel = new MainViewModel();
+                    viewModel = new ShoppingListViewModel(@"isostore:/OIShoppingListDB.sdf");
 
                 return viewModel;
             }
@@ -78,8 +78,8 @@ namespace OIShoppingListWinPhone
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
 
-            /*// Create the database if it does not exist.
-            using (ShoppingListDataContext db = new ShoppingListDataContext("Data Source=isostore:/ShoppingList.sdf"))
+            // Create the database if it does not exist.
+            using (ShoppingListDataContext db = new ShoppingListDataContext(@"isostore:/OIShoppingListDB.sdf"))
             {
                 if (db.DatabaseExists() == false)
                 {
@@ -89,10 +89,10 @@ namespace OIShoppingListWinPhone
             }
 
             // Create the ViewModel object.
-            viewModel = new ShoppingListViewModel("Data Source=isostore:/ShoppingList.sdf");
+            viewModel = new ShoppingListViewModel(@"isostore:/OIShoppingListDB.sdf");
 
             // Query the local database and load observable collections.
-            viewModel.LoadData();*/
+            viewModel.LoadData();
         }
 
         // Code to execute when the application is launching (eg, from Start)

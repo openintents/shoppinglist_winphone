@@ -6,9 +6,8 @@
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
-    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
-	xmlns:panel="clr-namespace:WP7DockPanel;assembly=WP7DockPanel" 
-    
+    xmlns:custom="clr-namespace:OIShoppingListWinPhone"
+	    
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     
@@ -25,25 +24,19 @@
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <!--Pivot Control-->
-        <controls:Pivot x:Name="pivotControl" Title="OI SHOPPING LIST"/>
-       <!--Pivot Control-->
-
-        <Border Height="80" Margin="0,0,0,72" VerticalAlignment="Bottom">
-            <Border.Background>
-                <SolidColorBrush Color="{StaticResource PhoneBackgroundColor}"/>
-            </Border.Background>
-            <Border.OpacityMask>
-                <LinearGradientBrush StartPoint="0 0" EndPoint="0 1">
-                    <GradientStop Color="Transparent" Offset="0.05"/>
-                    <GradientStop Color="{StaticResource PhoneBackgroundColor}" Offset="0.35"/>
-                </LinearGradientBrush>
-            </Border.OpacityMask>
-            <StackPanel Orientation="Horizontal" Margin="0,8,0,-8">
-                <TextBlock x:Name="checkItemsCount" Margin="0,30,0,0" FontSize="18" TextAlignment="Center" TextWrapping="Wrap" Text="#10" Width="90"/>
-                <TextBlock x:Name="checkItemsPrice" Margin="0,30,0,0" FontSize="18" TextAlignment="Left" TextWrapping="Wrap" Text="Checked:" Width="190"/>
-                <TextBlock x:Name="totalItemsPrice" Margin="0,30,3,0" FontSize="18" TextAlignment="Right" TextWrapping="Wrap" Text="Total:" Width="190"/>
-            </StackPanel>
-        </Border>
+        <controls:Pivot x:Name="PivotControl" Title="OI SHOPPING LIST"/>
+		<!--Pivot Control-->
+        
+        <Grid Height="50" Margin="12,0,12,65" VerticalAlignment="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="60"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" x:Name="checkItemsCount" Margin="0,0,5,0"  FontSize="18" TextAlignment="Center" TextWrapping="Wrap" Text="#16"/>
+            <TextBlock Grid.Column="1" x:Name="checkItemsPrice" Margin="0,0,5,0"  FontSize="18" TextAlignment="Left" TextWrapping="Wrap" Text="Checked:"/>
+            <TextBlock Grid.Column="2" x:Name="totalItemsPrice" Margin="1,0,5,0" FontSize="18" TextAlignment="Right" TextWrapping="Wrap" Text="Total:"/>
+        </Grid>
         <Grid Height="72" VerticalAlignment="Bottom">
             <TextBox Text="newItemName" x:Name="newListItemName" Margin="0,0,125,0" TextWrapping="NoWrap" FontSize="24"/>
             <Button Content="Add" HorizontalAlignment="Right" Width="130" Click="Button_Add_Click"/>

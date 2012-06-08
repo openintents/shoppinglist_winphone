@@ -36,23 +36,44 @@ namespace OIShoppingListWinPhone
                 App.ViewModel.LoadData();
             }
 
-            PivotItem newItem = new PivotItem();
-            newItem.Header = "list1";
-            newItem.Margin = new Thickness(0, 0, 0, 0);
+            Pivot pivot = this.PivotControl as Pivot;
+            if (App.ViewModel.ShoppingLists.Count != 0)
+            {                
+                foreach (ShoppingList sList in App.ViewModel.ShoppingLists)
+                {
+                    PivotItem pItem = new PivotItem();
+                    pItem.Header = sList.ListName;
+                    pItem.Margin = new Thickness(12, 0, 12, 0);
 
-            newItem.Style = (Style)App.Current.Resources["PivotItemCustomControl"];
-            pivotControl.Items.Add(newItem);
+                    PivotItemControl pItemControl = new PivotItemControl();
 
-            newItem = new PivotItem();
-            newItem.Header = "list2";
-            newItem.Margin = new Thickness(0, 0, 0, 0);
+                    foreach (ShoppingListItem listItem in sList.ListItems)
+                    {
+                        PivotItemControlElement pControl = new PivotItemControlElement(listItem);
+                        pItemControl.ContentPanel.Children.Add(pControl);
+                    }
+                    pItem.Content = pItemControl;
+                    pivot.Items.Add(pItem);
+                }
 
-            newItem.Style = (Style)App.Current.Resources["PivotItemCustomControl"];
-            pivotControl.Items.Add(newItem);
+                totalItemsPrice.Text = "Total:" + "\n" + "87.20";
+                checkItemsCount.Text = "#16";
+                checkItemsPrice.Text = "Checked:" + "\n" + "87.20";
+            }
+            else
+            {
+                ShoppingList newList = new ShoppingList();
+                newList.ListName = "MyNewList";
+                App.ViewModel.AddNewList(newList);
 
-            totalItemsPrice.Text = "Total:" + "\n" + "87.20";
-            checkItemsCount.Text = "#16";
-            checkItemsPrice.Text = "Checked:" + "\n" + "87.20";
+                PivotItem pItem = new PivotItem();
+                pItem.Header = newList.ListName;
+                pItem.Margin = new Thickness(12, 0, 12, 0);
+
+                PivotItemControl pItemControl = new PivotItemControl();
+                pItem.Content = pItemControl;
+                pivot.Items.Add(pItem);
+            }
         }
 
         private void ApplicationBarMenuAbout_Click(object sender, EventArgs e)

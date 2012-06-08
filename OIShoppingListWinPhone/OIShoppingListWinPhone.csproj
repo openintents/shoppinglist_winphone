@@ -63,9 +63,6 @@
     <Reference Include="System.Windows.Interactivity" />
     <Reference Include="System.Xml" />
     <Reference Include="mscorlib.extensions" />
-    <Reference Include="WP7DockPanel">
-      <HintPath>..\..\..\DockPanelsamples\dll\WP7DockPanel.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -74,10 +71,14 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomControls\PivotItemControl.xaml.cs">
+      <DependentUpon>PivotItemControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\PivotItemControlElement.xaml.cs">
+      <DependentUpon>PivotItemControlElement.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataModel + ViewModel\ItemViewModel.cs" />
-    <Compile Include="DataModel + ViewModel\ListDataModel.cs" />
-    <Compile Include="DataModel + ViewModel\ListViewModel.cs" />
     <Compile Include="DataModel + ViewModel\MainViewModel.cs" />
     <Compile Include="DataModel + ViewModel\ShoppingListDataModel.cs" />
     <Compile Include="DataModel + ViewModel\ShoppingListViewModel.cs" />
@@ -88,6 +89,14 @@
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
     <Page Include="MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\PivotItemControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\PivotItemControlElement.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
