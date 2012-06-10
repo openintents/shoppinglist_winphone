@@ -20,7 +20,9 @@ namespace OIShoppingListWinPhone
 {
     public partial class App : Application
     {
-        private static ShoppingListViewModel viewModel = null;
+        public Settings AppSettings { get; set; }
+
+        private static ShoppingListViewModel viewModel;
 
         /// <summary>
         /// A static ViewModel used by the views to bind against.
@@ -76,35 +78,22 @@ namespace OIShoppingListWinPhone
                 // Caution:- Use this under debug mode only. Application that disables user idle detection will continue to run
                 // and consume battery power when the user is not using the phone.
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
-            }
-
-            // Create the database if it does not exist.
-            using (ShoppingListDataContext db = new ShoppingListDataContext(@"isostore:/OIShoppingListDB.sdf"))
-            {
-                if (db.DatabaseExists() == false)
-                {
-                    // Create the local database.
-                    db.CreateDatabase();
-                }
-            }
-
-            // Create the ViewModel object.
-            viewModel = new ShoppingListViewModel(@"isostore:/OIShoppingListDB.sdf");
-
-            // Query the local database and load observable collections.
-            viewModel.LoadData();
+            }                       
         }
 
         // Code to execute when the application is launching (eg, from Start)
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
+            AppSettings = Settings.Load();
         }
 
         // Code to execute when the application is activated (brought to foreground)
         // This code will not execute when the application is first launched
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
+            AppSettings = Settings.Load();
+
             // Ensure that application state is restored appropriately
             if (!App.ViewModel.IsDataLoaded)
             {
@@ -116,6 +105,7 @@ namespace OIShoppingListWinPhone
         // This code will not execute when the application is closing
         private void Application_Deactivated(object sender, DeactivatedEventArgs e)
         {
+            AppSettings.Save();
         }
 
         // Code to execute when the application is closing (eg, user hit Back)
@@ -123,6 +113,7 @@ namespace OIShoppingListWinPhone
         private void Application_Closing(object sender, ClosingEventArgs e)
         {
             // Ensure that required application state is persisted here.
+            AppSettings.Save();
         }
 
         // Code to execute if a navigation fails

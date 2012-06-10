@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using Microsoft.Phone.Controls;
 
 namespace OIShoppingListWinPhone
 {
@@ -34,17 +35,69 @@ namespace OIShoppingListWinPhone
 
         #endregion*/
 
+        public event RoutedEventHandler OnMenuItemClick;
+
         public PivotItemControlElement(OIShoppingListWinPhone.DataModel.ShoppingListItem listItem)
         {
             InitializeComponent();
 
             itemCheck.IsChecked = listItem.Status;
+            itemName.Text = listItem.ItemName;
+            itemTag.Text = listItem.Tag;
             itemPriority.Text = String.Format("-{0}-", listItem.Priority);
             itemQuantity.Text = listItem.Quantity.ToString();
             itemUnits.Text = listItem.Units.ToString();
-            itemName.Text = listItem.ItemName;
             itemPrice.Text = String.Format("{0:F2}", listItem.Price);
-            itemTag.Text = listItem.Tag;
+
+            ContextMenu pItemControlElementMenu = new ContextMenu();
+            MenuItem menuItem = new MenuItem();
+            menuItem.Height = 65;
+            menuItem.Header = "edit item";
+            menuItem.Tag = this;
+            menuItem.Click += new RoutedEventHandler(menuItem_Click);
+            pItemControlElementMenu.Items.Add(menuItem);
+            menuItem = new MenuItem();
+            menuItem.Height = 65;
+            menuItem.Header = "mark item";
+            menuItem.Tag = this;
+            menuItem.Click += new RoutedEventHandler(menuItem_Click);
+            pItemControlElementMenu.Items.Add(menuItem);
+            menuItem = new MenuItem();
+            menuItem.Height = 65;
+            menuItem.Header = "stores...";
+            menuItem.Tag = this;
+            menuItem.Click += new RoutedEventHandler(menuItem_Click);
+            pItemControlElementMenu.Items.Add(menuItem);
+            menuItem = new MenuItem();
+            menuItem.Height = 65;
+            menuItem.Header = "remove item from list";
+            menuItem.Tag = this;
+            menuItem.Click += new RoutedEventHandler(menuItem_Click);
+            pItemControlElementMenu.Items.Add(menuItem);
+            menuItem = new MenuItem();
+            menuItem.Height = 65;
+            menuItem.Header = "copy item";
+            menuItem.Tag = this;
+            menuItem.Click += new RoutedEventHandler(menuItem_Click);
+            pItemControlElementMenu.Items.Add(menuItem);
+            menuItem = new MenuItem();
+            menuItem.Height = 65;
+            menuItem.Header = "delete item permanently";
+            menuItem.Tag = this;
+            menuItem.Click += new RoutedEventHandler(menuItem_Click);
+            pItemControlElementMenu.Items.Add(menuItem);
+            menuItem = new MenuItem();
+            menuItem.Height = 65;
+            menuItem.Header = "move item to other list";
+            menuItem.Tag = this;
+            menuItem.Click += new RoutedEventHandler(menuItem_Click);
+            pItemControlElementMenu.Items.Add(menuItem);
+            ContextMenuService.SetContextMenu(this.LayoutRoot, pItemControlElementMenu);
+        }
+
+        void menuItem_Click(object sender, RoutedEventArgs e)
+        {
+            OnMenuItemClick(sender, e);
         }
     }
 }

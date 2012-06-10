@@ -14,7 +14,7 @@ namespace OIShoppingListWinPhone.DataModel
     {        
         private int _listId;
 
-        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = true, AutoSync = AutoSync.OnInsert)]
+        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
         public int ListID
         {
             get { return this._listId; }
@@ -166,6 +166,15 @@ namespace OIShoppingListWinPhone.DataModel
         public int ListID
         {
             get { return this._listId; }
+            private set
+            {
+                if (this._listId != value)
+                {
+                    NotifyPropertyChanging("ListID");
+                    this._listId = value;
+                    NotifyPropertyChanged("ListID");
+                }
+            }
         }
                 
         private string _itemName;

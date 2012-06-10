@@ -14,7 +14,6 @@
     x:Class="OIShoppingListWinPhone.MainPage" 
     
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
-	d:DataContext="{d:DesignData SampleData/MainViewModelSampleData.xaml}"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -33,14 +32,58 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" x:Name="checkItemsCount" Margin="0,0,5,0"  FontSize="18" TextAlignment="Center" TextWrapping="Wrap" Text="#16"/>
-            <TextBlock Grid.Column="1" x:Name="checkItemsPrice" Margin="0,0,5,0"  FontSize="18" TextAlignment="Left" TextWrapping="Wrap" Text="Checked:"/>
-            <TextBlock Grid.Column="2" x:Name="totalItemsPrice" Margin="1,0,5,0" FontSize="18" TextAlignment="Right" TextWrapping="Wrap" Text="Total:"/>
+            <TextBlock Grid.Column="0" Name="checkItemsCount" Margin="0,0,5,0"  FontSize="18" TextAlignment="Center" TextWrapping="Wrap"/>
+            <TextBlock Grid.Column="1" Name="checkItemsPrice" Margin="0,0,5,0"  FontSize="18" TextAlignment="Left" TextWrapping="Wrap"/>
+            <TextBlock Grid.Column="2" Name="totalItemsPrice" Margin="1,0,5,0" FontSize="18" TextAlignment="Right" TextWrapping="Wrap"/>
         </Grid>
         <Grid Height="72" VerticalAlignment="Bottom">
-            <TextBox Text="newItemName" x:Name="newListItemName" Margin="0,0,125,0" TextWrapping="NoWrap" FontSize="24"/>
+            <TextBox Name="newListItemName" Margin="0,0,125,0" TextWrapping="NoWrap" FontSize="24"/>
             <Button Content="Add" HorizontalAlignment="Right" Width="130" Click="Button_Add_Click"/>
         </Grid>
+
+        <!--LayoutRoot for Adding/Renaming shopping list-->
+        <Rectangle Name="DisableRect"
+                   Fill="#80000000"
+                   Visibility="Collapsed"/>
+        <Border Name="DialogRect"
+                Background="{StaticResource PhoneChromeBrush}"
+                BorderBrush="{StaticResource PhoneForegroundBrush}"
+                BorderThickness="2"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Visibility="Collapsed">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Name="DialogLabel"
+                           Grid.Row="0"
+                           Grid.Column="0"
+                           Grid.ColumnSpan="2"
+                           Margin="12,12,12,12"
+                           FontSize="32"
+                           TextWrapping="Wrap"
+                           TextAlignment="Center"/>
+                <TextBox Name="DialogData"
+                         Grid.Row="1"
+                         Grid.Column="0"
+                         Grid.ColumnSpan="2"/>
+                <Button Grid.Row="2"
+                        Grid.Column="0"
+                        Content="OK"
+                        Click="ButtonDialogOK_Click"/>
+                <Button Grid.Row="2"
+                        Grid.Column="1"
+                        Content="Cancel"
+                        Click="ButtonDialogCancel_Click"/>
+            </Grid>
+        </Border>
     </Grid>
 
     <!--Sample code showing usage of ApplicationBar-->
@@ -53,10 +96,10 @@
                 <shell:ApplicationBarMenuItem Text="settings" Click="ApplicationBarMenuSettings_Click"/>
                 <shell:ApplicationBarMenuItem Text="about..." Click="ApplicationBarMenuAbout_Click"/>
             </shell:ApplicationBar.MenuItems>
-            <shell:ApplicationBarIconButton IconUri="/Images/add.png" Text="new list"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/mail.png" Text="rename list"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/edit.png" Text="send list"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/delete.png" Text="delete list"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/add.png" Text="new list" Click="ApplicationBarIconButtonNewList_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/mail.png" Text="send list" Click="ApplicationBarIconButtonSendList_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/edit.png" Text="rename list" Click="ApplicationBarIconButtonRenameList_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/delete.png" Text="delete list" Click="ApplicationBarIconButtonDeleteList_Click"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
     

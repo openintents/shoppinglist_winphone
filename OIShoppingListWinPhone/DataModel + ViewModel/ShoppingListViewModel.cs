@@ -24,10 +24,8 @@ namespace OIShoppingListWinPhone.ViewModel
         {
             listDB = new ShoppingListDataContext(toDoDBConnectionString);
             
-            if (listDB.DatabaseExists())
-                listDB.DeleteDatabase();
-            
-            listDB.CreateDatabase();
+            if (!listDB.DatabaseExists())
+                listDB.CreateDatabase();           
         }
         // All lists.
         private ObservableCollection<ShoppingList> _shoppingLists;
@@ -58,7 +56,34 @@ namespace OIShoppingListWinPhone.ViewModel
         {
             newList.CreatedDate = DateTime.Now;
             newList.ModifiedDate = DateTime.Now;
+
             listDB.Lists.InsertOnSubmit(newList);
+            listDB.SubmitChanges();
+            LoadData();
+        }
+
+        public void AddNewListItem(ShoppingList currentList, ShoppingListItem newListItem)
+        {
+            currentList.ListItems.Add(newListItem);
+            newListItem.CreatedDate = DateTime.Now;
+            newListItem.ModifiedDate = DateTime.Now;
+
+            listDB.ListItems.InsertOnSubmit(newListItem);
+            listDB.SubmitChanges();
+            LoadData();
+        }
+
+        public void DeleteList(ShoppingList delList)
+        {
+            listDB.Lists.DeleteOnSubmit(delList);
+            listDB.SubmitChanges();
+            LoadData();
+        }
+
+        public void RenameList(ShoppingList renameList, string newName)
+        {
+            var listsInDB = listDB.Lists.Where(c => c.ListID == renameList.ListID).FirstOrDefault();
+            listsInDB.ListName = newName;
             listDB.SubmitChanges();
         }
 
@@ -75,7 +100,7 @@ namespace OIShoppingListWinPhone.ViewModel
             }
         }
 
-        #endregion
+        #endregion                
     }
 
     public sealed class ShoppingListDataContext : DataContext
