@@ -59,7 +59,26 @@ namespace OIShoppingListWinPhone.ViewModel
 
             listDB.Lists.InsertOnSubmit(newList);
             listDB.SubmitChanges();
-            LoadData();
+
+            ShoppingLists.Add(newList);
+        }
+        
+        public void DeleteList(ShoppingList delList)
+        {
+            listDB.Lists.DeleteOnSubmit(delList);
+            listDB.SubmitChanges();
+
+            ShoppingLists.Remove(delList);
+        }
+
+        public void RenameList(ShoppingList renameList, string newName)
+        {
+            var listInDB = listDB.Lists.Where(c => c.ListID == renameList.ListID).FirstOrDefault();
+            listInDB.ListName = newName;
+            listDB.SubmitChanges();
+
+            var listInVM = ShoppingLists.Where(c => c.ListID == renameList.ListID).FirstOrDefault();
+            listInVM.ListName = newName;
         }
 
         public void AddNewListItem(ShoppingList currentList, ShoppingListItem newListItem)
@@ -70,20 +89,28 @@ namespace OIShoppingListWinPhone.ViewModel
 
             listDB.ListItems.InsertOnSubmit(newListItem);
             listDB.SubmitChanges();
-            LoadData();
+
+            var listInVM = ShoppingLists.Where(c => c.ListID == currentList.ListID).FirstOrDefault();
+            listInVM.ListItems.Add(newListItem);
         }
 
-        public void DeleteList(ShoppingList delList)
+        public void UpdateListItem(int ID,
+            string name,
+            int quantity,
+            int units,
+            float price,
+            string tags,
+            int priority,
+            string note)
         {
-            listDB.Lists.DeleteOnSubmit(delList);
-            listDB.SubmitChanges();
-            LoadData();
-        }
-
-        public void RenameList(ShoppingList renameList, string newName)
-        {
-            var listsInDB = listDB.Lists.Where(c => c.ListID == renameList.ListID).FirstOrDefault();
-            listsInDB.ListName = newName;
+            var itemInDB = listDB.ListItems.Where(c => c.ItemID == ID).FirstOrDefault();
+            itemInDB.ItemName = name;
+            itemInDB.Quantity = quantity;
+            itemInDB.Units = units;
+            itemInDB.Price = price;
+            itemInDB.Tag = tags;
+            itemInDB.Priority = priority;
+            itemInDB.Note = note;
             listDB.SubmitChanges();
         }
 

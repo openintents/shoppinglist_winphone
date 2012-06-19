@@ -65,11 +65,14 @@
     <Reference Include="mscorlib.extensions" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddNewListPage.xaml.cs">
-      <DependentUpon>AddNewListPage.xaml</DependentUpon>
+    <Compile Include="EditItemPage.xaml.cs">
+      <DependentUpon>EditItemPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\DialogNameControl.xaml.cs">
+      <DependentUpon>DialogNameControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -84,13 +87,18 @@
     <Compile Include="DataModel + ViewModel\ShoppingListDataModel.cs" />
     <Compile Include="DataModel + ViewModel\ShoppingListViewModel.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="ShoppingUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Page Include="AddNewListPage.xaml">
+    <Page Include="EditItemPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\DialogNameControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

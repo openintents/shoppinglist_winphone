@@ -194,10 +194,10 @@ namespace OIShoppingListWinPhone.DataModel
             }
         }
 
-        private Boolean _status;
+        private int _status;
 
-        [Column (DbType="BIT")]
-        public Boolean Status
+        [Column (DbType="INT")]
+        public int Status
         {
             get { return this._status; }
             set
@@ -211,10 +211,17 @@ namespace OIShoppingListWinPhone.DataModel
             }
         }
 
-        private Decimal _price;
+        public enum StatusEnumerator
+        {
+            Unchecked = 0,
+            Checked = 1,
+            Picked = 2
+        }
 
-        [Column(DbType = "DECIMAL")]
-        public Decimal Price
+        private float _price;
+
+        [Column(DbType = "FLOAT", CanBeNull = true)]
+        public float Price
         {
             get { return this._price; }
             set
@@ -230,7 +237,7 @@ namespace OIShoppingListWinPhone.DataModel
 
         private int _quantity;
 
-        [Column(DbType = "INT")]
+        [Column(DbType = "INT", CanBeNull = true)]
         public int Quantity
         {
             get { return this._quantity; }
@@ -247,7 +254,7 @@ namespace OIShoppingListWinPhone.DataModel
 
         private int _units;
 
-        [Column(DbType = "INT")]
+        [Column(DbType = "INT", CanBeNull = true)]
         public int Units
         {
             get { return this._units; }
@@ -264,7 +271,7 @@ namespace OIShoppingListWinPhone.DataModel
 
         private int _priority;
 
-        [Column(DbType = "INT")]
+        [Column(DbType = "INT", CanBeNull = true)]
         public int Priority
         {
             get { return this._priority; }
@@ -281,7 +288,7 @@ namespace OIShoppingListWinPhone.DataModel
 
         private string _tag;
 
-        [Column(DbType = "NVARCHAR(100)")]
+        [Column(DbType = "NVARCHAR(100)", CanBeNull = true)]
         public string Tag
         {
             get { return this._tag; }
@@ -298,7 +305,7 @@ namespace OIShoppingListWinPhone.DataModel
 
         private string _note;
 
-        [Column(DbType = "NVARCHAR(100)")]
+        [Column(DbType = "NVARCHAR(100)", CanBeNull = true)]
         public string Note
         {
             get { return this._note; }

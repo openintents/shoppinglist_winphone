@@ -3,20 +3,38 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+             
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     d:DesignHeight="100" d:DesignWidth="480">
     
-    <Grid x:Name="LayoutRoot" Background="{StaticResource PhoneBackgroundBrush}">
+    <Grid x:Name="LayoutRoot" Background="{StaticResource PhoneBackgroundBrush}"
+          Tap="LayoutRoot_Tap">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>        
+        </Grid.ColumnDefinitions>
+        
+        <toolkit:ContextMenuService.ContextMenu>
+            <toolkit:ContextMenu>
+                <toolkit:MenuItem Height="65" Header="edit item" Click="Menu_EditItem_Click"/>
+                <toolkit:MenuItem Height="65" Header="mark item" Click="Menu_MarkItem_Click"/>
+                <toolkit:MenuItem Height="65" Header="stores..." Click="Menu_Stores_Click"/>
+                <toolkit:MenuItem Height="65" Header="remove item from list" Click="Menu_RemoveItem_Click"/>
+                <toolkit:MenuItem Height="65" Header="copy item" Click="Menu_CopyItem_Click"/>
+                <toolkit:MenuItem Height="65" Header="delete item permanently" Click="Menu_DeleteItem_Click"/>
+                <toolkit:MenuItem Height="65" Header="move item to other list" Click="Menu_MoveItem_Click"/>
+            </toolkit:ContextMenu>
+        </toolkit:ContextMenuService.ContextMenu>
+        
         <Border Grid.Column="0" Grid.ColumnSpan="2" Margin="-12,0,-12,0" BorderThickness="1" BorderBrush="{StaticResource PhoneForegroundBrush}"/>
-        <CheckBox Grid.Column="0" Name="itemCheck" Height="75" Width="60" IsChecked="{Binding Check}" RenderTransformOrigin="0,0" Margin="-9,0,9,27">
+        <CheckBox Grid.Column="0" Name="itemCheck" Height="75" Width="60" IsChecked="{Binding Check}" RenderTransformOrigin="0,0" Margin="-9,0,9,27"
+                  Tap="itemCheck_Tap"
+                  Checked="itemCheck_Checked"
+                  Unchecked="itemCheck_Unchecked">
             <CheckBox.RenderTransform>
                 <ScaleTransform ScaleX="1.4" ScaleY="1.4"/>
             </CheckBox.RenderTransform>
@@ -38,7 +56,7 @@
                     <TextBlock Grid.Column="0" Name="itemPriority" Margin="5,0,5,0" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}"/>
                     <TextBlock Grid.Column="1" Name="itemQuantity" Margin="5,0,5,0" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
                     <TextBlock Grid.Column="2" Name="itemUnits" Margin="5,0,5,0" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
-                    <TextBlock Grid.Column="3" Name="itemName" Margin="5,0,5,0" TextWrapping="Wrap"  Style="{StaticResource PhoneTextExtraLargeStyle}" HorizontalAlignment="Center"/>
+                    <TextBlock Grid.Column="3" Name="itemName" Margin="5,0,5,0" TextWrapping="Wrap"  Style="{StaticResource PhoneTextExtraLargeStyle}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     <Image Grid.Column="4" Height="64" Width="64" Source="/Images/note_black.png" />
                 </Grid>
                 <Grid Grid.Row="1">

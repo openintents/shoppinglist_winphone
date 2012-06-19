@@ -9,16 +9,19 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using System.Windows.Controls.Primitives;
 using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
 
 using OIShoppingListWinPhone.DataModel;
 using OIShoppingListWinPhone.ViewModel;
-using Microsoft.Phone.Shell;
 
 namespace OIShoppingListWinPhone
 {
     public partial class MainPage : PhoneApplicationPage
     {
+        private DialogNameControl dlgName;
+
         // Constructor
         public MainPage()
         {
@@ -38,8 +41,11 @@ namespace OIShoppingListWinPhone
             }
 
             InitializeUI();
-        }        
 
+            dlgName = DialogName as DialogNameControl;
+            dlgName.ButtonOK.Click += new RoutedEventHandler(ButtonOK_Click);
+        }
+        
         private void Button_Add_Click(object sender, RoutedEventArgs e)
         {
             if (newListItemName.Text.Trim() != String.Empty)
@@ -53,51 +59,107 @@ namespace OIShoppingListWinPhone
                 {
                     ItemName = newListItemName.Text,
                     List = currentList,
-                    Priority = 1,
-                    Price = 5,
-                    Units = 2,
-                    Quantity = 2,
-                    Tag = "Tag",
-                    Status = true
+                    Priority = -1,
+                    Price = 0F,
+                    Units = -1,
+                    Quantity = -1,
+                    Tag = null,
+                    Status = (int)ShoppingListItem.StatusEnumerator.Unchecked
                 };
                 
                 App.ViewModel.AddNewListItem(currentList, newListItem);
-
                 newListItemName.Text = "";
-
-                curItemControl.ContentPanel.Children.Add(new PivotItemControlElement(newListItem));
-                //For future development
-                RedrawPivotItem(currentPivotItem);
+                PivotItemControlElement pControl = new PivotItemControlElement(newListItem);
+                curItemControl.ContentPanel.Children.Add(pControl);
+                AttachMenu(pControl);
+                //For future development////////////////////////////////////////////////////////////////////////////////////////
+                RedrawUI(currentPivotItem);
             }
             else
                 MessageBox.Show("Please, input correct list's item name" + "\n\n" + 
                                 "*Note: Name must not be empty", "Information", MessageBoxButton.OK);
         }
 
+        #region DialogNameControl ButtonOK Click Event
+                
+        void ButtonOK_Click(object sender, RoutedEventArgs e)
+        {
+            if (dlgName.DialogLabel.Text == "Enter new name of the shopping list")
+            {
+                Pivot pivot = this.PivotControl as Pivot;
+                PivotItem currentPivotItem = pivot.SelectedItem as PivotItem;
+                PivotItemControl pControl = currentPivotItem.Content as PivotItemControl;
+                ShoppingList renameList =  pControl.Tag as ShoppingList;
+
+                if (dlgName.DialogData.Text.Trim() != String.Empty &&
+                    dlgName.DialogData.Text != renameList.ListName)
+                {
+                    App.ViewModel.RenameList(renameList, dlgName.DialogData.Text);
+                    currentPivotItem.Header = dlgName.DialogData.Text;
+
+                    dlgName.Deactivate();
+                }
+                else
+                {
+                    MessageBox.Show("Please, input correct list's name" + "\n\n" +
+                                    "*Note:" + "\n" + "- New name must not be empty" + "\n" +
+                                    "- New name must not be the same", "Information", MessageBoxButton.OK);
+                    dlgName.Activate("Enter new name of the shopping list", renameList.ListName);
+                }
+            }
+            else if (dlgName.DialogLabel.Text == "Enter name of new shopping list")
+            {
+                if (dlgName.DialogData.Text.Trim() != String.Empty)
+                {
+                    ShoppingList newList = new ShoppingList();
+                    newList.ListName = dlgName.DialogData.Text;
+
+                    App.ViewModel.AddNewList(newList);
+
+                    Pivot pivot = this.PivotControl as Pivot;
+                    PivotItem pItem = new PivotItem();
+                    pItem.Header = newList.ListName;
+                    pItem.Margin = new Thickness(12, 0, 12, 0);
+
+                    PivotItemControl pItemControl = new PivotItemControl();
+                    pItemControl.Tag = newList;
+                    pItem.Content = pItemControl;
+                    pivot.Items.Add(pItem);
+                    pivot.SelectedIndex = pivot.Items.Count - 1;
+
+                    dlgName.Deactivate();
+                }
+                else
+                {
+                    MessageBox.Show("Please, input correct list's name" + "\n\n" +
+                                    "*Note: Name must not be empty", "Information", MessageBoxButton.OK);
+                    dlgName.Activate("Enter name of new shopping list", "");
+                }
+            }            
+        }
+        
+        #endregion
+
         #region ApplicationBarIconButton's Click Events
 
         private void ApplicationBarIconButtonNewList_Click(object sender, EventArgs e)
-        {
-            DialogLabel.Text = "Enter name of new shopping list";
-            DisableRect.Visibility = Visibility.Visible;
-            DialogRect.Visibility = Visibility.Visible;
-        }
+        {            
+            dlgName.Activate("Enter name of new shopping list", "");            
+        }        
 
         private void ApplicationBarIconButtonRenameList_Click(object sender, EventArgs e)
         {
-            DialogLabel.Text = "Enter new name of the shopping list";
             Pivot pivot = this.PivotControl as Pivot;
             PivotItem currentPivotItem = pivot.SelectedItem as PivotItem;
             PivotItemControl pControl = currentPivotItem.Content as PivotItemControl;
             ShoppingList renameList = pControl.Tag as ShoppingList;
-            DialogData.Text = renameList.ListName;
-            DisableRect.Visibility = Visibility.Visible;
-            DialogRect.Visibility = Visibility.Visible;            
+            
+            dlgName.Activate("Enter new name of the shopping list", renameList.ListName);
         }
 
         private void ApplicationBarIconButtonSendList_Click(object sender, EventArgs e)
         {
-
+            //Send shopping list via SMS or E-mail
         }
 
         private void ApplicationBarIconButtonDeleteList_Click(object sender, EventArgs e)
@@ -166,8 +228,8 @@ namespace OIShoppingListWinPhone
         private void InitializeUI()
         {
             int chItemsCount = 0;
-            Decimal tItemsPrice = 0;
-            Decimal chItemsPrice = 0;
+            float tItemsPrice = 0;
+            float chItemsPrice = 0;
 
             Pivot pivot = this.PivotControl as Pivot;
             pivot.Items.Clear();
@@ -185,13 +247,13 @@ namespace OIShoppingListWinPhone
                     foreach (ShoppingListItem listItem in sList.ListItems)
                     {
                         PivotItemControlElement pControl = new PivotItemControlElement(listItem);
-                        pControl.OnMenuItemClick += new RoutedEventHandler(pControl_OnMenuItemClick);
+                        AttachMenu(pControl);
                         pControl.Tag = listItem;
                         pItemControl.ContentPanel.Children.Add(pControl);
 
                         chItemsCount++;
                         tItemsPrice += listItem.Price;
-                        if (listItem.Status)
+                        if (listItem.Status == (int)ShoppingListItem.StatusEnumerator.Checked)
                             chItemsPrice += listItem.Price;
                     }
                     pItem.Content = pItemControl;
@@ -224,87 +286,113 @@ namespace OIShoppingListWinPhone
             }
         }
 
-        private void RedrawPivotItem(PivotItem item)
+        private void RedrawUI(PivotItem item)
         {
         }
 
-        void pControl_OnMenuItemClick(object sender, RoutedEventArgs e)
+        private void AttachMenu(PivotItemControlElement element)
         {
-            MenuItem menuItem = sender as MenuItem;
-            PivotItemControlElement element = menuItem.Tag as PivotItemControlElement;
-            ShoppingListItem listItem = element.Tag as ShoppingListItem;
-            switch (menuItem.Header.ToString())
+            element.LayoutRootManipulationStarted += new EventHandler<System.Windows.Input.GestureEventArgs>(element_LayoutRootManipulationStarted);
+
+            element.OnMenuEditItemClick +=new EventHandler<RoutedEventArgs>(element_OnMenuEditItemClick);
+            element.OnMenuMarkItemClick += new EventHandler<RoutedEventArgs>(element_OnMenuMarkItemClick);
+            element.OnMenuStoresClick += new EventHandler<RoutedEventArgs>(element_OnMenuStoresClick);
+            element.OnMenuRemoveItemClick += new EventHandler<RoutedEventArgs>(element_OnMenuRemoveItemClick);
+            element.OnMenuCopyItemClick += new EventHandler<RoutedEventArgs>(element_OnMenuCopyItemClick);
+            element.OnMenuDeleteItemClick += new EventHandler<RoutedEventArgs>(element_OnMenuDeleteItemClick);
+            element.OnMenuMoveItemClick += new EventHandler<RoutedEventArgs>(element_OnMenuMoveItemClick);
+        }
+
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            if (NavigationContext.QueryString.ContainsKey("Name"))
             {
-                case "edit item":
-                    {
-                    }
-                    break;
-                case "mark item":
-                    {
-                    }
-                    break;
-                case "stores...":
-                    {
-                    }
-                    break;
-                case "remove item from list":
-                    {
-                    }
-                    break;
-                case "copy item":
-                    {
-                    }
-                    break;
-                case "delete item permanently":
-                    {
-                    }
-                    break;
-                case "move item to other list":
-                    {
-                    }
-                    break;
+                NavigationService.RemoveBackEntry();
+                if (NavigationContext.QueryString.ContainsKey("ID"))
+                {
+                    string newName = NavigationContext.QueryString["Name"].ToString();
+                    int newQuantity;
+                    if (NavigationContext.QueryString["Quantity"].ToString() != "")
+                        newQuantity = Convert.ToInt32(NavigationContext.QueryString["Quantity"].ToString());
+                    else
+                        newQuantity = -1;
+
+                    int newUnits;
+                    if (NavigationContext.QueryString["Units"].ToString() != "")
+                        newUnits = Convert.ToInt32(NavigationContext.QueryString["Units"].ToString());
+                    else
+                        newUnits = -1;
+
+                    float newPrice = (float)Convert.ToDouble(NavigationContext.QueryString["Price"].ToString());
+                    string newTag = NavigationContext.QueryString["Tag"].ToString();
+
+                    int newPriority;
+                    if (NavigationContext.QueryString["Priority"].ToString() != "")
+                        newPriority = Convert.ToInt32(NavigationContext.QueryString["Priority"].ToString());
+                    else
+                        newPriority = -1;
+
+                    string newNote = NavigationContext.QueryString["Note"].ToString();
+                    
+                    App.ViewModel.UpdateListItem(Convert.ToInt32(NavigationContext.QueryString["ID"].ToString()),
+                        newName, newQuantity, newUnits, newPrice, newTag, newPriority, newNote);
+                    //PivotItemControlElement elementForUpdate = this.State["ItemForUpdate"] as PivotItemControlElement;
+                    //elementForUpdate.UpdateControl(newName, newQuantity, newUnits, newPrice, newTag, newPriority, newNote);
+                }
             }
         }
 
-        private void ButtonDialogOK_Click(object sender, RoutedEventArgs e)
+        void element_LayoutRootManipulationStarted(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            if (DialogLabel.Text == "Enter new name of the shopping list")
-            {
-                Pivot pivot = this.PivotControl as Pivot;
-                PivotItem currentPivotItem = pivot.SelectedItem as PivotItem;
-                PivotItemControl pControl = currentPivotItem.Content as PivotItemControl;
-                ShoppingList renameList = pControl.Tag as ShoppingList;
-                App.ViewModel.RenameList(renameList, DialogData.Text);
-                currentPivotItem.Header = DialogData.Text;
-            }
-            else if (DialogLabel.Text == "Enter name of new shopping list")
-            {
-                ShoppingList newList = new ShoppingList();
-                newList.ListName = DialogData.Text;
+            ShoppingListItem listItem = (sender as PivotItemControlElement).Tag as ShoppingListItem;
+            //this.State.Add("ItemForUpdate", sender);
 
-                App.ViewModel.AddNewList(newList);
-
-                Pivot pivot = this.PivotControl as Pivot;
-                PivotItem pItem = new PivotItem();
-                pItem.Header = newList.ListName;
-                pItem.Margin = new Thickness(12, 0, 12, 0);
-
-                PivotItemControl pItemControl = new PivotItemControl();
-                pItemControl.Tag = newList;
-                pItem.Content = pItemControl;
-                pivot.Items.Add(pItem);
-                pivot.SelectedIndex = pivot.Items.Count - 1;
-            }
-            DialogData.Text = "";
-            DisableRect.Visibility = Visibility.Collapsed;
-            DialogRect.Visibility = Visibility.Collapsed;
+            string queryBody = "?ID=" + listItem.ItemID.ToString()
+                + "&Name=" + listItem.ItemName
+                + "&Quantity=" + listItem.Quantity.ToString()
+                + "&Units=" + listItem.Units.ToString()
+                + "&Price=" + String.Format("{0:F2}", listItem.Price)
+                + "&Tag=" + listItem.Tag
+                + "&Priority=" + listItem.Priority
+                + "&Note=" + listItem.Note;
+            NavigationService.Navigate(new Uri("/EditItemPage.xaml" + queryBody, UriKind.Relative));
         }
 
-        private void ButtonDialogCancel_Click(object sender, RoutedEventArgs e)
+        void element_OnMenuMoveItemClick(object sender, RoutedEventArgs e)
         {
-            DialogData.Text = "";
-            DisableRect.Visibility = Visibility.Collapsed;
-            DialogRect.Visibility = Visibility.Collapsed;
+            int x = 0;
+        }
+
+        void element_OnMenuDeleteItemClick(object sender, RoutedEventArgs e)
+        {
+            int x = 0;
+        }
+
+        void element_OnMenuCopyItemClick(object sender, RoutedEventArgs e)
+        {
+            int x = 0;
+        }
+
+        void element_OnMenuEditItemClick(object sender, RoutedEventArgs e)
+        {
+            int x = 0;
+        }
+
+        void element_OnMenuMarkItemClick(object sender, RoutedEventArgs e)
+        {
+            int x = 0;
+        }
+
+        void element_OnMenuStoresClick(object sender, RoutedEventArgs e)
+        {
+            int x = 0;
+        }
+
+        void element_OnMenuRemoveItemClick(object sender, RoutedEventArgs e)
+        {
+            int x = 0;
         }
     }
 }

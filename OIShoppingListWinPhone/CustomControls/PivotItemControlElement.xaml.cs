@@ -35,69 +35,109 @@ namespace OIShoppingListWinPhone
 
         #endregion*/
 
-        public event RoutedEventHandler OnMenuItemClick;
+        public event EventHandler<System.Windows.Input.GestureEventArgs> LayoutRootManipulationStarted;
+
+        public event EventHandler<RoutedEventArgs> OnMenuEditItemClick;
+        public event EventHandler<RoutedEventArgs> OnMenuMarkItemClick;
+        public event EventHandler<RoutedEventArgs> OnMenuStoresClick;
+        public event EventHandler<RoutedEventArgs> OnMenuRemoveItemClick;
+        public event EventHandler<RoutedEventArgs> OnMenuCopyItemClick;
+        public event EventHandler<RoutedEventArgs> OnMenuDeleteItemClick;
+        public event EventHandler<RoutedEventArgs> OnMenuMoveItemClick;
 
         public PivotItemControlElement(OIShoppingListWinPhone.DataModel.ShoppingListItem listItem)
         {
             InitializeComponent();
 
-            itemCheck.IsChecked = listItem.Status;
+            if (listItem.Status == 1)
+                itemCheck.IsChecked = true;
             itemName.Text = listItem.ItemName;
-            itemTag.Text = listItem.Tag;
-            itemPriority.Text = String.Format("-{0}-", listItem.Priority);
-            itemQuantity.Text = listItem.Quantity.ToString();
-            itemUnits.Text = listItem.Units.ToString();
-            itemPrice.Text = String.Format("{0:F2}", listItem.Price);
-
-            ContextMenu pItemControlElementMenu = new ContextMenu();
-            MenuItem menuItem = new MenuItem();
-            menuItem.Height = 65;
-            menuItem.Header = "edit item";
-            menuItem.Tag = this;
-            menuItem.Click += new RoutedEventHandler(menuItem_Click);
-            pItemControlElementMenu.Items.Add(menuItem);
-            menuItem = new MenuItem();
-            menuItem.Height = 65;
-            menuItem.Header = "mark item";
-            menuItem.Tag = this;
-            menuItem.Click += new RoutedEventHandler(menuItem_Click);
-            pItemControlElementMenu.Items.Add(menuItem);
-            menuItem = new MenuItem();
-            menuItem.Height = 65;
-            menuItem.Header = "stores...";
-            menuItem.Tag = this;
-            menuItem.Click += new RoutedEventHandler(menuItem_Click);
-            pItemControlElementMenu.Items.Add(menuItem);
-            menuItem = new MenuItem();
-            menuItem.Height = 65;
-            menuItem.Header = "remove item from list";
-            menuItem.Tag = this;
-            menuItem.Click += new RoutedEventHandler(menuItem_Click);
-            pItemControlElementMenu.Items.Add(menuItem);
-            menuItem = new MenuItem();
-            menuItem.Height = 65;
-            menuItem.Header = "copy item";
-            menuItem.Tag = this;
-            menuItem.Click += new RoutedEventHandler(menuItem_Click);
-            pItemControlElementMenu.Items.Add(menuItem);
-            menuItem = new MenuItem();
-            menuItem.Height = 65;
-            menuItem.Header = "delete item permanently";
-            menuItem.Tag = this;
-            menuItem.Click += new RoutedEventHandler(menuItem_Click);
-            pItemControlElementMenu.Items.Add(menuItem);
-            menuItem = new MenuItem();
-            menuItem.Height = 65;
-            menuItem.Header = "move item to other list";
-            menuItem.Tag = this;
-            menuItem.Click += new RoutedEventHandler(menuItem_Click);
-            pItemControlElementMenu.Items.Add(menuItem);
-            ContextMenuService.SetContextMenu(this.LayoutRoot, pItemControlElementMenu);
+            if (listItem.Tag != null)
+                itemTag.Text = listItem.Tag;
+            if (listItem.Priority != -1)
+                itemPriority.Text = String.Format("-{0}-", listItem.Priority);
+            if (listItem.Quantity != -1)
+                itemQuantity.Text = listItem.Quantity.ToString();
+            if (listItem.Units != -1)
+                itemUnits.Text = listItem.Units.ToString();
+            if (listItem.Price != 0)
+                itemPrice.Text = String.Format("{0:F2}", listItem.Price);
         }
 
-        void menuItem_Click(object sender, RoutedEventArgs e)
+        public void UpdateControl(string name,
+            int quantity,
+            int units,
+            float price,
+            string tags,
+            int priority,
+            string note)
         {
-            OnMenuItemClick(sender, e);
+            itemName.Text = name;
+            if (tags != null)
+                itemTag.Text = tags;
+            if (priority != -1)
+                itemPriority.Text = String.Format("-{0}-", priority);
+            if (quantity != -1)
+                itemQuantity.Text = quantity.ToString();
+            if (units != -1)
+                itemUnits.Text = units.ToString();
+            if (price != 0)
+                itemPrice.Text = String.Format("{0:F2}", price);
+        }
+                
+        private void Menu_EditItem_Click(object sender, RoutedEventArgs e)
+        {
+            OnMenuEditItemClick(this, e);
+        }
+
+        private void Menu_MarkItem_Click(object sender, RoutedEventArgs e)
+        {
+            OnMenuMarkItemClick(this, e);
+        }
+
+        private void Menu_Stores_Click(object sender, RoutedEventArgs e)
+        {
+            OnMenuStoresClick(this, e);
+        }
+
+        private void Menu_RemoveItem_Click(object sender, RoutedEventArgs e)
+        {
+            OnMenuRemoveItemClick(this, e);
+        }
+
+        private void Menu_CopyItem_Click(object sender, RoutedEventArgs e)
+        {
+            OnMenuCopyItemClick(this, e);
+        }
+
+        private void Menu_DeleteItem_Click(object sender, RoutedEventArgs e)
+        {
+            OnMenuDeleteItemClick(this, e);
+        }
+
+        private void Menu_MoveItem_Click(object sender, RoutedEventArgs e)
+        {
+            OnMenuMoveItemClick(this, e);
+        }
+
+        private void LayoutRoot_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            LayoutRootManipulationStarted(this, e);
+        }
+
+        private void itemCheck_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {            
+            e.Handled = true;
+        }
+
+        private void itemCheck_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void itemCheck_Unchecked(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
