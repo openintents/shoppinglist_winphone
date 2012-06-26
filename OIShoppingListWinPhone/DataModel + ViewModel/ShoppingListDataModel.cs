@@ -194,10 +194,10 @@ namespace OIShoppingListWinPhone.DataModel
             }
         }
 
-        private int _status;
+        private int? _status;
 
-        [Column (DbType="INT")]
-        public int Status
+        [Column (DbType="INT", CanBeNull=true)]
+        public int? Status
         {
             get { return this._status; }
             set
@@ -220,7 +220,7 @@ namespace OIShoppingListWinPhone.DataModel
 
         private float _price;
 
-        [Column(DbType = "FLOAT", CanBeNull = true)]
+        [Column(DbType = "FLOAT")]
         public float Price
         {
             get { return this._price; }
@@ -235,10 +235,10 @@ namespace OIShoppingListWinPhone.DataModel
             }
         }
 
-        private int _quantity;
+        private int? _quantity;
 
         [Column(DbType = "INT", CanBeNull = true)]
-        public int Quantity
+        public int? Quantity
         {
             get { return this._quantity; }
             set
@@ -252,10 +252,10 @@ namespace OIShoppingListWinPhone.DataModel
             }
         }
 
-        private int _units;
+        private int? _units;
 
         [Column(DbType = "INT", CanBeNull = true)]
-        public int Units
+        public int? Units
         {
             get { return this._units; }
             set
@@ -269,10 +269,10 @@ namespace OIShoppingListWinPhone.DataModel
             }
         }
 
-        private int _priority;
+        private int? _priority;
 
         [Column(DbType = "INT", CanBeNull = true)]
-        public int Priority
+        public int? Priority
         {
             get { return this._priority; }
             set
@@ -288,7 +288,7 @@ namespace OIShoppingListWinPhone.DataModel
 
         private string _tag;
 
-        [Column(DbType = "NVARCHAR(100)", CanBeNull = true)]
+        [Column(DbType = "NVARCHAR(100)")]
         public string Tag
         {
             get { return this._tag; }
@@ -305,7 +305,7 @@ namespace OIShoppingListWinPhone.DataModel
 
         private string _note;
 
-        [Column(DbType = "NVARCHAR(100)", CanBeNull = true)]
+        [Column(DbType = "NVARCHAR(100)")]
         public string Note
         {
             get { return this._note; }
@@ -444,6 +444,15 @@ namespace OIShoppingListWinPhone.DataModel
         public int ListID
         {
             get { return this._listId; }
+            private set
+            {
+                if (this._listId != value)
+                {
+                    NotifyPropertyChanging("ListID");
+                    this._listId = value;
+                    NotifyPropertyChanged("ListID");
+                }
+            }
         }
 
         private string _storeName;
@@ -588,6 +597,15 @@ namespace OIShoppingListWinPhone.DataModel
         public int ItemID
         {
             get { return this._itemId; }
+            set
+            {
+                if (this._itemId != value)
+                {
+                    NotifyPropertyChanging("ItemID");
+                    this._itemId = value;
+                    NotifyPropertyChanged("ItemID");
+                }
+            }
         }
 
         private int _storeId;
@@ -596,12 +614,21 @@ namespace OIShoppingListWinPhone.DataModel
         public int StoreID
         {
             get { return this._storeId; }
+            set
+            {
+                if (this._storeId != value)
+                {
+                    NotifyPropertyChanging("StoreID");
+                    this._storeId = value;
+                    NotifyPropertyChanged("StoreID");
+                }
+            }
         }
 
         private EntityRef<ShoppingListItem> _item;
 
         [Association(Name = "FK_ItemsStores_List", Storage = "_item", ThisKey = "ItemID", OtherKey = "ItemID", IsForeignKey = true, DeleteRule = "CASCADE")]
-        public ShoppingListItem List
+        public ShoppingListItem ListItem
         {
             get { return this._item.Entity; }
             set

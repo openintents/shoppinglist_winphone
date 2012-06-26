@@ -5,6 +5,7 @@ using System.Linq;
 using System.Data.Linq;
 
 using OIShoppingListWinPhone.DataModel;
+using System.Collections.Generic;
 
 namespace OIShoppingListWinPhone.ViewModel
 {
@@ -92,6 +93,61 @@ namespace OIShoppingListWinPhone.ViewModel
 
             var listInVM = ShoppingLists.Where(c => c.ListID == currentList.ListID).FirstOrDefault();
             listInVM.ListItems.Add(newListItem);
+        }
+
+        public void AddNewStore(ShoppingList list, ShoppingListStore store)
+        {
+            list.ListStores.Add(store);
+            store.CreatedDate = DateTime.Now;
+            store.ModifiedDate = DateTime.Now;
+
+            listDB.ListStores.InsertOnSubmit(store);
+            listDB.SubmitChanges();
+        }
+
+        public IEnumerable<ShoppingListStore> LoadStoresPerItem(int itemId)
+        {
+            var StoresPerItem = from ItemStore in listDB.ItemsStores
+                              join Item in listDB.ListItems
+                                on ItemStore.ItemID equals Item.ItemID
+                              join Store in listDB.ListStores
+                                on ItemStore.StoreID equals Store.StoreID
+                              group ItemStore by ItemStore.ListItem into ItemStoreGroup
+                              select new
+                              {
+                                  Item = ItemStoreGroup.Key,
+                                  Stores = ItemStoreGroup.Select(Item => Item.Store)
+                              };
+            foreach (var union in StoresPerItem)
+            {
+                if (union.Item.ItemID == itemId)
+                    return union.Stores;
+            }
+            return null;
+        }
+
+        public void UpdateRelationship(int itemId, string storeName, bool isCheck)
+        {
+            ShoppingListItem item = listDB.ListItems.Where(c => c.ItemID == itemId).FirstOrDefault();
+            ShoppingListStore store = listDB.ListStores.Where(x => x.StoreName == storeName).FirstOrDefault();
+            
+            if (isCheck)
+            {
+                ShoppingListItemsStores itemstore = new ShoppingListItemsStores()
+                    {
+                         ListItem = item,
+                         Store = store
+                    };
+                item.ItemsStores.Add(itemstore);
+                store.StoresItems.Add(itemstore);
+                listDB.ItemsStores.InsertOnSubmit(itemstore);
+            }
+            else
+            {
+
+            }
+            
+            listDB.SubmitChanges();
         }
 
         public void UpdateListItem(int ID,

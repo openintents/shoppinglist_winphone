@@ -60,3 +60,4 @@ C:\Users\Alex\Documents\GitHub\shoppinglist_winphone\OIShoppingListWinPhone\obj\
 C:\Users\Alex\Documents\GitHub\shoppinglist_winphone\OIShoppingListWinPhone\obj\Debug\MainPage.g.i.cs
 C:\Users\Alex\Documents\GitHub\shoppinglist_winphone\OIShoppingListWinPhone\obj\Debug\CustomControls\PivotItemControl.g.i.cs
 C:\Users\Alex\Documents\GitHub\shoppinglist_winphone\OIShoppingListWinPhone\obj\Debug\CustomControls\PivotItemControlElement.g.i.cs
+C:\Users\Alex\Documents\GitHub\shoppinglist_winphone\OIShoppingListWinPhone\obj\Debug\StoreItemPage.g.i.cs

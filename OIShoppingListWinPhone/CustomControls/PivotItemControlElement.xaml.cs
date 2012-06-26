@@ -15,27 +15,10 @@ namespace OIShoppingListWinPhone
 {
     public partial class PivotItemControlElement : UserControl
     {
-        /*#region Variables for Control's displaying
-
-        public string ItemName { get; set; }
-
-        public Boolean Status { get; set; }
-
-        public Decimal Price { get; set; }
-
-        public int Quantity { get; set; }
-
-        public int Units { get; set; }
-
-        public int Priority { get; set; }
-
-        public new string Tag { get; set; }
-
-        public string Note {get; set; }
-
-        #endregion*/
-
         public event EventHandler<System.Windows.Input.GestureEventArgs> LayoutRootManipulationStarted;
+
+        public event EventHandler<RoutedEventArgs> ItemCheck;
+        public event EventHandler<RoutedEventArgs> ItemUncheck;
 
         public event EventHandler<RoutedEventArgs> OnMenuEditItemClick;
         public event EventHandler<RoutedEventArgs> OnMenuMarkItemClick;
@@ -132,12 +115,12 @@ namespace OIShoppingListWinPhone
 
         private void itemCheck_Checked(object sender, RoutedEventArgs e)
         {
-
+            //ItemCheck(this, e);
         }
 
         private void itemCheck_Unchecked(object sender, RoutedEventArgs e)
         {
-
+            //ItemUncheck(this, e);
         }
     }
 }

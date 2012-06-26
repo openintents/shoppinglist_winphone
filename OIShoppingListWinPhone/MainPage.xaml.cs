@@ -338,8 +338,6 @@ namespace OIShoppingListWinPhone
                     
                     App.ViewModel.UpdateListItem(Convert.ToInt32(NavigationContext.QueryString["ID"].ToString()),
                         newName, newQuantity, newUnits, newPrice, newTag, newPriority, newNote);
-                    //PivotItemControlElement elementForUpdate = this.State["ItemForUpdate"] as PivotItemControlElement;
-                    //elementForUpdate.UpdateControl(newName, newQuantity, newUnits, newPrice, newTag, newPriority, newNote);
                 }
             }
         }
@@ -347,7 +345,6 @@ namespace OIShoppingListWinPhone
         void element_LayoutRootManipulationStarted(object sender, System.Windows.Input.GestureEventArgs e)
         {
             ShoppingListItem listItem = (sender as PivotItemControlElement).Tag as ShoppingListItem;
-            //this.State.Add("ItemForUpdate", sender);
 
             string queryBody = "?ID=" + listItem.ItemID.ToString()
                 + "&Name=" + listItem.ItemName
@@ -362,37 +359,41 @@ namespace OIShoppingListWinPhone
 
         void element_OnMenuMoveItemClick(object sender, RoutedEventArgs e)
         {
-            int x = 0;
+            
         }
 
         void element_OnMenuDeleteItemClick(object sender, RoutedEventArgs e)
         {
-            int x = 0;
+            
         }
 
         void element_OnMenuCopyItemClick(object sender, RoutedEventArgs e)
         {
-            int x = 0;
+            
         }
 
         void element_OnMenuEditItemClick(object sender, RoutedEventArgs e)
         {
-            int x = 0;
+            
         }
 
         void element_OnMenuMarkItemClick(object sender, RoutedEventArgs e)
         {
-            int x = 0;
+            
         }
 
         void element_OnMenuStoresClick(object sender, RoutedEventArgs e)
         {
-            int x = 0;
+            ShoppingListItem listItem = (sender as PivotItemControlElement).Tag as ShoppingListItem;
+            string queryBody = "?ListId=" + listItem.ListID
+                + "&ItemId=" + listItem.ItemID
+                + "&ItemName=" + listItem.ItemName;
+            NavigationService.Navigate(new Uri("/StoreItemPage.xaml" + queryBody, UriKind.Relative));
         }
 
         void element_OnMenuRemoveItemClick(object sender, RoutedEventArgs e)
         {
-            int x = 0;
+            
         }
     }
 }
