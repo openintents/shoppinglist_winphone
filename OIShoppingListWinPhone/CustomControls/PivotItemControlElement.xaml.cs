@@ -34,15 +34,28 @@ namespace OIShoppingListWinPhone
 
             if (listItem.Status == 1)
                 itemCheck.IsChecked = true;
+
+            itemName.FontSize = (int)App.AppSettings.FontSize;
             itemName.Text = listItem.ItemName;
+
             if (listItem.Tag != null)
                 itemTag.Text = listItem.Tag;
-            if (listItem.Priority != -1)
+
+            if (listItem.Priority != null)
                 itemPriority.Text = String.Format("-{0}-", listItem.Priority);
-            if (listItem.Quantity != -1)
+
+            if (listItem.Quantity != null)
+            {
+                itemQuantity.FontSize = (int)App.AppSettings.FontSize;
                 itemQuantity.Text = listItem.Quantity.ToString();
-            if (listItem.Units != -1)
+            }
+
+            if (listItem.Units != null)
+            {
+                itemUnits.FontSize = (int)App.AppSettings.FontSize;
                 itemUnits.Text = listItem.Units.ToString();
+            }
+
             if (listItem.Price != 0)
                 itemPrice.Text = String.Format("{0:F2}", listItem.Price);
         }

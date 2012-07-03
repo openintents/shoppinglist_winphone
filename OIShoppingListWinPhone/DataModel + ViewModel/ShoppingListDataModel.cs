@@ -194,10 +194,10 @@ namespace OIShoppingListWinPhone.DataModel
             }
         }
 
-        private int? _status;
+        private int _status;
 
-        [Column (DbType="INT", CanBeNull=true)]
-        public int? Status
+        [Column (DbType="INT")]
+        public int Status
         {
             get { return this._status; }
             set

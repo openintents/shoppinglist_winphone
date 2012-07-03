@@ -6,18 +6,24 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
 	xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     
+    xmlns:SampleData="clr-namespace:Expression.Blend.SampleData.SortOrderSettings" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+    
     x:Class="OIShoppingListWinPhone.App">
 
     <!--Application Resources-->
     <Application.Resources>
     
+    	<ResourceDictionary>
+    		<SampleData:SortOrderSettings x:Key="SortOrderSettings" d:IsDataSource="True"/>
+    	</ResourceDictionary>
+    
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>
         <!--Required object that handles lifetime events for the application-->
-        <shell:PhoneApplicationService 
-            Launching="Application_Launching" Closing="Application_Closing" 
-            Activated="Application_Activated" Deactivated="Application_Deactivated"/>
+    	<shell:PhoneApplicationService 
+    		Launching="Application_Launching" Closing="Application_Closing" 
+    		Activated="Application_Activated" Deactivated="Application_Deactivated"/>
     </Application.ApplicationLifetimeObjects>
 
 </Application>

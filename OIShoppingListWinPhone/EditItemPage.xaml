@@ -10,7 +10,7 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
-    mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
+    mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -134,7 +134,7 @@
 						<Border Grid.Row="3"
 								Grid.Column="4"
 								Grid.ColumnSpan="2"
-								Margin="5,30,5,15"
+								Margin="5,32,5,17"
 								BorderBrush="#FF646464"
 								BorderThickness="1"
 								CornerRadius="7">
@@ -151,37 +151,15 @@
 					</Grid>
 				</StackPanel>
 			</ScrollViewer>           	
-			<Grid Grid.Row="1" Margin="5,10,5,20">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="*"/>
-					<ColumnDefinition Width="*"/>
-				</Grid.ColumnDefinitions>
-				<Button Grid.Column="0"
-						Height="85"
-						Margin="5"
-						Padding="5"
-						Content="OK"
-                        Click="Button_Click_OK"/>
-				<Button Grid.Column="1"
-						Height="85"
-						Margin="5"
-						Padding="5"
-						Content="Cancel"
-                        Click="Button_Click_Cancel"/>
-			</Grid>
 		</Grid>
     </Grid>
  
     <!--Sample code showing usage of ApplicationBar-->
-    <!--<phone:PhoneApplicationPage.ApplicationBar>
+    <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Button 1"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Button 2"/>
-            <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
-                <shell:ApplicationBarMenuItem Text="MenuItem 2"/>
-            </shell:ApplicationBar.MenuItems>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.check.rest.png" Text="ok" Click="ApplicationBarIconButtonOk_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.cancel.rest.png" Text="cancel" Click="ApplicationBarIconButtonCancel_Click"/>
         </shell:ApplicationBar>
-    </phone:PhoneApplicationPage.ApplicationBar>-->
+    </phone:PhoneApplicationPage.ApplicationBar>
 
 </phone:PhoneApplicationPage>

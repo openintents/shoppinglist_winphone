@@ -20,7 +20,7 @@ namespace OIShoppingListWinPhone
 {
     public partial class App : Application
     {
-        public Settings AppSettings { get; set; }
+        public static Settings AppSettings { get; set; }
 
         private static ShoppingListViewModel viewModel;
 

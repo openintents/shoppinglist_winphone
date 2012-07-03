@@ -63,8 +63,12 @@
     <Reference Include="System.Windows.Interactivity" />
     <Reference Include="System.Xml" />
     <Reference Include="mscorlib.extensions" />
+    <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdvancedSettingsPage.xaml.cs">
+      <DependentUpon>AdvancedSettingsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EditItemPage.xaml.cs">
       <DependentUpon>EditItemPage.xaml</DependentUpon>
     </Compile>
@@ -86,7 +90,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataModel + ViewModel\ShoppingListDataModel.cs" />
     <Compile Include="DataModel + ViewModel\ShoppingListViewModel.cs" />
+    <Compile Include="SampleData\SortOrderSettings\SortOrderSettings.xaml.cs">
+      <DependentUpon>SortOrderSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Settings.cs" />
+    <Compile Include="SettingsPage.xaml.cs">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ShoppingUtils.cs" />
     <Compile Include="StoreItemPage.xaml.cs">
       <DependentUpon>StoreItemPage.xaml</DependentUpon>
@@ -97,6 +107,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="AdvancedSettingsPage.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="EditItemPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -117,6 +131,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="SampleData\SortOrderSettings\SortOrderSettings.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="StoreItemPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -124,7 +146,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AppManifest.xml" />
-    <None Include="Properties\WMAppManifest.xml" />
+    <None Include="Properties\WMAppManifest.xml">
+      <SubType>Designer</SubType>
+    </None>
+    <DesignTimeOnly Include="SampleData\SortOrderSettings\SortOrderSettings.xsd" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ApplicationIcon.png">

@@ -152,11 +152,11 @@ namespace OIShoppingListWinPhone.ViewModel
 
         public void UpdateListItem(int ID,
             string name,
-            int quantity,
-            int units,
+            int? quantity,
+            int? units,
             float price,
             string tags,
-            int priority,
+            int? priority,
             string note)
         {
             var itemInDB = listDB.ListItems.Where(c => c.ItemID == ID).FirstOrDefault();

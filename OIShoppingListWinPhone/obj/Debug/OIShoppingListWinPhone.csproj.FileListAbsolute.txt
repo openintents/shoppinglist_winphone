@@ -55,9 +55,11 @@ C:\Users\Alex\Documents\GitHub\shoppinglist_winphone\OIShoppingListWinPhone\Bin\
 C:\Users\Alex\Documents\GitHub\shoppinglist_winphone\OIShoppingListWinPhone\Bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
 C:\Users\Alex\Documents\GitHub\shoppinglist_winphone\OIShoppingListWinPhone\Bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll
 C:\Users\Alex\Documents\GitHub\shoppinglist_winphone\OIShoppingListWinPhone\obj\Debug\App.g.i.cs
+C:\Users\Alex\Documents\GitHub\shoppinglist_winphone\OIShoppingListWinPhone\obj\Debug\AdvancedSettingsPage.g.i.cs
 C:\Users\Alex\Documents\GitHub\shoppinglist_winphone\OIShoppingListWinPhone\obj\Debug\EditItemPage.g.i.cs
 C:\Users\Alex\Documents\GitHub\shoppinglist_winphone\OIShoppingListWinPhone\obj\Debug\CustomControls\DialogNameControl.g.i.cs
 C:\Users\Alex\Documents\GitHub\shoppinglist_winphone\OIShoppingListWinPhone\obj\Debug\MainPage.g.i.cs
 C:\Users\Alex\Documents\GitHub\shoppinglist_winphone\OIShoppingListWinPhone\obj\Debug\CustomControls\PivotItemControl.g.i.cs
 C:\Users\Alex\Documents\GitHub\shoppinglist_winphone\OIShoppingListWinPhone\obj\Debug\CustomControls\PivotItemControlElement.g.i.cs
+C:\Users\Alex\Documents\GitHub\shoppinglist_winphone\OIShoppingListWinPhone\obj\Debug\SettingsPage.g.i.cs
 C:\Users\Alex\Documents\GitHub\shoppinglist_winphone\OIShoppingListWinPhone\obj\Debug\StoreItemPage.g.i.cs

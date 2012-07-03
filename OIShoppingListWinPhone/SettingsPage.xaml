@@ -1,0 +1,108 @@
+﻿<phone:PhoneApplicationPage
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit" 
+    x:Class="OIShoppingListWinPhone.SettingsPage"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
+    mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="True">
+	<phone:PhoneApplicationPage.Resources>
+		<DataTemplate x:Key="ItemTemplate">
+			<StackPanel>
+				<TextBlock Text="{Binding OrderName}"/>
+			</StackPanel>
+		</DataTemplate>
+	</phone:PhoneApplicationPage.Resources>
+ 
+    <!--Sample code showing usage of ApplicationBar-->
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+        	<shell:ApplicationBarIconButton IconUri="/Images/appbar.check.rest.png" Text="ok" Click="ApplicationBarIconButtonOk_Click"/>
+        	<shell:ApplicationBarIconButton IconUri="/Images/appbar.cancel.rest.png" Text="cancel" Click="ApplicationBarIconButtonCancel_Click"/>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent" DataContext="{Binding Source={StaticResource SortOrderSettings}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+            <TextBlock x:Name="ApplicationTitle" Text="OI SHOPPING LIST" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="PageTitle" Text="settings" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+        </StackPanel>
+
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+        	<ScrollViewer x:Name="ApplicationSettingsPanel">
+	        	<StackPanel  Height="600">
+	        		<Border x:Name="LabelBorder" Background="#FF646464">
+	        			<TextBlock x:Name="ChapterLabel" FontSize="20" TextWrapping="Wrap" Text="Application Settings" FontWeight="Bold" Foreground="White"/>    		
+	        		</Border>
+					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">						
+						<toolkit:ListPicker Name="FontSizeSettings" ItemCountThreshold="4">
+			        		<toolkit:ListPicker.HeaderTemplate>
+			        			<DataTemplate>
+			        				<StackPanel>
+			        					<TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Font Size" FontWeight="Bold"/>
+										<TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Change font size"/>  				
+									</StackPanel>
+								</DataTemplate>
+							</toolkit:ListPicker.HeaderTemplate>
+			        		<toolkit:ListPickerItem Content="Tiny"/>
+							<toolkit:ListPickerItem Content="Small"/>
+							<toolkit:ListPickerItem Content="Default"/>
+							<toolkit:ListPickerItem Content="Large"/>
+		        		</toolkit:ListPicker>
+					</Border>
+					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,-1,-1,0">
+						<toolkit:ListPicker x:Name="SortOrderSettings"
+											ListPickerMode="Full"
+											ItemCountThreshold="0"
+											ItemTemplate="{StaticResource ItemTemplate}"
+											ItemsSource="{Binding Collection}">
+							<toolkit:ListPicker.HeaderTemplate>
+			        			<DataTemplate>
+			        				<StackPanel>
+			        					<TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Sort Order" FontWeight="Bold"/>
+										<TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Change sort order of list items"/>  				
+									</StackPanel>
+								</DataTemplate>
+							</toolkit:ListPicker.HeaderTemplate>
+							<toolkit:ListPicker.FullModeHeader>
+								<StackPanel>
+									<TextBlock FontSize="40" TextWrapping="Wrap" Text="Sort Order" FontWeight="Bold"/>
+									<TextBlock FontSize="20" TextWrapping="Wrap" Text="Change sort order of list items" Margin="0,0,0,20"/>  				
+								</StackPanel>
+							</toolkit:ListPicker.FullModeHeader>
+							<toolkit:ListPicker.FullModeItemTemplate>
+								<DataTemplate>
+									<TextBlock Margin="15,10" FontSize="27" TextWrapping="Wrap" Text="{Binding OrderName}"/>
+								</DataTemplate>
+							</toolkit:ListPicker.FullModeItemTemplate>
+						</toolkit:ListPicker>
+					</Border>
+					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,-1,-1,0">
+						<Grid Margin="12,0,12,0" ManipulationCompleted="AdvancedSettings_Click" >
+							<StackPanel>
+								<TextBlock Margin="0,10,0,0" FontSize="27" TextWrapping="Wrap" Text="Advanced settings" FontWeight="Bold"/>
+								<TextBlock Margin="0,0,0,10" FontSize="20" TextWrapping="Wrap" Text="Additional settings"/>  				
+							</StackPanel>
+						</Grid>
+					</Border>			
+	        	</StackPanel>
+			</ScrollViewer>
+		</Grid>
+    </Grid>
+
+</phone:PhoneApplicationPage>

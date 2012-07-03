@@ -59,12 +59,13 @@ namespace OIShoppingListWinPhone
                 {
                     ItemName = newListItemName.Text,
                     List = currentList,
-                    Priority = -1,
+                    Priority = null,
                     Price = 0F,
-                    Units = -1,
-                    Quantity = -1,
-                    Tag = null,
-                    Status = (int)ShoppingListItem.StatusEnumerator.Unchecked
+                    Units = null,
+                    Quantity = null,
+                    Tag = string.Empty,
+                    Status = (int)ShoppingListItem.StatusEnumerator.Unchecked,
+                    Note = string.Empty
                 };
                 
                 App.ViewModel.AddNewListItem(currentList, newListItem);
@@ -210,7 +211,7 @@ namespace OIShoppingListWinPhone
 
         private void ApplicationBarMenuSettings_Click(object sender, EventArgs e)
         {
-
+            NavigationService.Navigate(new Uri("/SettingsPage.xaml", UriKind.Relative));
         }
 
         private void ApplicationBarMenuMarkAllItems_Click(object sender, EventArgs e)
@@ -244,7 +245,26 @@ namespace OIShoppingListWinPhone
                     PivotItemControl pItemControl = new PivotItemControl();
                     pItemControl.Tag = sList;
 
+                    List<ShoppingListItem> listItems = new List<ShoppingListItem>();
                     foreach (ShoppingListItem listItem in sList.ListItems)
+                    {
+                        listItems.Add(listItem);
+                    }
+                    IEnumerable<ShoppingListItem> sortListItems = listItems;
+                    switch (App.AppSettings.SortOrder)
+                    {
+                        case (int)Settings.SortOrderSettings.Alphabetical:
+                            sortListItems = listItems.OrderBy(x => x.ItemName);
+                            break;
+                        case (int)Settings.SortOrderSettings.OldestFirst:
+                            sortListItems = listItems.OrderBy(x => x.CreatedDate);
+                            break;
+                        case (int)Settings.SortOrderSettings.TagsAlphabetical:
+                            sortListItems = listItems.OrderBy(x => x.Tag);
+                            break;
+                    }
+
+                    foreach (ShoppingListItem listItem in sortListItems)
                     {
                         PivotItemControlElement pControl = new PivotItemControlElement(listItem);
                         AttachMenu(pControl);
@@ -284,17 +304,13 @@ namespace OIShoppingListWinPhone
                 checkItemsCount.Text = "#0";
                 checkItemsPrice.Text = "Checked:" + "\n" + "0";
             }
-        }
-
-        private void RedrawUI(PivotItem item)
-        {
-        }
+        }       
 
         private void AttachMenu(PivotItemControlElement element)
         {
             element.LayoutRootManipulationStarted += new EventHandler<System.Windows.Input.GestureEventArgs>(element_LayoutRootManipulationStarted);
 
-            element.OnMenuEditItemClick +=new EventHandler<RoutedEventArgs>(element_OnMenuEditItemClick);
+            element.OnMenuEditItemClick += new EventHandler<RoutedEventArgs>(element_OnMenuEditItemClick);
             element.OnMenuMarkItemClick += new EventHandler<RoutedEventArgs>(element_OnMenuMarkItemClick);
             element.OnMenuStoresClick += new EventHandler<RoutedEventArgs>(element_OnMenuStoresClick);
             element.OnMenuRemoveItemClick += new EventHandler<RoutedEventArgs>(element_OnMenuRemoveItemClick);
@@ -303,6 +319,10 @@ namespace OIShoppingListWinPhone
             element.OnMenuMoveItemClick += new EventHandler<RoutedEventArgs>(element_OnMenuMoveItemClick);
         }
 
+        private void RedrawUI(PivotItem item)
+        {
+        }
+        
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -313,28 +333,27 @@ namespace OIShoppingListWinPhone
                 if (NavigationContext.QueryString.ContainsKey("ID"))
                 {
                     string newName = NavigationContext.QueryString["Name"].ToString();
-                    int newQuantity;
+                    float newPrice = (float)Convert.ToDouble(NavigationContext.QueryString["Price"].ToString());
+                    string newTag = NavigationContext.QueryString["Tag"].ToString();
+                    string newNote = NavigationContext.QueryString["Note"].ToString();
+
+                    int? newQuantity;
                     if (NavigationContext.QueryString["Quantity"].ToString() != "")
                         newQuantity = Convert.ToInt32(NavigationContext.QueryString["Quantity"].ToString());
                     else
-                        newQuantity = -1;
+                        newQuantity = null;
 
-                    int newUnits;
+                    int? newUnits;
                     if (NavigationContext.QueryString["Units"].ToString() != "")
                         newUnits = Convert.ToInt32(NavigationContext.QueryString["Units"].ToString());
                     else
-                        newUnits = -1;
-
-                    float newPrice = (float)Convert.ToDouble(NavigationContext.QueryString["Price"].ToString());
-                    string newTag = NavigationContext.QueryString["Tag"].ToString();
-
-                    int newPriority;
+                        newUnits = null;
+                    
+                    int? newPriority;
                     if (NavigationContext.QueryString["Priority"].ToString() != "")
                         newPriority = Convert.ToInt32(NavigationContext.QueryString["Priority"].ToString());
                     else
-                        newPriority = -1;
-
-                    string newNote = NavigationContext.QueryString["Note"].ToString();
+                        newPriority = null;
                     
                     App.ViewModel.UpdateListItem(Convert.ToInt32(NavigationContext.QueryString["ID"].ToString()),
                         newName, newQuantity, newUnits, newPrice, newTag, newPriority, newNote);
@@ -348,12 +367,19 @@ namespace OIShoppingListWinPhone
 
             string queryBody = "?ID=" + listItem.ItemID.ToString()
                 + "&Name=" + listItem.ItemName
-                + "&Quantity=" + listItem.Quantity.ToString()
-                + "&Units=" + listItem.Units.ToString()
                 + "&Price=" + String.Format("{0:F2}", listItem.Price)
                 + "&Tag=" + listItem.Tag
-                + "&Priority=" + listItem.Priority
                 + "&Note=" + listItem.Note;
+
+            if (listItem.Priority != null)
+                queryBody += "&Priority=" + listItem.Priority.ToString();
+
+            if (listItem.Quantity != null)
+                queryBody += "&Quantity=" + listItem.Quantity.ToString();
+
+            if (listItem.Units != null)
+                queryBody += "&Units=" + listItem.Units.ToString();
+
             NavigationService.Navigate(new Uri("/EditItemPage.xaml" + queryBody, UriKind.Relative));
         }
 

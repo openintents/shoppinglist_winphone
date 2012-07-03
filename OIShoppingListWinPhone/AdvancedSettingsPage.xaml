@@ -1,0 +1,168 @@
+﻿<phone:PhoneApplicationPage 
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+	xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+	xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit" 
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800"
+	x:Class="OIShoppingListWinPhone.AdvancedSettingsPage"
+	FontFamily="{StaticResource PhoneFontFamilyNormal}"
+	FontSize="{StaticResource PhoneFontSizeNormal}"
+	Foreground="{StaticResource PhoneForegroundBrush}"
+	Orientation="Portrait"
+	shell:SystemTray.IsVisible="True">
+
+	<!--LayoutRoot is the root grid where all page content is placed-->
+	<Grid x:Name="LayoutRoot" Background="Transparent">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		
+		<!--TitlePanel contains the name of the application and page title-->
+		<StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+			<TextBlock x:Name="ApplicationTitle" Text="OI SHOPPING LIST" Style="{StaticResource PhoneTextNormalStyle}"/>
+			<TextBlock x:Name="PageTitle" Text="advanced settings" Margin="9,15,0,0" FontSize="55" Style="{StaticResource PhoneTextTitle1Style}"/>
+		</StackPanel>
+
+		<!--ContentPanel - place additional content here-->
+		<Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+			<ScrollViewer>
+				<StackPanel>
+					<Border x:Name="LabelBorder" Background="#FF646464">
+	        			<TextBlock x:Name="ChapterLabel" FontSize="20" TextWrapping="Wrap" Text="General" FontWeight="Bold" Foreground="White"/>    		
+	        		</Border>
+					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">						
+						<toolkit:ListPicker Name="FontSizeSettings" ItemCountThreshold="4">
+			        		<toolkit:ListPicker.HeaderTemplate>
+			        			<DataTemplate>
+			        				<StackPanel>
+			        					<TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Capitalization" FontWeight="Bold"/>
+										<TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Automatic capitalization of entries"/>  				
+									</StackPanel>
+								</DataTemplate>
+							</toolkit:ListPicker.HeaderTemplate>
+			        		<toolkit:ListPickerItem Content="None"/>
+							<toolkit:ListPickerItem Content="Per sentence"/>
+							<toolkit:ListPickerItem Content="Per word"/>
+		        		</toolkit:ListPicker>
+					</Border>
+					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">
+						<CheckBox>
+							<CheckBox.ContentTemplate>
+								<DataTemplate>
+									<StackPanel>
+			        					<TextBlock Margin="15,-10,0,0" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Hide checked items" FontWeight="Bold"/>
+										<TextBlock Margin="15,0,0,-10" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Immediately hide items checked off"/>  				
+									</StackPanel>
+								</DataTemplate>
+							</CheckBox.ContentTemplate>
+						</CheckBox>
+					</Border>
+					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">
+						<CheckBox>
+							<CheckBox.ContentTemplate>
+								<DataTemplate>
+									<StackPanel>
+			        					<TextBlock Margin="15,-10,0,0" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Fast scrolling" FontWeight="Bold"/>
+										<TextBlock Margin="15,0,0,-10" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Scroll handle appears when scrolling 35 items or more"/>  				
+									</StackPanel>
+								</DataTemplate>
+							</CheckBox.ContentTemplate>
+						</CheckBox>
+					</Border>
+					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">
+						<CheckBox>
+							<CheckBox.ContentTemplate>
+								<DataTemplate>
+									<StackPanel>
+			        					<TextBlock Margin="15,-10,0,0" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Shake to clean up" FontWeight="Bold"/>
+										<TextBlock Margin="15,0,0,-10" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Shake the phone to clean up the list"/>  				
+									</StackPanel>
+								</DataTemplate>
+							</CheckBox.ContentTemplate>
+						</CheckBox>
+					</Border>
+					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">
+						<CheckBox>
+							<CheckBox.ContentTemplate>
+								<DataTemplate>
+									<StackPanel>
+			        					<TextBlock Margin="15,-10,0,0" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Track per-store prices" FontWeight="Bold"/>
+										<TextBlock Margin="15,0,0,-10" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Keep track of separate prices for each item at each store"/>  				
+									</StackPanel>
+								</DataTemplate>
+							</CheckBox.ContentTemplate>
+						</CheckBox>
+					</Border>
+					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">
+						<CheckBox>
+							<CheckBox.ContentTemplate>
+								<DataTemplate>
+									<StackPanel>
+			        					<TextBlock Margin="15,-10,0,0" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Disable screen lock" FontWeight="Bold"/>
+										<TextBlock Margin="15,0,0,-10" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Prevent the screen to be locked when checked"/>  				
+									</StackPanel>
+								</DataTemplate>
+							</CheckBox.ContentTemplate>
+						</CheckBox>
+					</Border>
+					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">
+						<CheckBox>
+							<CheckBox.ContentTemplate>
+								<DataTemplate>
+									<StackPanel>
+			        					<TextBlock Margin="15,-10,0,0" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Quick edit mode" FontWeight="Bold"/>
+										<TextBlock Margin="15,0,0,-10" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Touching Priority or Quantity values summons the Edit Item dialog"/>  				
+									</StackPanel>
+								</DataTemplate>
+							</CheckBox.ContentTemplate>
+						</CheckBox>
+					</Border>
+					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">
+						<CheckBox>
+							<CheckBox.ContentTemplate>
+								<DataTemplate>
+									<StackPanel>
+			        					<TextBlock Margin="15,-10,0,0" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Filters" FontWeight="Bold"/>
+										<TextBlock Margin="15,0,0,-10" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Lists can be filtered by tags or stores"/>  				
+									</StackPanel>
+								</DataTemplate>
+							</CheckBox.ContentTemplate>
+						</CheckBox>
+					</Border>
+					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">
+						<CheckBox>
+							<CheckBox.ContentTemplate>
+								<DataTemplate>
+									<StackPanel>
+			        					<TextBlock Margin="15,-10,0,0" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Reset Quantity" FontWeight="Bold"/>
+										<TextBlock Margin="15,0,0,-10" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Reset the quantity when adding items again"/>  				
+									</StackPanel>
+								</DataTemplate>
+							</CheckBox.ContentTemplate>
+						</CheckBox>
+					</Border>
+					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,-1,-1,0">
+						<Grid Margin="12,0,12,0">
+							<StackPanel>
+								<TextBlock Margin="60,15,0,25" FontSize="27" TextWrapping="Wrap" Text="Reset all settings" FontWeight="Bold"/>
+							</StackPanel>
+						</Grid>
+					</Border>		
+				</StackPanel>
+			</ScrollViewer>
+		</Grid>
+	</Grid>
+	
+	<!--Sample code showing usage of ApplicationBar-->
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+        	<shell:ApplicationBarIconButton IconUri="/Images/appbar.check.rest.png" Text="ok"/>
+        	<shell:ApplicationBarIconButton IconUri="/Images/appbar.cancel.rest.png" Text="cancel"/>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+	
+</phone:PhoneApplicationPage>
