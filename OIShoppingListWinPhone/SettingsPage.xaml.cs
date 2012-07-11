@@ -42,12 +42,7 @@ namespace OIShoppingListWinPhone
             SortOrderSettings.SelectedIndex = (int)App.AppSettings.SortOrder;
             
         }
-
-        private void AdvancedSettings_Click(object sender, ManipulationCompletedEventArgs e)
-        {
-            NavigationService.Navigate(new Uri("/AdvancedSettingsPage.xaml", UriKind.Relative));
-        }
-
+                
         private void ApplicationBarIconButtonOk_Click(object sender, EventArgs e)
         {
             App.AppSettings.SortOrder = SortOrderSettings.SelectedIndex;
@@ -75,6 +70,11 @@ namespace OIShoppingListWinPhone
         private void ApplicationBarIconButtonCancel_Click(object sender, EventArgs e)
         {
             NavigationService.GoBack();
+        }
+
+        private void Grid_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/AdvancedSettingsPage.xaml", UriKind.Relative));
         }
     }
 }

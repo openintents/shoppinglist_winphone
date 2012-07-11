@@ -29,7 +29,7 @@ namespace OIShoppingListWinPhone
 
             // Set the data context of the listbox control to the sample data
             DataContext = App.ViewModel;
-            this.Loaded += new RoutedEventHandler(MainPage_Loaded);                
+            this.Loaded += new RoutedEventHandler(MainPage_Loaded);
         }
 
         // Load data for the ViewModel Items
@@ -71,6 +71,8 @@ namespace OIShoppingListWinPhone
                 App.ViewModel.AddNewListItem(currentList, newListItem);
                 newListItemName.Text = "";
                 PivotItemControlElement pControl = new PivotItemControlElement(newListItem);
+                pControl.Tag = newListItem;
+                //curItemControl.ContentPanel.Children.Insert(1, pControl);
                 curItemControl.ContentPanel.Children.Add(pControl);
                 AttachMenu(pControl);
                 //For future development////////////////////////////////////////////////////////////////////////////////////////
@@ -253,14 +255,42 @@ namespace OIShoppingListWinPhone
                     IEnumerable<ShoppingListItem> sortListItems = listItems;
                     switch (App.AppSettings.SortOrder)
                     {
+                        case (int)Settings.SortOrderSettings.UncheckedFirst_Alphabetical:
+                            listItems.Sort(new UncheckedFirst_Alphabetical());
+                            sortListItems = listItems;
+                            break;
                         case (int)Settings.SortOrderSettings.Alphabetical:
                             sortListItems = listItems.OrderBy(x => x.ItemName);
+                            break;
+                        case (int)Settings.SortOrderSettings.NewestFirst:
+                            listItems.Sort(new NewestFirst());
+                            sortListItems = listItems;
                             break;
                         case (int)Settings.SortOrderSettings.OldestFirst:
                             sortListItems = listItems.OrderBy(x => x.CreatedDate);
                             break;
                         case (int)Settings.SortOrderSettings.TagsAlphabetical:
                             sortListItems = listItems.OrderBy(x => x.Tag);
+                            break;
+                        case (int)Settings.SortOrderSettings.Priority_TagsAlphabetical:
+                            listItems.Sort(new Priority_TagsAlphabetical());
+                            sortListItems = listItems;
+                            break;
+                        case (int)Settings.SortOrderSettings.MostExpensiveFirst:
+                            listItems.Sort(new MostExpensiveFirst());
+                            sortListItems = listItems;
+                            break;
+                        case (int)Settings.SortOrderSettings.UncheckedFirst_TagsAlphabetical:
+                            listItems.Sort(new UncheckedFirst_TagsAlphabetical());
+                            sortListItems = listItems;
+                            break;
+                        case (int)Settings.SortOrderSettings.UncheckedFirst_Priority_Alphabetical:
+                            listItems.Sort(new UncheckedFirst_Priority_Alphabetical());
+                            sortListItems = listItems;
+                            break;
+                        case (int)Settings.SortOrderSettings.UnckeckedFirst_Priority_TagsAlphabetical:
+                            listItems.Sort(new UnckeckedFirst_Priority_TagsAlphabetical());
+                            sortListItems = listItems;
                             break;
                     }
 

@@ -19,6 +19,21 @@ namespace OIShoppingListWinPhone
         public int FontSize { get; set; }
         public int SortOrder { get; set; }
 
+        public bool ShowPrice { get; set; }
+        public bool ShowTags { get; set; }
+        public bool ShowUnits { get; set; }
+        public bool ShowQuantity { get; set; }
+        public bool ShowPriority { get; set; }
+
+        public bool HideCheckedItems { get; set; }
+        public bool FastScrolling { get; set; }
+        public bool ShakeToCleanUp { get; set; }
+        public bool TrackPerStorePrices { get; set; }
+        public bool DisableScreenLock { get; set; }
+        public bool QuickEditMode { get; set; }
+        public bool Filters { get; set; }
+        public bool ResetQuality { get; set; }
+
         public enum FontSizeSettings
         {
             Tiny = 20,
@@ -36,7 +51,7 @@ namespace OIShoppingListWinPhone
             TagsAlphabetical = 4,
             Priority_TagsAlphabetical = 5,
             MostExpensiveFirst = 6,
-            UncheckedFirst_TagsAlphabetic = 7,
+            UncheckedFirst_TagsAlphabetical = 7,
             UncheckedFirst_Priority_Alphabetical = 8,
             UnckeckedFirst_Priority_TagsAlphabetical = 9
         }
@@ -45,6 +60,21 @@ namespace OIShoppingListWinPhone
         {
             FontSize = (int)FontSizeSettings.Default;
             SortOrder = (int)SortOrderSettings.OldestFirst;
+
+            ShowPrice = true;
+            ShowTags = true;
+            ShowUnits = true;
+            ShowQuantity = true;
+            ShowPriority = true;
+
+            HideCheckedItems = false;
+            FastScrolling = false;
+            ShakeToCleanUp = false;
+            TrackPerStorePrices = false;
+            DisableScreenLock = false;
+            QuickEditMode = false;
+            Filters = false;
+            ResetQuality = false;
         }
 
         public void Save()
