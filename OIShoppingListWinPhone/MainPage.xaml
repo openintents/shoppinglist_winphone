@@ -4,12 +4,15 @@
 	xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
 	xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
 	xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
-	xmlns:custom="clr-namespace:OIShoppingListWinPhone"
+	xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+	xmlns:ec="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
+	xmlns:eim="clr-namespace:Microsoft.Expression.Interactivity.Media;assembly=Microsoft.Expression.Interactions"
+    
+    xmlns:custom="clr-namespace:OIShoppingListWinPhone"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-	xmlns:ec="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions" 
-    
+	
     x:Class="OIShoppingListWinPhone.MainPage" 
     
     d:DesignWidth="480" d:DesignHeight="696"
@@ -20,40 +23,9 @@
     SupportedOrientations="PortraitOrLandscape"  Orientation="Portrait"
     shell:SystemTray.IsVisible="True">
 
-    <!--Sample code showing usage of ApplicationBar-->
-    <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBar.MenuItems>
-				<shell:ApplicationBarMenuItem Text="clean up list" />
-                <shell:ApplicationBarMenuItem Text="pick items" />
-                <shell:ApplicationBarMenuItem Text="mark all items" Click="ApplicationBarMenuMarkAllItems_Click"/>
-                <shell:ApplicationBarMenuItem Text="settings" Click="ApplicationBarMenuSettings_Click"/>
-                <shell:ApplicationBarMenuItem Text="about..." Click="ApplicationBarMenuAbout_Click"/>
-            </shell:ApplicationBar.MenuItems>
-        	<shell:ApplicationBarIconButton IconUri="/Images/add.png" Text="new list" Click="ApplicationBarIconButtonNewList_Click"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/mail.png" Text="send list" Click="ApplicationBarIconButtonSendList_Click"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/edit.png" Text="rename list" Click="ApplicationBarIconButtonRenameList_Click"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/delete.png" Text="delete list" Click="ApplicationBarIconButtonDeleteList_Click"/>
-        </shell:ApplicationBar>
-    </phone:PhoneApplicationPage.ApplicationBar>
-
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
-    	
-        <!--Pivot Control-->
-        <controls:Pivot x:Name="PivotControl" Title="OI SHOPPING LIST"/>
-		<!--Pivot Control-->
         
-        <Grid Height="50" Margin="12,0,12,65" VerticalAlignment="Bottom">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="60"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" x:Name="checkItemsCount" Margin="0,0,5,0"  FontSize="18" TextAlignment="Center" TextWrapping="Wrap"/>
-            <TextBlock Grid.Column="1" x:Name="checkItemsPrice" Margin="0,0,5,0"  FontSize="18" TextAlignment="Left" TextWrapping="Wrap"/>
-            <TextBlock Grid.Column="2" x:Name="totalItemsPrice" Margin="1,0,5,0" FontSize="18" TextAlignment="Right" TextWrapping="Wrap"/>
-        </Grid>
         <Grid Height="72" VerticalAlignment="Bottom">
             <TextBox x:Name="newListItemName" Margin="0,0,125,0" TextWrapping="NoWrap" FontSize="24"/>
             <Button Content="Add" HorizontalAlignment="Right" Width="130" Click="Button_Add_Click"/>
@@ -61,5 +33,22 @@
 		
 		<custom:DialogNameControl x:Name="DialogName" Visibility="Collapsed"/>
 	</Grid>
-    
+
+    <!--Sample code showing usage of ApplicationBar-->
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="clean up list" />
+                <shell:ApplicationBarMenuItem Text="pick items" />
+                <shell:ApplicationBarMenuItem Text="mark all items" Click="ApplicationBarMenuMarkAllItems_Click"/>
+                <shell:ApplicationBarMenuItem Text="settings" Click="ApplicationBarMenuSettings_Click"/>
+                <shell:ApplicationBarMenuItem Text="about..." Click="ApplicationBarMenuAbout_Click"/>
+            </shell:ApplicationBar.MenuItems>
+            <shell:ApplicationBarIconButton IconUri="/Images/add.png" Text="new list" Click="ApplicationBarIconButtonNewList_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/mail.png" Text="send list" Click="ApplicationBarIconButtonSendList_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/edit.png" Text="rename list" Click="ApplicationBarIconButtonRenameList_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/delete.png" Text="delete list" Click="ApplicationBarIconButtonDeleteList_Click"/>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
 </phone:PhoneApplicationPage>

@@ -3,6 +3,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:custom="clr-namespace:OIShoppingListWinPhone;assembly=OIShoppingListWinPhone"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -10,8 +13,104 @@
     d:DesignHeight="800" d:DesignWidth="480">
     
     <Grid x:Name="LayoutRoot">
-        <ScrollViewer Margin="0,0,0,115">
-            <StackPanel Name="ContentPanel"/>
-        </ScrollViewer>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Grid.ColumnSpan="6" Margin="12,17,0,28"
+                    DataContext="{Binding ElementName=ListSelector, Path=SelectedItem}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock x:Name="ListTitle" Text="{Binding ListName}" Style="{StaticResource PhoneTextLargeStyle}"/>
+                <TextBlock Text="-" Style="{StaticResource PhoneTextLargeStyle}"/>
+                <TextBlock x:Name="ApplicationTitle" Text="OI SHOPPING LIST" Style="{StaticResource PhoneTextLargeStyle}"/>
+            </StackPanel>            
+        </StackPanel>
+        
+        <toolkit:ListPicker x:Name="ListSelector"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Grid.Row="1"
+                            ItemsSource="{Binding ShoppingLists}"
+                            SelectionChanged="ListSelector_SelectionChanged">
+            <toolkit:ListPicker.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding ListName}"/>
+                </DataTemplate>
+            </toolkit:ListPicker.ItemTemplate>
+        </toolkit:ListPicker>
+        
+        <toolkit:ListPicker x:Name="TagsSelector"
+                            Grid.Column="2"
+                            Grid.ColumnSpan="2"
+                            Grid.Row="1"
+                            DataContext="{Binding ElementName=ListSelector, Path=SelectedItem}"
+                            ItemsSource="{Binding Tags}"
+                            SelectionChanged="ListSelector_SelectionChanged"/>
+        
+        <toolkit:ListPicker x:Name="StoreSelector"
+                            Grid.Column="4"
+                            Grid.ColumnSpan="2"
+                            Grid.Row="1"
+                            DataContext="{Binding ElementName=ListSelector, Path=SelectedItem}"
+                            ItemsSource="{Binding ListStores}"
+                            SelectionChanged="ListSelector_SelectionChanged">
+            <toolkit:ListPicker.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding StoreName}"/>
+                </DataTemplate>
+            </toolkit:ListPicker.ItemTemplate>
+        </toolkit:ListPicker>
+        
+        <ListBox Name="ItemContainer"
+                 Grid.Column="0"
+                 Grid.ColumnSpan="6"
+                 Grid.Row="2"
+                 Margin="0,0,0,120"
+                 DataContext="{Binding ElementName=ListSelector, Path=SelectedItem}">
+            
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </ListBox.ItemContainerStyle>
+            
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <custom:PivotItemControlElement/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Grid Grid.Column="0" Grid.ColumnSpan="6"
+              Grid.Row="2"
+              Height="50" Margin="12,0,12,65" VerticalAlignment="Bottom"
+              DataContext="{Binding ElementName=ListSelector, Path=SelectedItem}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="60"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="#" FontSize="18" TextAlignment="Right"  TextWrapping="Wrap"/>
+                <TextBlock Grid.Column="1" Text="{Binding CheckedCount}" x:Name="checkItemsCount" Margin="0,0,5,0"  FontSize="18" TextAlignment="Left"  TextWrapping="Wrap"/>
+            </Grid>
+            <TextBlock Grid.Column="1" Text="{Binding CheckedPrice}" x:Name="checkItemsPrice" Margin="0,0,5,0"  FontSize="18" TextAlignment="Left" TextWrapping="Wrap"/>
+            <TextBlock Grid.Column="2" Text="{Binding TotalPrice}" x:Name="totalItemsPrice" Margin="1,0,5,0" FontSize="18" TextAlignment="Right" TextWrapping="Wrap"/>
+        </Grid>
     </Grid>
 </UserControl>

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Collections.Generic;
+using System.Linq;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
 
@@ -79,6 +81,70 @@ namespace OIShoppingListWinPhone.DataModel
                 }
             }
         }
+
+        private int _checkedCount;
+        public int CheckedCount
+        {
+            get { return this._checkedCount; }
+            set
+            {
+                if (this._checkedCount != value)
+                {
+                    NotifyPropertyChanging("CheckedCount");
+                    this._checkedCount = value;
+                    NotifyPropertyChanged("CheckedCount");
+                }
+            }
+        }
+
+        private float _checkedPrice;
+        public float CheckedPrice
+        {
+            get { return this._checkedPrice; }
+            set
+            {
+                if (this._checkedPrice != value)
+                {
+                    NotifyPropertyChanging("CheckedPrice");
+                    this._checkedPrice = value;
+                    NotifyPropertyChanged("CheckedPrice");
+                }
+            }
+        }
+
+        private float _totalPrice;
+        public float TotalPrice
+        {
+            get { return this._totalPrice; }
+            set
+            {
+                if (this._totalPrice != value)
+                {
+                    NotifyPropertyChanging("TotalPrice");
+                    this._totalPrice = value;
+                    NotifyPropertyChanged("TotalPrice");
+                }
+            }
+        }
+
+        public List<string> Tags
+        {
+            get
+            {
+                List<string> tags = new List<string>();
+                foreach (ShoppingListItem item in this.ListItems)
+                {
+                    foreach (string tag in item.Tags)
+                    {
+                        if (!tags.Contains(tag))
+                            tags.Add(tag);
+                    }
+                }
+                tags.Sort();
+                tags.Insert(0, "[Empty]");
+                return tags;
+            }
+        }
                 
         private EntitySet<ShoppingListItem> _listItems;
 
@@ -86,7 +152,28 @@ namespace OIShoppingListWinPhone.DataModel
         public EntitySet<ShoppingListItem> ListItems
         {
             get { return this._listItems; }
-            set { _listItems.Assign(value); }
+            set
+            {
+                _listItems.Assign(value);
+
+                int chCount = 0;
+                float chPrice = 0.0F;
+                float totalPrice = 0.0F;
+
+                foreach (ShoppingListItem item in _listItems)
+                {
+                    if (item.Status == (int)ShoppingListItem.StatusEnumerator.Checked)
+                    {
+                        chCount++;
+                        chPrice += item.Price;
+                    }
+                    totalPrice += item.Price;
+                }
+
+                CheckedCount = chCount;
+                CheckedPrice = chPrice;
+                TotalPrice = totalPrice;
+            }
         }
                 
         private EntitySet<ShoppingListStore> _listStores;
@@ -94,7 +181,11 @@ namespace OIShoppingListWinPhone.DataModel
         [Association(Storage = "_listStores", OtherKey = "ListID", ThisKey = "ListID", DeleteRule="CASCADE")]
         public EntitySet<ShoppingListStore> ListStores
         {
-            get { return this._listStores; }
+            get
+            {
+                this._listStores.Insert(0, new ShoppingListStore() { List = this, StoreName = "[Empty]" });
+                return this._listStores;
+            }
             set { this._listStores.Assign(value); }
         }
 
@@ -102,6 +193,10 @@ namespace OIShoppingListWinPhone.DataModel
         {
             _listItems = new EntitySet<ShoppingListItem>();
             _listStores = new EntitySet<ShoppingListStore>();
+
+            CheckedCount = 0;
+            CheckedPrice = 0.0F;
+            TotalPrice = 0.0F;
         }
 
         #region INotifyPropertyChanging members
@@ -351,6 +446,21 @@ namespace OIShoppingListWinPhone.DataModel
                     this._modifiedDate = value;
                     NotifyPropertyChanged("ListModifiedDate");
                 }
+            }
+        }
+
+        public List<string> Tags
+        {
+            get
+            {
+                List<string> tags = new List<string>();
+                string[] tags_array = this.Tag.Split(',');
+                foreach (string tag in tags_array)
+                {
+                    if(tag.Trim() != string.Empty)
+                    tags.Add(tag.Trim());
+                }
+                return tags;
             }
         }
 

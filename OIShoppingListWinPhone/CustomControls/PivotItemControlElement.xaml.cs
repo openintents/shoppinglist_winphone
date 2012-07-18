@@ -11,129 +11,104 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 
+using OIShoppingListWinPhone.DataModel;
+using OIShoppingListWinPhone.ViewModel;
+
 namespace OIShoppingListWinPhone
 {
     public partial class PivotItemControlElement : UserControl
-    {
-        public event EventHandler<System.Windows.Input.GestureEventArgs> LayoutRootManipulationStarted;
-
-        public event EventHandler<RoutedEventArgs> ItemCheck;
-        public event EventHandler<RoutedEventArgs> ItemUncheck;
-
-        public event EventHandler<RoutedEventArgs> OnMenuEditItemClick;
-        public event EventHandler<RoutedEventArgs> OnMenuMarkItemClick;
-        public event EventHandler<RoutedEventArgs> OnMenuStoresClick;
-        public event EventHandler<RoutedEventArgs> OnMenuRemoveItemClick;
-        public event EventHandler<RoutedEventArgs> OnMenuCopyItemClick;
-        public event EventHandler<RoutedEventArgs> OnMenuDeleteItemClick;
-        public event EventHandler<RoutedEventArgs> OnMenuMoveItemClick;
-
-        public PivotItemControlElement(OIShoppingListWinPhone.DataModel.ShoppingListItem listItem)
+    {        
+        public PivotItemControlElement()
         {
             InitializeComponent();
-
-            if (listItem.Status == 1)
-                itemCheck.IsChecked = true;
-
-            itemName.FontSize = (int)App.AppSettings.FontSize;
-            itemName.Text = listItem.ItemName;
-
-            if (listItem.Tag != null && App.AppSettings.ShowTags)
-                itemTag.Text = listItem.Tag;
-
-            if (listItem.Priority != null && App.AppSettings.ShowPriority)
-                itemPriority.Text = String.Format("-{0}-", listItem.Priority);
-
-            if (listItem.Quantity != null && App.AppSettings.ShowQuantity)
-            {
-                itemQuantity.FontSize = (int)App.AppSettings.FontSize;
-                itemQuantity.Text = listItem.Quantity.ToString();
-            }
-
-            if (listItem.Units != null && App.AppSettings.ShowUnits)
-            {
-                itemUnits.FontSize = (int)App.AppSettings.FontSize;
-                itemUnits.Text = listItem.Units.ToString();
-            }
-
-            if (listItem.Price != 0 && App.AppSettings.ShowPrice)
-                itemPrice.Text = String.Format("{0:F2}", listItem.Price);
         }
 
-        public void UpdateControl(string name,
-            int quantity,
-            int units,
-            float price,
-            string tags,
-            int priority,
-            string note)
+        private void ItemCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            itemName.Text = name;
-            if (tags != null)
-                itemTag.Text = tags;
-            if (priority != -1)
-                itemPriority.Text = String.Format("-{0}-", priority);
-            if (quantity != -1)
-                itemQuantity.Text = quantity.ToString();
-            if (units != -1)
-                itemUnits.Text = units.ToString();
-            if (price != 0)
-                itemPrice.Text = String.Format("{0:F2}", price);
-        }
-                
-        private void Menu_EditItem_Click(object sender, RoutedEventArgs e)
-        {
-            OnMenuEditItemClick(this, e);
+            CheckBox box = sender as CheckBox;
+            Grid elementRoot = box.Parent as Grid;
+            object element = elementRoot.Parent;
+
+            DependencyObject obj = sender as DependencyObject;
+            while (obj != null && !(obj is ListBoxItem))
+                obj = VisualTreeHelper.GetParent(obj);
+            ShoppingListItem item = (obj as ListBoxItem).DataContext as ShoppingListItem;
+
+            //ShoppingList list = PivotControl.SelectedItem as ShoppingList;
+            //ShoppingListItem item = PivotControl.ItemTemplate.GetValue(ListBox.SelectedItemProperty) as ShoppingListItem;
+            //ShoppingListItem listItem = (sender as PivotItemControlElement).Tag as ShoppingListItem;
         }
 
-        private void Menu_MarkItem_Click(object sender, RoutedEventArgs e)
+        private void ItemCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
-            OnMenuMarkItemClick(this, e);
+
         }
 
-        private void Menu_Stores_Click(object sender, RoutedEventArgs e)
+        private void ItemParameterRoot_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            OnMenuStoresClick(this, e);
+            DependencyObject obj = sender as DependencyObject;
+            while (sender != null && !(sender is ListBoxItem))
+                obj = VisualTreeHelper.GetParent(sender as DependencyObject);
+            /*ShoppingList list = PivotControl.SelectedItem as ShoppingList;
+            ShoppingListItem item = PivotControl.ItemTemplate.GetValue(ListBox.SelectedItemProperty) as ShoppingListItem;
+            ShoppingListItem listItem = (sender as PivotItemControlElement).Tag as ShoppingListItem;
+
+            string queryBody = "?ID=" + listItem.ItemID.ToString()
+                + "&Name=" + listItem.ItemName
+                + "&Price=" + String.Format("{0:F2}", listItem.Price)
+                + "&Tag=" + listItem.Tag
+                + "&Note=" + listItem.Note;
+
+            if (listItem.Priority != null)
+                queryBody += "&Priority=" + listItem.Priority.ToString();
+
+            if (listItem.Quantity != null)
+                queryBody += "&Quantity=" + listItem.Quantity.ToString();
+
+            if (listItem.Units != null)
+                queryBody += "&Units=" + listItem.Units.ToString();
+
+            NavigationService.Navigate(new Uri("/EditItemPage.xaml" + queryBody, UriKind.Relative));*/
+        }
+        
+        void element_OnMenuMoveItemClick(object sender, RoutedEventArgs e)
+        {
+
         }
 
-        private void Menu_RemoveItem_Click(object sender, RoutedEventArgs e)
+        void element_OnMenuDeleteItemClick(object sender, RoutedEventArgs e)
         {
-            OnMenuRemoveItemClick(this, e);
+
         }
 
-        private void Menu_CopyItem_Click(object sender, RoutedEventArgs e)
+        void element_OnMenuCopyItemClick(object sender, RoutedEventArgs e)
         {
-            OnMenuCopyItemClick(this, e);
+
         }
 
-        private void Menu_DeleteItem_Click(object sender, RoutedEventArgs e)
+        void element_OnMenuEditItemClick(object sender, RoutedEventArgs e)
         {
-            OnMenuDeleteItemClick(this, e);
+            //object type = PivotControl.ItemTemplate.GetValue(ListBox.NameProperty);
         }
 
-        private void Menu_MoveItem_Click(object sender, RoutedEventArgs e)
+        void element_OnMenuMarkItemClick(object sender, RoutedEventArgs e)
         {
-            OnMenuMoveItemClick(this, e);
+
         }
 
-        private void LayoutRoot_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        void element_OnMenuStoresClick(object sender, RoutedEventArgs e)
         {
-            LayoutRootManipulationStarted(this, e);
+            //ShoppingListItem listItem = (sender as PivotItemControlElement).Tag as ShoppingListItem;
+            string queryBody = "/StoreItemPage.xaml";/*?ListId=" + listItem.ListID
+                + "&ItemId=" + listItem.ItemID
+                + "&ItemName=" + listItem.ItemName;*/
+            (Application.Current.RootVisual as PhoneApplicationFrame).Navigate(new Uri(queryBody, UriKind.Relative));
+            //NavigationService.Navigate(new Uri(queryBody, UriKind.Relative));
         }
 
-        private void itemCheck_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {            
-            e.Handled = true;
-        }
-
-        private void itemCheck_Checked(object sender, RoutedEventArgs e)
+        void element_OnMenuRemoveItemClick(object sender, RoutedEventArgs e)
         {
-            //ItemCheck(this, e);
-        }
 
-        private void itemCheck_Unchecked(object sender, RoutedEventArgs e)
-        {
-            //ItemUncheck(this, e);
         }
     }
 }

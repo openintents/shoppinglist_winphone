@@ -69,6 +69,9 @@
     <Compile Include="AdvancedSettingsPage.xaml.cs">
       <DependentUpon>AdvancedSettingsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomControls\CustomPivotControl.xaml.cs">
+      <DependentUpon>CustomPivotControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EditItemPage.xaml.cs">
       <DependentUpon>EditItemPage.xaml</DependentUpon>
     </Compile>
@@ -110,6 +113,10 @@
     <Page Include="AdvancedSettingsPage.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CustomControls\CustomPivotControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="EditItemPage.xaml">
       <SubType>Designer</SubType>
