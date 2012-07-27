@@ -13,16 +13,9 @@
 	Foreground="{StaticResource PhoneForegroundBrush}"
 	Orientation="Portrait"
 	shell:SystemTray.IsVisible="True">
-	<phone:PhoneApplicationPage.Resources>
-		<DataTemplate x:Key="ItemTemplate">
-			<StackPanel>
-				<TextBlock Text="{Binding OrderName}"/>
-			</StackPanel>
-		</DataTemplate>
-	</phone:PhoneApplicationPage.Resources>
 
 	<!--LayoutRoot is the root grid where all page content is placed-->
-	<Grid x:Name="LayoutRoot" Background="Transparent" DataContext="{Binding Source={StaticResource SortOrderSettings}}">
+    <Grid x:Name="LayoutRoot" Background="Transparent" DataContext="{Binding Source={StaticResource SortOrderDataSource}}">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="*"/>
@@ -42,7 +35,7 @@
 	        			<TextBlock x:Name="ChapterLabel" FontSize="20" TextWrapping="Wrap" Text="General" FontWeight="Bold" Foreground="White"/>    		
 	        		</Border>
 					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">						
-						<toolkit:ListPicker Name="FontSizeSettings" ItemCountThreshold="4">
+						<toolkit:ListPicker Name="FontSizeSettings">
 			        		<toolkit:ListPicker.HeaderTemplate>
 			        			<DataTemplate>
 			        				<StackPanel>
@@ -239,9 +232,8 @@
 					</Border>
 					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0" DataContext="{Binding}">						
 						<toolkit:ListPicker x:Name="SortOrderSettings"
-											ListPickerMode="Full"
-											ItemCountThreshold="0"
-											ItemTemplate="{StaticResource ItemTemplate}"
+                                            ExpansionMode="FullScreenOnly"
+                                            FullModeHeader="Sort Orders"
 											ItemsSource="{Binding Collection}">
 							<toolkit:ListPicker.HeaderTemplate>
 			        			<DataTemplate>
@@ -251,15 +243,14 @@
 									</StackPanel>
 								</DataTemplate>
 							</toolkit:ListPicker.HeaderTemplate>
-							<toolkit:ListPicker.FullModeHeader>
-								<StackPanel>
-									<TextBlock FontSize="40" TextWrapping="Wrap" Text="Sort order - Pick Items" FontWeight="Bold"/>
-									<TextBlock FontSize="20" TextWrapping="Wrap" Text="Change sort order of list items in Pick Items mode" Margin="0,0,0,20"/>  				
-								</StackPanel>
-							</toolkit:ListPicker.FullModeHeader>
+                            <toolkit:ListPicker.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding SortOrder}"/>
+                                </DataTemplate>
+                            </toolkit:ListPicker.ItemTemplate>
 							<toolkit:ListPicker.FullModeItemTemplate>
 								<DataTemplate>
-									<TextBlock Margin="15,10" FontSize="27" TextWrapping="Wrap" Text="{Binding OrderName}"/>
+									<TextBlock Margin="15,10" FontSize="25" TextWrapping="Wrap" Text="{Binding SortOrder}"/>
 								</DataTemplate>
 							</toolkit:ListPicker.FullModeItemTemplate>
 						</toolkit:ListPicker>
@@ -280,7 +271,7 @@
 	        			<TextBlock x:Name="ChapterLabel4" FontSize="20" TextWrapping="Wrap" Text="Subtotal by Priority" FontWeight="Bold" Foreground="White"/>    		
 	        		</Border>
 					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">						
-						<toolkit:ListPicker Name="FontSizeSettingss" ItemCountThreshold="5">
+						<toolkit:ListPicker Name="FontSizeSettingss">
 			        		<toolkit:ListPicker.HeaderTemplate>
 			        			<DataTemplate>
 			        				<StackPanel>

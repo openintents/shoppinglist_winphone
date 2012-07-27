@@ -1,0 +1,113 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:custom="clr-namespace:OIShoppingListWinPhone.CustomControls">
+    <!-- Resource dictionary entries should be defined here. -->
+    <Style TargetType="custom:ComboBox">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="custom:ComboBox">
+                    <Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="MouseOver"/>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0:0:0" To="0.6" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="DisableRect"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="FocusStates">
+                                <VisualState x:Name="Focused"/>
+                                <VisualState x:Name="Unfocused"/>
+                                <VisualState x:Name="FocusedDropDown">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Duration="0:5:0" Storyboard.TargetProperty="Fill" Storyboard.TargetName="DownArrow">
+                                            <DiscreteObjectKeyFrame KeyTime="0:0:0"
+                                                                    Value="{StaticResource PhoneAccentBrush}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                        <Border x:Name="ContentPresenterBorder"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <ContentPresenter x:Name="ContentPresenter"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  IsHitTestVisible="False"/>
+
+                                <ToggleButton x:Name="DropDownToggle" Grid.ColumnSpan="2">
+                                    <ToggleButton.Template>
+                                        <ControlTemplate TargetType="ToggleButton">
+                                            <Grid/>
+                                        </ControlTemplate>
+                                    </ToggleButton.Template>
+                                </ToggleButton>
+
+                                <Path x:Name="DownArrow"
+                                      Data="M135,390 L335,390 L235,500 z"
+                                      Fill="{StaticResource PhoneForegroundBrush}"
+                                      Grid.Column="1"
+                                      Stretch="Fill"
+                                      UseLayoutRounding="False"
+                                      Height="10"
+                                      Width="12"
+                                      Margin="0,3,5,0"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+
+                            </Grid>
+                        </Border>
+
+                        <Popup x:Name="Popup">                            
+                            <Border BorderBrush="{StaticResource PhoneBorderBrush}"
+                                    Background="{TemplateBinding Background}"
+                                    BorderThickness="1">
+                                <ScrollViewer x:Name="ScrollViewer"
+                                              MaxHeight="200" Margin="10,35,10,-20"
+                                              VerticalScrollBarVisibility="Auto">
+                                    <ItemsPresenter Margin="0"/>
+                                </ScrollViewer>
+                            </Border>
+                        </Popup>
+
+                        <Rectangle x:Name="DisableRect"
+                                   Fill="{StaticResource PhoneContrastBackgroundBrush}"
+                                   Opacity="0"/>
+                    </Grid>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="BorderBrush" Value="{StaticResource PhoneForegroundBrush}"/>
+        <Setter Property="BorderThickness" Value="3"/>
+        <Setter Property="Background" Value="{StaticResource PhoneBackgroundBrush}"/>
+        <Setter Property="FontSize" Value="19"/>
+        <Setter Property="FontFamily" Value="Segoe WP Semibold"/>
+        <Setter Property="Height" Value="45"/>
+
+        <Setter Property="ItemTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Grid>
+                        <ContentPresenter Content="{Binding}" Margin="5"/>
+                    </Grid>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

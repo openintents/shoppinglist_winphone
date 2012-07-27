@@ -29,16 +29,22 @@ namespace OIShoppingListWinPhone
 
         void PivotItemControl_Loaded(object sender, RoutedEventArgs e)
         {
-            ShoppingList currentList = ListSelector.SelectedItem as ShoppingList;
-            this.FilteredItemsCollection = currentList.ListItems;
-            ItemContainer.ItemsSource = this.FilteredItemsCollection;
+            if (ListSelector.Items.Count != 0)
+                ListSelector.SelectedIndex = 0;
+            /*ShoppingList currentList = ListSelector.SelectedItem as ShoppingList;
+            if (currentList != null)
+            {
+                this.FilteredItemsCollection = currentList.ListItems;
+                //ItemContainer.ItemsSource = this.FilteredItemsCollection;
+            }*/
         }
 
         private void ListSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            this.FilteredItemsCollection = new EntitySet<ShoppingListItem>();
+            /*this.FilteredItemsCollection = new EntitySet<ShoppingListItem>();
             ShoppingList currentList = ListSelector.SelectedItem as ShoppingList;
-            this.FilteredItemsCollection = currentList.ListItems;
+            if (currentList != null)
+                this.FilteredItemsCollection = currentList.ListItems;
 
             if (TagsSelector.SelectedIndex > 0)
                 this.FilteredItemsCollection = this.FilteredItemsCollection.Where(x => x.Tags.Contains(TagsSelector.SelectedItem as string));
@@ -55,7 +61,7 @@ namespace OIShoppingListWinPhone
                 }
                 this.FilteredItemsCollection = newCollection;
             }
-            ItemContainer.ItemsSource = this.FilteredItemsCollection;
+            ItemContainer.ItemsSource = this.FilteredItemsCollection;*/
         }
     }
 }

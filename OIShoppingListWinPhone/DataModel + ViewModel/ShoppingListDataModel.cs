@@ -183,7 +183,7 @@ namespace OIShoppingListWinPhone.DataModel
         {
             get
             {
-                this._listStores.Insert(0, new ShoppingListStore() { List = this, StoreName = "[Empty]" });
+                //this._listStores.Insert(0, new ShoppingListStore() { List = this, StoreName = "[Empty]" });
                 return this._listStores;
             }
             set { this._listStores.Assign(value); }

@@ -5,7 +5,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
-    xmlns:custom="clr-namespace:OIShoppingListWinPhone;assembly=OIShoppingListWinPhone"
+    xmlns:custom="clr-namespace:OIShoppingListWinPhone.CustomControls"
+    xmlns:local="clr-namespace:OIShoppingListWinPhone"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -26,58 +28,58 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-
-        <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Grid.ColumnSpan="6" Margin="12,17,0,28"
-                    DataContext="{Binding ElementName=ListSelector, Path=SelectedItem}">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock x:Name="ListTitle" Text="{Binding ListName}" Style="{StaticResource PhoneTextLargeStyle}"/>
-                <TextBlock Text="-" Style="{StaticResource PhoneTextLargeStyle}"/>
-                <TextBlock x:Name="ApplicationTitle" Text="OI SHOPPING LIST" Style="{StaticResource PhoneTextLargeStyle}"/>
-            </StackPanel>            
-        </StackPanel>
-        
-        <toolkit:ListPicker x:Name="ListSelector"
-                            Grid.Column="0"
-                            Grid.ColumnSpan="2"
-                            Grid.Row="1"
-                            ItemsSource="{Binding ShoppingLists}"
-                            SelectionChanged="ListSelector_SelectionChanged">
-            <toolkit:ListPicker.ItemTemplate>
+     
+        <custom:ComboBox x:Name="ListSelector"
+                         Grid.Column="0"
+                         Grid.ColumnSpan="2"
+                         Grid.Row="1"
+                         Margin="5"
+                         ItemsSource="{Binding ShoppingLists}"
+                         SelectionChanged="ListSelector_SelectionChanged">
+            <custom:ComboBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding ListName}"/>
                 </DataTemplate>
-            </toolkit:ListPicker.ItemTemplate>
-        </toolkit:ListPicker>
+            </custom:ComboBox.ItemTemplate>
+        </custom:ComboBox>
+
+        <custom:ComboBox x:Name="TagsSelector"
+                         Grid.Column="2"
+                         Grid.ColumnSpan="2"
+                         Grid.Row="1"
+                         Margin="5"
+                         DataContext="{Binding ElementName=ListSelector, Path=SelectedItem}"
+                         ItemsSource="{Binding Tags}"
+                         SelectionChanged="ListSelector_SelectionChanged">
+        </custom:ComboBox>
         
-        <toolkit:ListPicker x:Name="TagsSelector"
-                            Grid.Column="2"
-                            Grid.ColumnSpan="2"
-                            Grid.Row="1"
-                            DataContext="{Binding ElementName=ListSelector, Path=SelectedItem}"
-                            ItemsSource="{Binding Tags}"
-                            SelectionChanged="ListSelector_SelectionChanged"/>
-        
-        <toolkit:ListPicker x:Name="StoreSelector"
+        <custom:ComboBox x:Name="StoreSelector"
                             Grid.Column="4"
                             Grid.ColumnSpan="2"
                             Grid.Row="1"
-                            DataContext="{Binding ElementName=ListSelector, Path=SelectedItem}"
-                            ItemsSource="{Binding ListStores}"
+                            ItemsSource="{Binding ElementName=ListSelector, Path=SelectedItem.ListStores}"
                             SelectionChanged="ListSelector_SelectionChanged">
-            <toolkit:ListPicker.ItemTemplate>
+            <custom:ComboBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding StoreName}"/>
                 </DataTemplate>
-            </toolkit:ListPicker.ItemTemplate>
-        </toolkit:ListPicker>
-        
+            </custom:ComboBox.ItemTemplate>
+        </custom:ComboBox>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Grid.ColumnSpan="6" Margin="12,17,0,28" Orientation="Horizontal"
+                    DataContext="{Binding ElementName=ListSelector, Path=SelectedItem}">
+            <TextBlock x:Name="ListName" Text="{Binding ListName}" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock Text="-" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="ApplicationTitle" Text="OI SHOPPING LIST" Style="{StaticResource PhoneTextNormalStyle}"/>
+        </StackPanel>
+
         <ListBox Name="ItemContainer"
                  Grid.Column="0"
                  Grid.ColumnSpan="6"
                  Grid.Row="2"
-                 Margin="0,0,0,120"
-                 DataContext="{Binding ElementName=ListSelector, Path=SelectedItem}">
+                 Margin="0,0,0,120"                 
+                 ItemsSource="{Binding ElementName=ListSelector, Path=SelectedItem.ListItems}">
             
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
@@ -87,7 +89,7 @@
             
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <custom:PivotItemControlElement/>
+                    <local:PivotItemControlElement/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

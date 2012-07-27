@@ -84,15 +84,15 @@ namespace OIShoppingListWinPhone.ViewModel
 
         public void AddNewListItem(ShoppingList currentList, ShoppingListItem newListItem)
         {
-            currentList.ListItems.Add(newListItem);
             newListItem.CreatedDate = DateTime.Now;
             newListItem.ModifiedDate = DateTime.Now;
+            currentList.ListItems.Add(newListItem);
 
             listDB.ListItems.InsertOnSubmit(newListItem);
             listDB.SubmitChanges();
 
-            var listInVM = ShoppingLists.Where(c => c.ListID == currentList.ListID).FirstOrDefault();
-            listInVM.ListItems.Add(newListItem);
+            /*var listInVM = ShoppingLists.Where(c => c.ListID == currentList.ListID).FirstOrDefault();
+            listInVM.ListItems.Add(newListItem);*/
         }
 
         public void AddNewStore(ShoppingList list, ShoppingListStore store)

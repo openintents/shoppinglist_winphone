@@ -12,6 +12,7 @@ using System.Windows.Shapes;
 using System.Windows.Controls.Primitives;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using Microsoft.Phone.Tasks;
 
 using OIShoppingListWinPhone.DataModel;
 using OIShoppingListWinPhone.ViewModel;
@@ -22,6 +23,7 @@ namespace OIShoppingListWinPhone
     public partial class MainPage : PhoneApplicationPage
     {
         private DialogNameControl dlgName;
+        private SendModeChooser chooser;
 
         // Constructor
         public MainPage()
@@ -33,6 +35,7 @@ namespace OIShoppingListWinPhone
             this.Loaded += new RoutedEventHandler(MainPage_Loaded);
 
             dlgName = DialogName as DialogNameControl;
+            //chooser = SendChooser as SendModeChooser;
             dlgName.ButtonOK.Click += new RoutedEventHandler(ButtonOK_Click);
         }
 
@@ -45,19 +48,38 @@ namespace OIShoppingListWinPhone
             }
 
             if (LayoutRoot.Children.Count == 3)
+            {
+                Control c = LayoutRoot.Children[0] as Control;
                 LayoutRoot.Children.RemoveAt(0);
+            }
+
             if (App.AppSettings.Filters)
-                LayoutRoot.Children.Insert(0, new PivotItemControl());
+            {
+                Control elem = new PivotItemControl();
+                LayoutRoot.Children.Insert(0, elem);
+            }
             else
-                LayoutRoot.Children.Insert(0, new CustomPivotControl());
+            {
+                Control elem = new CustomPivotControl();
+                LayoutRoot.Children.Insert(0, elem);
+            }
         }
         
         private void Button_Add_Click(object sender, RoutedEventArgs e)
         {
             if (newListItemName.Text.Trim() != String.Empty)
-            {                
-                /*ShoppingList currentList = PivotControl.SelectedItem as ShoppingList;
-
+            {
+                DependencyObject listContainer = LayoutRoot.Children[0];
+                Grid grid = VisualTreeHelper.GetChild(listContainer, 0) as Grid;
+                UIElement obj = grid.Children[0] as ItemsControl;
+                ShoppingList currentList = new ShoppingList();
+                if (obj is Pivot)
+                    currentList = (obj as Pivot).SelectedItem as ShoppingList;
+                else if (obj is ListPicker)
+                    currentList = (obj as ListPicker).SelectedItem as ShoppingList;
+                else
+                    MessageBox.Show("Unrecognized control", "Exception", MessageBoxButton.OK);
+                                
                 ShoppingListItem newListItem = new ShoppingListItem()
                 {
                     ItemName = newListItemName.Text,
@@ -68,11 +90,11 @@ namespace OIShoppingListWinPhone
                     Quantity = null,
                     Tag = string.Empty,
                     Status = (int)ShoppingListItem.StatusEnumerator.Unchecked,
-                    Note = string.Empty
+                    Note = string.Empty,
                 };
                 
                 App.ViewModel.AddNewListItem(currentList, newListItem);
-                newListItemName.Text = "";*/
+                newListItemName.Text = "";
             }
             else
                 MessageBox.Show("Please, input correct list's item name" + "\n\n" + 
@@ -145,6 +167,29 @@ namespace OIShoppingListWinPhone
         private void ApplicationBarIconButtonSendList_Click(object sender, EventArgs e)
         {
             //Send shopping list via SMS or E-mail
+            chooser = new SendModeChooser();
+            LayoutRoot.Children.Add(chooser);
+            chooser.buttonSMS.Click += new RoutedEventHandler(buttonSMS_Click);
+            chooser.buttonEmail.Click += new RoutedEventHandler(buttonEmail_Click);
+            chooser.Activate();
+        }
+
+        void buttonSMS_Click(object sender, RoutedEventArgs e)
+        {            
+            SmsComposeTask smsTask = new SmsComposeTask();
+            smsTask.Body = CreateMessageBody();
+            smsTask.Show();            
+            chooser.Deactivate();
+            LayoutRoot.Children.Remove(chooser);
+        }
+
+        void buttonEmail_Click(object sender, RoutedEventArgs e)
+        {
+            EmailComposeTask emailTask = new EmailComposeTask();
+            emailTask.Body = CreateMessageBody();
+            emailTask.Show();
+            chooser.Deactivate();
+            LayoutRoot.Children.Remove(chooser);
         }
 
         private void ApplicationBarIconButtonDeleteList_Click(object sender, EventArgs e)
@@ -156,6 +201,46 @@ namespace OIShoppingListWinPhone
         }
 
         #endregion
+
+        private string CreateMessageBody()
+        {
+            DependencyObject listContainer = LayoutRoot.Children[0];
+            Grid grid = VisualTreeHelper.GetChild(listContainer, 0) as Grid;
+            UIElement obj = grid.Children[0] as ItemsControl;
+            ShoppingList currentList = new ShoppingList();
+            if (obj is Pivot)
+                currentList = (obj as Pivot).SelectedItem as ShoppingList;
+            else if (obj is ListPicker)
+                currentList = (obj as ListPicker).SelectedItem as ShoppingList;
+            else
+                MessageBox.Show("Unrecognized control", "Exception", MessageBoxButton.OK);
+
+            String body = String.Empty;
+
+            if (currentList != null)
+            {
+                foreach (ShoppingListItem item in currentList.ListItems)
+                {
+                    if (item.Status <= 1)
+                    {
+                        body += String.Format("[{0}] ", item.Status == 0 ? " " : "X");
+                        body += item.Quantity == null ? "" : item.Quantity + " ";
+                        body += item.Units == null ? "" : item.Units + " ";
+                        body += String.Format("{0} ", item.ItemName);
+
+                        if (item.Tag != string.Empty || item.Price != 0.00F)
+                        {
+                            body += "()";
+                            body = body.Insert(body.Length - 1, item.Tag == string.Empty ? "" : item.Tag + " ");
+                            body = body.Insert(body.Length - 1, item.Price == 0.00F ? "" : String.Format("{0:F2}", item.Price));
+                        }
+                        body += "\n";
+                    }
+                }
+            }
+
+            return body;
+        }
 
         #region ApplicationBarMenu's Click Events
 

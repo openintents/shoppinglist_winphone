@@ -29,7 +29,8 @@
             </CheckBox.RenderTransform>
         </CheckBox>
 
-        <Grid Grid.Column="1" Name="ItemParameterRoot" Margin="0,1,0,0">
+        <Grid Grid.Column="1" Name="ItemParameterRoot" Margin="0,1,0,0"
+              Tap="ItemParameterRoot_Tap">
             <StackPanel>
                 <Grid Background="{StaticResource PhoneBackgroundBrush}">
                     <Grid.RowDefinitions>

@@ -44,7 +44,7 @@ namespace OIShoppingListWinPhone
         /// Provides easy access to the root frame of the Phone Application.
         /// </summary>
         /// <returns>The root frame of the Phone Application.</returns>
-        public PhoneApplicationFrame RootFrame { get; private set; }
+        public TransitionFrame RootFrame { get; private set; }
 
         /// <summary>
         /// Constructor for the Application object.
@@ -155,7 +155,7 @@ namespace OIShoppingListWinPhone
 
             // Create the frame but don't set it as RootVisual yet; this allows the splash
             // screen to remain active until the application is ready to render.
-            RootFrame = new PhoneApplicationFrame();
+            RootFrame = new TransitionFrame();
             RootFrame.Navigated += CompleteInitializePhoneApplication;
 
             // Handle navigation failures

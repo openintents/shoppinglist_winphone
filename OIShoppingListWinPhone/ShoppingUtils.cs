@@ -33,7 +33,7 @@ namespace OIShoppingListWinPhone
     {
         public int Compare(ShoppingListItem first, ShoppingListItem second)
         {
-            return 0 - first.CreatedDate.CompareTo(second.CreatedDate);
+            return 0;// -first.CreatedDate.CompareTo(second.CreatedDate);
         }
     }
     

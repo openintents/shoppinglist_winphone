@@ -6,7 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
 	xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     
-    xmlns:SampleData="clr-namespace:Expression.Blend.SampleData.SortOrderSettings" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:SampleData="clr-namespace:Expression.Blend.SampleData.SortOrderDataSource" mc:Ignorable="d"
     
     x:Class="OIShoppingListWinPhone.App">
 
@@ -14,7 +14,10 @@
     <Application.Resources>
     
     	<ResourceDictionary>
-    		<SampleData:SortOrderSettings x:Key="SortOrderSettings" d:IsDataSource="True"/>
+    		<ResourceDictionary.MergedDictionaries>
+    			<ResourceDictionary Source="Themes/Generic.xaml"/>
+    		</ResourceDictionary.MergedDictionaries>
+    		<SampleData:SortOrderDataSource x:Key="SortOrderDataSource" d:IsDataSource="True"/>
     	</ResourceDictionary>
     
     </Application.Resources>

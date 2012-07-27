@@ -23,7 +23,7 @@
             </controls:Pivot.HeaderTemplate>
             <controls:Pivot.ItemTemplate>
                 <DataTemplate>
-                    <ListBox Name="ItemContainer"  ItemsSource="{Binding ListItems}"
+                    <ListBox Name="ItemContainer" ItemsSource="{Binding ListItems}"
                              SelectionChanged="ItemContainer_SelectionChanged"
                              Tap="ItemContainer_Tap">
 

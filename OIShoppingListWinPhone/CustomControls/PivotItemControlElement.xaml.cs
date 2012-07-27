@@ -33,10 +33,6 @@ namespace OIShoppingListWinPhone
             while (obj != null && !(obj is ListBoxItem))
                 obj = VisualTreeHelper.GetParent(obj);
             ShoppingListItem item = (obj as ListBoxItem).DataContext as ShoppingListItem;
-
-            //ShoppingList list = PivotControl.SelectedItem as ShoppingList;
-            //ShoppingListItem item = PivotControl.ItemTemplate.GetValue(ListBox.SelectedItemProperty) as ShoppingListItem;
-            //ShoppingListItem listItem = (sender as PivotItemControlElement).Tag as ShoppingListItem;
         }
 
         private void ItemCheckBox_Unchecked(object sender, RoutedEventArgs e)
@@ -47,12 +43,11 @@ namespace OIShoppingListWinPhone
         private void ItemParameterRoot_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             DependencyObject obj = sender as DependencyObject;
-            while (sender != null && !(sender is ListBoxItem))
-                obj = VisualTreeHelper.GetParent(sender as DependencyObject);
-            /*ShoppingList list = PivotControl.SelectedItem as ShoppingList;
-            ShoppingListItem item = PivotControl.ItemTemplate.GetValue(ListBox.SelectedItemProperty) as ShoppingListItem;
-            ShoppingListItem listItem = (sender as PivotItemControlElement).Tag as ShoppingListItem;
+            while (obj != null && !(obj is ListBoxItem))
+                obj = VisualTreeHelper.GetParent(obj as DependencyObject);
 
+            ShoppingListItem listItem = obj.GetValue(ListBoxItem.DataContextProperty) as ShoppingListItem;
+            
             string queryBody = "?ID=" + listItem.ItemID.ToString()
                 + "&Name=" + listItem.ItemName
                 + "&Price=" + String.Format("{0:F2}", listItem.Price)
@@ -68,7 +63,8 @@ namespace OIShoppingListWinPhone
             if (listItem.Units != null)
                 queryBody += "&Units=" + listItem.Units.ToString();
 
-            NavigationService.Navigate(new Uri("/EditItemPage.xaml" + queryBody, UriKind.Relative));*/
+            (Application.Current.RootVisual as PhoneApplicationFrame).Navigate(new Uri("/EditItemPage.xaml"+ queryBody,
+                UriKind.Relative));
         }
         
         void element_OnMenuMoveItemClick(object sender, RoutedEventArgs e)
