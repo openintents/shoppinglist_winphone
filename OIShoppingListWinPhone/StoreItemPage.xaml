@@ -54,8 +54,6 @@
                 </ListBox.ItemTemplate>
             </ListBox>
 		</Grid>
-
-        <custom:DialogNameControl x:Name="DialogName" Visibility="Collapsed"/>
     </Grid>
  
     <!--Sample code showing usage of ApplicationBar-->

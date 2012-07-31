@@ -3,13 +3,13 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
 	xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
-	xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
 	xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:effects="clr-namespace:OIShoppingListWinPhone.Effects"
+    
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
 	xmlns:ec="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
 	xmlns:eim="clr-namespace:Microsoft.Expression.Interactivity.Media;assembly=Microsoft.Expression.Interactions"
-    
-    xmlns:custom="clr-namespace:OIShoppingListWinPhone"
+        
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	
@@ -21,8 +21,10 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     mc:Ignorable="d"
     SupportedOrientations="PortraitOrLandscape"  Orientation="Portrait"
-    shell:SystemTray.IsVisible="True">
-	
+    shell:SystemTray.IsVisible="True"
+    effects:TiltEffect.IsTiltEnabled="True">
+    
+    <!--Implementation for Main Page navigation transitions-->
 	<toolkit:TransitionService.NavigationInTransition>
 		<toolkit:NavigationInTransition>
 	   		<toolkit:NavigationInTransition.Backward>
@@ -47,20 +49,20 @@
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         
+        <!--Layout for Add new item button and Item name TextBox-->
         <Grid Height="72" VerticalAlignment="Bottom">
             <TextBox x:Name="newListItemName" Margin="0,0,125,0" TextWrapping="NoWrap" FontSize="24"/>
-            <Button Content="Add" HorizontalAlignment="Right" Width="130" Click="Button_Add_Click"/>
+            <Button Content="add" HorizontalAlignment="Right" Width="130" Click="Button_Add_Click"/>
         </Grid>
-		
-		<custom:DialogNameControl x:Name="DialogName" Visibility="Collapsed"/>
-	</Grid>
+	
+    </Grid>
 
-    <!--Sample code showing usage of ApplicationBar-->
+    <!--ApplicationBar description-->
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
             <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="clean up list" />
-                <shell:ApplicationBarMenuItem Text="pick items" />
+                <shell:ApplicationBarMenuItem Text="clean up list" Click="ApplicationBarMenuCleanUpList_Click"/>
+                <shell:ApplicationBarMenuItem Text="pick items" Click="ApplicationBarMenuPickItems_Click"/>
                 <shell:ApplicationBarMenuItem Text="mark all items" Click="ApplicationBarMenuMarkAllItems_Click"/>
                 <shell:ApplicationBarMenuItem Text="settings" Click="ApplicationBarMenuSettings_Click"/>
                 <shell:ApplicationBarMenuItem Text="about..." Click="ApplicationBarMenuAbout_Click"/>

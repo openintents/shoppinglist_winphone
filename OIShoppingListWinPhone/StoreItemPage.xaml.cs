@@ -14,6 +14,7 @@ using System.Collections.ObjectModel;
 
 using OIShoppingListWinPhone.DataModel;
 using OIShoppingListWinPhone.ViewModel;
+using OIShoppingListWinPhone.CustomLayout;
 
 namespace OIShoppingListWinPhone
 {
@@ -21,7 +22,7 @@ namespace OIShoppingListWinPhone
     {
         private int itemId;
         private ShoppingList list;
-        private DialogNameControl dlgName;
+        private EditNameDialog dlgName;
         ItemsStoresCollection collection = new ItemsStoresCollection();
 
         public StoreItemPage()
@@ -65,7 +66,7 @@ namespace OIShoppingListWinPhone
                 TextBlock pageTitle = this.PageTitle as TextBlock;
                 pageTitle.Text = NavigationContext.QueryString["ItemName"] + pageTitle.Text;
 
-                dlgName = DialogName as DialogNameControl;
+                dlgName =new EditNameDialog();
                 dlgName.ButtonOK.Click += new RoutedEventHandler(ButtonOK_Click);
             }
         }
@@ -85,11 +86,8 @@ namespace OIShoppingListWinPhone
                 dlgName.Deactivate();                
             }
             else
-            {
                 MessageBox.Show("Please, enter a name" + "\n\n" +
                                 "*Note:" + "\n" + "- New name must not be empty", "Information", MessageBoxButton.OK);
-                dlgName.Activate("Enter new store name", "");
-            }
         }
         
         private void ApplicationBarIconButtonOK_Click(object sender, EventArgs e)
@@ -108,7 +106,7 @@ namespace OIShoppingListWinPhone
 
         private void ApplicationBarIconButtonAdd_Click(object sender, EventArgs e)
         {
-            dlgName.Activate("Enter new store name", "");
+            dlgName.Activate(EditNameDialog.EditNameDialogMode.AddingNewStore);
         }
     }
 

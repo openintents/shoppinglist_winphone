@@ -14,11 +14,11 @@ using Microsoft.Phone.Controls;
 using OIShoppingListWinPhone.DataModel;
 using OIShoppingListWinPhone.ViewModel;
 
-namespace OIShoppingListWinPhone
+namespace OIShoppingListWinPhone.CustomLayout
 {
-    public partial class PivotItemControlElement : UserControl
-    {        
-        public PivotItemControlElement()
+    public partial class ListItemContainer : UserControl
+    {
+        public ListItemContainer()
         {
             InitializeComponent();
         }

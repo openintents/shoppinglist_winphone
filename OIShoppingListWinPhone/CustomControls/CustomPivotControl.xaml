@@ -1,21 +1,34 @@
-﻿<UserControl x:Class="OIShoppingListWinPhone.CustomControls.CustomPivotControl"
+﻿<UserControl x:Class="OIShoppingListWinPhone.CustomLayout.CustomPivotControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
 	xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
-    xmlns:custom="clr-namespace:OIShoppingListWinPhone;assembly=OIShoppingListWinPhone"
+    xmlns:custom="clr-namespace:OIShoppingListWinPhone.CustomLayout"
+    xmlns:settings="clr-namespace:OIShoppingListWinPhone.Settings"
+    
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     d:DesignHeight="800" d:DesignWidth="480">
     
+    <UserControl.Resources>
+        <settings:ApplicationSettings x:Key="Settings"/>
+    </UserControl.Resources>
+    
     <Grid x:Name="LayoutRoot">
         <!--Pivot Control-->
-        <controls:Pivot Name="PivotControl" Title="OI SHOPPING LIST"
-                        ItemsSource="{Binding ShoppingLists}" Margin="0,0,0,120">
+        <controls:Pivot Name="PivotControl"
+                        ItemsSource="{Binding ShoppingLists}"
+                        Margin="0,0,0,120"
+                        SelectedIndex="{Binding Source={StaticResource Settings}, Path=SelectedListIndexSetting, Mode=TwoWay}">
+            <controls:Pivot.Title>
+                <Grid Background="{StaticResource PhoneAccentBrush}">
+                    <TextBlock Text="OI SHOPPING LIST"/>
+                </Grid>
+            </controls:Pivot.Title>
             <controls:Pivot.HeaderTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding ListName}"/>
@@ -23,23 +36,7 @@
             </controls:Pivot.HeaderTemplate>
             <controls:Pivot.ItemTemplate>
                 <DataTemplate>
-                    <ListBox Name="ItemContainer" ItemsSource="{Binding ListItems}"
-                             SelectionChanged="ItemContainer_SelectionChanged"
-                             Tap="ItemContainer_Tap">
-
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="ListBoxItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                            </Style>
-                        </ListBox.ItemContainerStyle>
-
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <custom:PivotItemControlElement/>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-
-                    </ListBox>
+                    <custom:ListItemsContainerControl/>
                 </DataTemplate>
             </controls:Pivot.ItemTemplate>
         </controls:Pivot>

@@ -1,11 +1,10 @@
-﻿<UserControl x:Class="OIShoppingListWinPhone.PivotItemControl"
+﻿<UserControl x:Class="OIShoppingListWinPhone.CustomLayout.PivotItemControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
-    xmlns:custom="clr-namespace:OIShoppingListWinPhone.CustomControls"
     xmlns:local="clr-namespace:OIShoppingListWinPhone"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     mc:Ignorable="d"
@@ -29,7 +28,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
      
-        <custom:ComboBox x:Name="ListSelector"
+        <!--<custom:ComboBox x:Name="ListSelector"
                          Grid.Column="0"
                          Grid.ColumnSpan="2"
                          Grid.Row="1"
@@ -41,9 +40,9 @@
                     <TextBlock Text="{Binding ListName}"/>
                 </DataTemplate>
             </custom:ComboBox.ItemTemplate>
-        </custom:ComboBox>
+        </custom:ComboBox>-->
 
-        <custom:ComboBox x:Name="TagsSelector"
+        <!--<custom:ComboBox x:Name="TagsSelector"
                          Grid.Column="2"
                          Grid.ColumnSpan="2"
                          Grid.Row="1"
@@ -51,9 +50,9 @@
                          DataContext="{Binding ElementName=ListSelector, Path=SelectedItem}"
                          ItemsSource="{Binding Tags}"
                          SelectionChanged="ListSelector_SelectionChanged">
-        </custom:ComboBox>
+        </custom:ComboBox>-->
         
-        <custom:ComboBox x:Name="StoreSelector"
+        <!--<custom:ComboBox x:Name="StoreSelector"
                             Grid.Column="4"
                             Grid.ColumnSpan="2"
                             Grid.Row="1"
@@ -64,10 +63,10 @@
                     <TextBlock Text="{Binding StoreName}"/>
                 </DataTemplate>
             </custom:ComboBox.ItemTemplate>
-        </custom:ComboBox>
+        </custom:ComboBox>-->
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Grid.ColumnSpan="6" Margin="12,17,0,28" Orientation="Horizontal"
+        <!--<StackPanel x:Name="TitlePanel" Grid.Row="0" Grid.ColumnSpan="6" Margin="12,17,0,28" Orientation="Horizontal"
                     DataContext="{Binding ElementName=ListSelector, Path=SelectedItem}">
             <TextBlock x:Name="ListName" Text="{Binding ListName}" Style="{StaticResource PhoneTextNormalStyle}"/>
             <TextBlock Text="-" Style="{StaticResource PhoneTextNormalStyle}"/>
@@ -92,7 +91,7 @@
                     <local:PivotItemControlElement/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
-        </ListBox>
+        </ListBox>-->
 
         <Grid Grid.Column="0" Grid.ColumnSpan="6"
               Grid.Row="2"

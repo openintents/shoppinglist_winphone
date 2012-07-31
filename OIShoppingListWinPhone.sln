@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010 Express for Windows Phone
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OIShoppingListWinPhone", "OIShoppingListWinPhone\OIShoppingListWinPhone.csproj", "{54F517F7-3E99-423F-8BCC-18CC9E16F482}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OIShoppingListWinPhone.Controls", "OIShoppingListWinPhone.Controls\OIShoppingListWinPhone.Controls.csproj", "{402FE879-DABF-40E0-8704-A7C04E60DDAA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{54F517F7-3E99-423F-8BCC-18CC9E16F482}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54F517F7-3E99-423F-8BCC-18CC9E16F482}.Release|Any CPU.Build.0 = Release|Any CPU
 		{54F517F7-3E99-423F-8BCC-18CC9E16F482}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{402FE879-DABF-40E0-8704-A7C04E60DDAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{402FE879-DABF-40E0-8704-A7C04E60DDAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{402FE879-DABF-40E0-8704-A7C04E60DDAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{402FE879-DABF-40E0-8704-A7C04E60DDAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

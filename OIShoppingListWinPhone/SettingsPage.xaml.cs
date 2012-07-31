@@ -11,6 +11,8 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 
+using OIShoppingListWinPhone.Settings;
+
 namespace OIShoppingListWinPhone
 {
     public partial class SettingsPage : PhoneApplicationPage
@@ -23,43 +25,43 @@ namespace OIShoppingListWinPhone
 
         void SettingsPage_Loaded(object sender, RoutedEventArgs e)
         {
-            switch (App.AppSettings.FontSize)
+            switch ((int)App.Settings.FontSize)
             {
-                case (int)Settings.FontSizeSettings.Default:
+                case (int)ApplicationSettings.FontSizeSettings.Default:
                     FontSizeSettings.SelectedIndex = 2;
                     break;
-                case (int)Settings.FontSizeSettings.Large:
+                case (int)ApplicationSettings.FontSizeSettings.Large:
                     FontSizeSettings.SelectedIndex = 3;
                     break;
-                case (int)Settings.FontSizeSettings.Small:
+                case (int)ApplicationSettings.FontSizeSettings.Small:
                     FontSizeSettings.SelectedIndex = 1;
                     break;
-                case (int)Settings.FontSizeSettings.Tiny:
+                case (int)ApplicationSettings.FontSizeSettings.Tiny:
                     FontSizeSettings.SelectedIndex = 0;
                     break;
             }
 
-            SortOrderSettings.SelectedIndex = (int)App.AppSettings.SortOrder;
+            SortOrderSettings.SelectedIndex = App.Settings.SortOrder;
             
         }
                 
         private void ApplicationBarIconButtonOk_Click(object sender, EventArgs e)
         {
-            App.AppSettings.SortOrder = SortOrderSettings.SelectedIndex;
+            App.Settings.SortOrder = SortOrderSettings.SelectedIndex;
 
             switch (FontSizeSettings.SelectedIndex)
             {
                 case 0:
-                    App.AppSettings.FontSize = (int)Settings.FontSizeSettings.Tiny;
+                    App.Settings.FontSize = (int)ApplicationSettings.FontSizeSettings.Tiny;
                     break;
                 case 1:
-                    App.AppSettings.FontSize = (int)Settings.FontSizeSettings.Small;
+                    App.Settings.FontSize = (int)ApplicationSettings.FontSizeSettings.Small;
                     break;
                 case 2:
-                    App.AppSettings.FontSize = (int)Settings.FontSizeSettings.Default;
+                    App.Settings.FontSize = (int)ApplicationSettings.FontSizeSettings.Default;
                     break;
                 case 3:
-                    App.AppSettings.FontSize = (int)Settings.FontSizeSettings.Large;
+                    App.Settings.FontSize = (int)ApplicationSettings.FontSizeSettings.Large;
                     break;
             }
 

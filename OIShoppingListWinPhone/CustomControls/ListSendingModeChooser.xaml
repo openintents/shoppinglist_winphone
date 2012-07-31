@@ -5,9 +5,11 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
 	xmlns:ec="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions" 
-	mc:Ignorable="d"
-	x:Class="OIShoppingListWinPhone.SendModeChooser"
-	d:DesignWidth="480" d:DesignHeight="800">
+	xmlns:effects="clr-namespace:OIShoppingListWinPhone.Effects"
+    mc:Ignorable="d"
+	x:Class="OIShoppingListWinPhone.CustomLayout.ListSendingModeChooser"
+	d:DesignWidth="480" d:DesignHeight="800"
+    effects:TiltEffect.IsTiltEnabled="True">
 
 	<Grid x:Name="LayoutRoot">
     	<i:Interaction.Triggers>
@@ -112,16 +114,21 @@
     		</VisualStateGroup>
     	</VisualStateManager.VisualStateGroups>
     	        
-        <!--LayoutRoot for Adding/Renaming shopping list-->
+        <!--LayoutRoot for choosing shopping listsending mode (via SMS or E-mail)-->
+        
+        <!--Disable rectangle. Actually it's a background of control-->
         <Rectangle x:Name="DisableRect"
         	Fill="#803D3B3B"/>
+        
         <Border x:Name="DialogRect"
     		BorderBrush="{StaticResource PhoneForegroundBrush}"
     		BorderThickness="2"
     		CornerRadius="4"
     		Margin="0,140,0,0"
     		HorizontalAlignment="Center"
-    		VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Height="318">
+    		VerticalAlignment="Top"
+            RenderTransformOrigin="0.5,0.5"
+            Height="315">
         	<Border.RenderTransform>
         		<CompositeTransform/>
         	</Border.RenderTransform>
@@ -152,14 +159,27 @@
     				TextAlignment="Left"
 					Text="Send list" FontWeight="Bold" FontFamily="Segoe WP"/>
                 
+                <!--Button for choose sending via SMS-->
                 <Button x:Name="buttonSMS" Grid.Row="1"
     				Grid.Column="0"
-    				Margin="2,2,2,0">
+    				Margin="2,4,2,0">
+                	<i:Interaction.Triggers>
+                		<i:EventTrigger EventName="Click">
+                			<ec:GoToStateAction x:Name="ButtonSMSGoToStateCollapsed" StateName="CollapsedVisualState"/>
+                		</i:EventTrigger>
+                	</i:Interaction.Triggers>
                 	<Image Source="\Images\sms.png"/>
                 </Button>
+                
+                <!--Button for choose sending via E-mail-->
                 <Button x:Name="buttonEmail" Grid.Row="1"
     				Grid.Column="1"
-    				Margin="2,2,2,0">
+    				Margin="2,4,2,0">
+                	<i:Interaction.Triggers>
+                		<i:EventTrigger EventName="Click">
+                			<ec:GoToStateAction x:Name="ButtonEmailGoToStateCollapsed" StateName="CollapsedVisualState"/>
+                		</i:EventTrigger>
+                	</i:Interaction.Triggers>
                 	<Image Source="\Images\e-mail.png"/>
                 </Button>
 				

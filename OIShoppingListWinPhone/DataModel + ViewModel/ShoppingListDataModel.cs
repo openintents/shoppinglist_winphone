@@ -8,9 +8,8 @@ using System.Data.Linq.Mapping;
 namespace OIShoppingListWinPhone.DataModel
 {
     /// <summary>
-    /// ShoppingList database table slass
+    /// ShoppingList database table class
     /// </summary>
-    /// <returns></returns>
     [Table (Name="Lists")]
     public sealed class ShoppingList: INotifyPropertyChanging, INotifyPropertyChanged
     {        

@@ -12,22 +12,29 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using System.IO.IsolatedStorage;
 
 using OIShoppingListWinPhone.DataModel;
 using OIShoppingListWinPhone.ViewModel;
+using OIShoppingListWinPhone.Settings;
 
 namespace OIShoppingListWinPhone
 {
     public partial class App : Application
     {
-        public static Settings AppSettings { get; set; }
+        /// <summary>
+        /// A static Application Settings used by the whole application.
+        /// </summary>
+        /// <returns>The Settings object.</returns>
+        public static ApplicationSettings Settings { get; set; }
 
+        // Private static ViewModel field used by the views to bind against.
         private static ShoppingListViewModel viewModel;
 
         /// <summary>
         /// A static ViewModel used by the views to bind against.
         /// </summary>
-        /// <returns>The MainViewModel object.</returns>
+        /// <returns>The ShoppingListViewModel object.</returns>
         public static ShoppingListViewModel ViewModel
         {
             get
@@ -85,7 +92,7 @@ namespace OIShoppingListWinPhone
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
-            AppSettings = Settings.Load();
+            Settings = ApplicationSettings.Load();
 
             // Ensure that application state is restored appropriately
             if (!App.ViewModel.IsDataLoaded)
@@ -98,7 +105,7 @@ namespace OIShoppingListWinPhone
         // This code will not execute when the application is first launched
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
-            AppSettings = Settings.Load();
+            Settings = ApplicationSettings.Load();
 
             // Ensure that application state is restored appropriately
             if (!App.ViewModel.IsDataLoaded)
@@ -111,7 +118,7 @@ namespace OIShoppingListWinPhone
         // This code will not execute when the application is closing
         private void Application_Deactivated(object sender, DeactivatedEventArgs e)
         {
-            AppSettings.Save();
+            Settings.Save();
         }
 
         // Code to execute when the application is closing (eg, user hit Back)
@@ -119,7 +126,7 @@ namespace OIShoppingListWinPhone
         private void Application_Closing(object sender, ClosingEventArgs e)
         {
             // Ensure that required application state is persisted here.
-            AppSettings.Save();
+            Settings.Save();
         }
 
         // Code to execute if a navigation fails

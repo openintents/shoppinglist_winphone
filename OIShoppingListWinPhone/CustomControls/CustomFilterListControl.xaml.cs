@@ -12,13 +12,11 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 
-using OIShoppingListWinPhone.DataModel;
-
-namespace OIShoppingListWinPhone
+namespace OIShoppingListWinPhone.CustomLayout
 {
     public partial class PivotItemControl : UserControl
     {
-        IEnumerable<ShoppingListItem> FilteredItemsCollection;
+        //IEnumerable<ShoppingListItem> FilteredItemsCollection;
 
         public PivotItemControl()
         {
@@ -29,8 +27,9 @@ namespace OIShoppingListWinPhone
 
         void PivotItemControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if (ListSelector.Items.Count != 0)
+            /*if (ListSelector.Items.Count != 0)
                 ListSelector.SelectedIndex = 0;
+             */ 
             /*ShoppingList currentList = ListSelector.SelectedItem as ShoppingList;
             if (currentList != null)
             {

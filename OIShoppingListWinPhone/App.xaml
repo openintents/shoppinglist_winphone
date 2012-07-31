@@ -4,22 +4,19 @@
     
 	xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
-	xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:SampleData="clr-namespace:Expression.Blend.SampleData.SortOrderDataSource" mc:Ignorable="d"
+    xmlns:SampleData="clr-namespace:Expression.Blend.SampleData.SortOrderDataSource"
+    
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        
+    mc:Ignorable="d"
     
     x:Class="OIShoppingListWinPhone.App">
 
     <!--Application Resources-->
     <Application.Resources>
-    
-    	<ResourceDictionary>
-    		<ResourceDictionary.MergedDictionaries>
-    			<ResourceDictionary Source="Themes/Generic.xaml"/>
-    		</ResourceDictionary.MergedDictionaries>
-    		<SampleData:SortOrderDataSource x:Key="SortOrderDataSource" d:IsDataSource="True"/>
-    	</ResourceDictionary>
-    
+        <SampleData:SortOrderDataSource x:Key="SortOrderDataSource" d:IsDataSource="True"/>
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>

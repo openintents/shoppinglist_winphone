@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="OIShoppingListWinPhone.PivotItemControlElement"
+﻿<UserControl x:Class="OIShoppingListWinPhone.CustomLayout.ListItemContainer"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -16,14 +16,15 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-
-        <Border Grid.Column="0" Grid.ColumnSpan="2"
-                                            BorderBrush="{StaticResource PhoneChromeBrush}"
-                                            BorderThickness="1"
-                                            Margin="-1,-1,-1,0"/>
-        <CheckBox Grid.Column="0" Width="60" RenderTransformOrigin="0,0" Margin="-5,-12,10,15" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                          Checked="ItemCheckBox_Checked"
-                                                          Unchecked="ItemCheckBox_Unchecked">
+        
+        <CheckBox Grid.Column="0"
+                  Width="60"
+                  RenderTransformOrigin="0,0"
+                  Margin="-5,-12,10,15"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  Checked="ItemCheckBox_Checked"
+                  Unchecked="ItemCheckBox_Unchecked">
             <CheckBox.RenderTransform>
                 <ScaleTransform ScaleX="1.4" ScaleY="1.4"/>
             </CheckBox.RenderTransform>
@@ -41,13 +42,19 @@
                     <!--Context Menu for ListBox Item-->
                     <toolkit:ContextMenuService.ContextMenu>
                         <toolkit:ContextMenu>
-                            <toolkit:MenuItem Height="65" Header="edit item" Click="element_OnMenuEditItemClick"/>
-                            <toolkit:MenuItem Height="65" Header="mark item" Click="element_OnMenuMarkItemClick"/>
-                            <toolkit:MenuItem Height="65" Header="stores..." Click="element_OnMenuStoresClick"/>
-                            <toolkit:MenuItem Height="65" Header="remove item from list" Click="element_OnMenuRemoveItemClick"/>
-                            <toolkit:MenuItem Height="65" Header="copy item" Click="element_OnMenuCopyItemClick"/>
-                            <toolkit:MenuItem Height="65" Header="delete item permanently" Click="element_OnMenuDeleteItemClick"/>
-                            <toolkit:MenuItem Height="65" Header="move item to other list" Click="element_OnMenuMoveItemClick"/>
+                            <toolkit:MenuItem Height="45" Header="edit item" Click="element_OnMenuEditItemClick">
+                                <toolkit:MenuItem.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock FontSize="20" Margin="5,-10,2,2" Text="{Binding}"/>
+                                    </DataTemplate>
+                                </toolkit:MenuItem.HeaderTemplate>
+                            </toolkit:MenuItem>
+                            <toolkit:MenuItem Height="45" Header="mark item" Click="element_OnMenuMarkItemClick"/>
+                            <toolkit:MenuItem Height="45" Header="stores..." Click="element_OnMenuStoresClick"/>
+                            <toolkit:MenuItem Height="45" Header="remove item from list" Click="element_OnMenuRemoveItemClick"/>
+                            <toolkit:MenuItem Height="45" Header="copy item" Click="element_OnMenuCopyItemClick"/>
+                            <toolkit:MenuItem Height="45" Header="delete item permanently" Click="element_OnMenuDeleteItemClick"/>
+                            <toolkit:MenuItem Height="45" Header="move item to other list" Click="element_OnMenuMoveItemClick"/>
                         </toolkit:ContextMenu>
                     </toolkit:ContextMenuService.ContextMenu>
 
@@ -63,7 +70,7 @@
                         <TextBlock Grid.Column="1" Text="{Binding Quantity}" Margin="5,0,5,0" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                         <TextBlock Grid.Column="2" Text="{Binding Units}" Margin="5,0,5,0" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                         <TextBlock Grid.Column="3" Text="{Binding ItemName}" Margin="5,0,5,0" TextWrapping="Wrap"  Style="{StaticResource PhoneTextExtraLargeStyle}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <Image Grid.Column="4" Height="64" Width="64" Source="/Images/note_black.png" />
+                        <Image Grid.Column="4" Height="64" Width="64"/>
                     </Grid>
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>

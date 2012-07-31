@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="OIShoppingListWinPhone.CustomLayout.ListItemsContainerControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:custom="clr-namespace:OIShoppingListWinPhone.CustomLayout"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    d:DesignHeight="480" d:DesignWidth="480">
+    
+    <Grid x:Name="LayoutRoot">
+        <ListBox Name="ItemContainer" ItemsSource="{Binding ListItems}"
+                             SelectionChanged="ItemContainer_SelectionChanged"
+                             Tap="ItemContainer_Tap">
+
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </ListBox.ItemContainerStyle>
+
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <custom:ListItemContainer/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+
+        </ListBox>
+    </Grid>
+</UserControl>
