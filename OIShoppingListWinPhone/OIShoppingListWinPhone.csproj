@@ -51,6 +51,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Expression.Interactions, Version=3.8.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Live, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Live.Controls, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Controls" />
     <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL" />
@@ -65,8 +67,15 @@
     <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AboutPage.xaml.cs">
+      <DependentUpon>AboutPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AdvancedSettingsPage.xaml.cs">
       <DependentUpon>AdvancedSettingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\ComboBox.cs" />
+    <Compile Include="CustomControls\CustomFilterListContro.xaml.cs">
+      <DependentUpon>CustomFilterListContro.xaml</DependentUpon>
     </Compile>
     <Compile Include="CustomControls\CustomPivotControl.xaml.cs">
       <DependentUpon>CustomPivotControl.xaml</DependentUpon>
@@ -89,9 +98,6 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CustomControls\CustomFilterListControl.xaml.cs">
-      <DependentUpon>CustomFilterListControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="CustomControls\ListItemContainer.xaml.cs">
       <DependentUpon>ListItemContainer.xaml</DependentUpon>
     </Compile>
@@ -106,6 +112,9 @@
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ShoppingUtils.cs" />
+    <Compile Include="SkyDrivePage.xaml.cs">
+      <DependentUpon>SkyDrivePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="StoreItemPage.xaml.cs">
       <DependentUpon>StoreItemPage.xaml</DependentUpon>
     </Compile>
@@ -116,9 +125,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="AboutPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="AdvancedSettingsPage.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CustomControls\CustomFilterListContro.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CustomControls\CustomPivotControl.xaml">
       <SubType>Designer</SubType>
@@ -144,10 +161,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CustomControls\CustomFilterListControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="CustomControls\ListItemContainer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -160,9 +173,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="SkyDrivePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="StoreItemPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -179,14 +200,11 @@
     <Content Include="Background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\appbar.check.rest.png" />
     <Content Include="Images\appbar.new.rest.png" />
-    <Content Include="Images\appbar.cancel.rest.png" />
+    <Content Include="Images\appbar.save.rest.png" />
     <Content Include="Images\e-mail.png" />
     <Content Include="Images\edit.png" />
     <Content Include="Images\edit_name.png" />
-    <Content Include="Images\note.png" />
-    <Content Include="Images\note_black.png" />
     <Content Include="Images\sms.png" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
@@ -194,7 +212,6 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Images\add.png" />
     <Content Include="Images\delete.png" />
     <Content Include="Images\mail.png" />
   </ItemGroup>

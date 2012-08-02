@@ -44,7 +44,7 @@ namespace OIShoppingListWinPhone
             }
         }
 
-        private void ApplicationBarIconButtonOk_Click(object sender, EventArgs e)
+        private void ApplicationBarIconButtonSave_Click(object sender, EventArgs e)
         {
             string queryBody = "?ID=" + this.itemID.ToString()
                 + "&Name=" + this.itemName.Text
@@ -58,9 +58,34 @@ namespace OIShoppingListWinPhone
             NavigationService.Navigate(new Uri("/MainPage.xaml" + queryBody, UriKind.Relative));
         }
 
-        private void ApplicationBarIconButtonCancel_Click(object sender, EventArgs e)
+        private void NumericKeyUp(object sender, KeyEventArgs e)
         {
-            NavigationService.GoBack();
+            this.NumericInput(sender);
+        }
+
+        private void itemPriority_KeyUp(object sender, KeyEventArgs e)
+        {
+            this.NumericInput(sender);
+        }
+
+        private void NumericInput(object sender)
+        {
+            TextBox txt = (TextBox)sender;
+            if (txt.Text.Contains('.'))
+            {
+                txt.Text = txt.Text.Replace(".", "");
+                txt.SelectionStart = txt.Text.Length;
+            }
+            else if (txt.Text.Contains(','))
+            {
+                txt.Text = txt.Text.Replace(",", "");
+                txt.SelectionStart = txt.Text.Length;
+            }
+            else if (txt.Text.Contains('-'))
+            {
+                txt.Text = txt.Text.Replace("-", "");
+                txt.SelectionStart = txt.Text.Length;
+            }
         }
     }
 }

@@ -78,7 +78,7 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="{Binding Tag}" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}"/>
-                        <!--<TextBlock Grid.Column="1" Text="{Binding Price}" HorizontalAlignment="Right" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}"/>-->
+                        <TextBlock Grid.Column="1" Text="{Binding Price}" HorizontalAlignment="Right" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}"/>
                     </Grid>
                 </Grid>
             </StackPanel>

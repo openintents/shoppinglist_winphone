@@ -43,38 +43,9 @@ namespace OIShoppingListWinPhone
 
             SortOrderSettings.SelectedIndex = App.Settings.SortOrder;
             
-        }
+        }          
                 
-        private void ApplicationBarIconButtonOk_Click(object sender, EventArgs e)
-        {
-            App.Settings.SortOrder = SortOrderSettings.SelectedIndex;
-
-            switch (FontSizeSettings.SelectedIndex)
-            {
-                case 0:
-                    App.Settings.FontSize = (int)ApplicationSettings.FontSizeSettings.Tiny;
-                    break;
-                case 1:
-                    App.Settings.FontSize = (int)ApplicationSettings.FontSizeSettings.Small;
-                    break;
-                case 2:
-                    App.Settings.FontSize = (int)ApplicationSettings.FontSizeSettings.Default;
-                    break;
-                case 3:
-                    App.Settings.FontSize = (int)ApplicationSettings.FontSizeSettings.Large;
-                    break;
-            }
-
-            MessageBox.Show("Application Settings were successfully saved", "Information", MessageBoxButton.OK);
-            NavigationService.GoBack();
-        }
-
-        private void ApplicationBarIconButtonCancel_Click(object sender, EventArgs e)
-        {
-            NavigationService.GoBack();
-        }
-
-        private void Grid_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        private void ButtonAdvSettings_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new Uri("/AdvancedSettingsPage.xaml", UriKind.Relative));
         }

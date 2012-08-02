@@ -44,7 +44,7 @@
                                 <ContentPresenter x:Name="ContentPresenter"
                                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                  IsHitTestVisible="False"/>
+                                                  IsHitTestVisible="False" Margin="0,-20,0,10"/>
 
                                 <ToggleButton x:Name="DropDownToggle" Grid.ColumnSpan="2">
                                     <ToggleButton.Template>
@@ -74,7 +74,7 @@
                                     Background="{TemplateBinding Background}"
                                     BorderThickness="1">
                                 <ScrollViewer x:Name="ScrollViewer"
-                                              Margin="12, 10"
+                                              Margin="12, 40,12,-15"
                                               MaxHeight="200"
                                               VerticalScrollBarVisibility="Auto">
                                     <ItemsPresenter/>
@@ -96,14 +96,14 @@
         <Setter Property="BorderBrush" Value="{StaticResource PhoneForegroundBrush}"/>
         <Setter Property="BorderThickness" Value="3"/>
         <Setter Property="Background" Value="{StaticResource PhoneBackgroundBrush}"/>
-        <Setter Property="FontSize" Value="19"/>
+        <Setter Property="FontSize" Value="20"/>
         <Setter Property="FontFamily" Value="Segoe WP Semibold"/>
 
         <Setter Property="ItemTemplate">
             <Setter.Value>
                 <DataTemplate>
                     <Grid>
-                        <ContentPresenter Content="{Binding}" Margin="5"/>
+                        <ContentPresenter Content="{Binding}" Margin="5,25,5,0"/>
                     </Grid>
                 </DataTemplate>
             </Setter.Value>

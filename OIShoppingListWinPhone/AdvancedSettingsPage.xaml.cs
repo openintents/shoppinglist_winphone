@@ -37,38 +37,21 @@ namespace OIShoppingListWinPhone
             this.QuickEditMode.IsChecked = App.AppSettings.QuickEditMode;
             this.Filters.IsChecked = App.AppSettings.Filters;
             this.ResetQuality.IsChecked = App.AppSettings.ResetQuality;*/
-        }
-
-        private void ApplicationBarIconButtonOk_Click(object sender, EventArgs e)
-        {
-            //Update Application Settings
-            /*App.AppSettings.ShowPrice = (bool)this.ShowPrice.IsChecked;
-            App.AppSettings.ShowTags = (bool)this.ShowTags.IsChecked;
-            App.AppSettings.ShowUnits = (bool)this.ShowUnits.IsChecked;
-            App.AppSettings.ShowQuantity = (bool)this.ShowQuantity.IsChecked;
-            App.AppSettings.ShowPriority = (bool)this.ShowPriority.IsChecked;
-
-            App.AppSettings.HideCheckedItems = (bool)this.HideCheckedItems.IsChecked;
-            App.AppSettings.FastScrolling = (bool)this.FastScrolling.IsChecked;
-            App.AppSettings.ShakeToCleanUp = (bool)this.ShakeToCleanUp.IsChecked;
-            App.AppSettings.TrackPerStorePrices = (bool)this.TrackPerStorePrices.IsChecked;
-            App.AppSettings.DisableScreenLock = (bool)this.DisableScreenLock.IsChecked;
-            App.AppSettings.QuickEditMode = (bool)this.QuickEditMode.IsChecked;
-            App.AppSettings.Filters = (bool)this.Filters.IsChecked;
-            App.AppSettings.ResetQuality = (bool)this.ResetQuality.IsChecked;*/
-
-            MessageBox.Show("Application Settings were successfully saved", "Information", MessageBoxButton.OK);
-            NavigationService.GoBack();
-        }
-
-        private void ApplicationBarIconButtonCancel_Click(object sender, EventArgs e)
-        {
-            NavigationService.GoBack();
-        }
+        }        
 
         private void ResetQuality_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             MessageBox.Show("Reset Quality", "Info", MessageBoxButton.OK);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ResetAllSettings_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

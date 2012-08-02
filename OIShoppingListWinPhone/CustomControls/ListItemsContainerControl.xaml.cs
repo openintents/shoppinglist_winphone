@@ -19,16 +19,10 @@ namespace OIShoppingListWinPhone.CustomLayout
             InitializeComponent();
         }
 
-        private void ItemContainer_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        private void ItemContainer_Loaded(object sender, RoutedEventArgs e)
         {
-            ListBox box = sender as ListBox;
-            //ShoppingListItem item = box.SelectedItem as ShoppingListItem;
-        }
-
-        private void ItemContainer_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ListBox list = sender as ListBox;
-            //ShoppingListItem item = list.SelectedItem as ShoppingListItem;
+            if (this.ItemContainer.SelectedItem != null)
+                this.ItemContainer.ScrollIntoView(this.ItemContainer.SelectedItem);
         }
     }
 }

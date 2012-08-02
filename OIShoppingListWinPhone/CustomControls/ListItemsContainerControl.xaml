@@ -11,9 +11,9 @@
     d:DesignHeight="480" d:DesignWidth="480">
     
     <Grid x:Name="LayoutRoot">
-        <ListBox Name="ItemContainer" ItemsSource="{Binding ListItems}"
-                             SelectionChanged="ItemContainer_SelectionChanged"
-                             Tap="ItemContainer_Tap">
+        <ListBox Name="ItemContainer" 
+                 ItemsSource="{Binding ListItems}"
+                 Loaded="ItemContainer_Loaded">
 
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">

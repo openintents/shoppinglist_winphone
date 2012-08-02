@@ -14,11 +14,11 @@ using System.Collections.ObjectModel;
 
 namespace OIShoppingListWinPhone.CustomLayout
 {
-    public partial class PivotItemControl : UserControl
+    public partial class CustomFilterListControl : UserControl
     {
         //IEnumerable<ShoppingListItem> FilteredItemsCollection;
 
-        public PivotItemControl()
+        public CustomFilterListControl()
         {
             InitializeComponent();
 
@@ -29,7 +29,7 @@ namespace OIShoppingListWinPhone.CustomLayout
         {
             /*if (ListSelector.Items.Count != 0)
                 ListSelector.SelectedIndex = 0;
-             */ 
+             */
             /*ShoppingList currentList = ListSelector.SelectedItem as ShoppingList;
             if (currentList != null)
             {

@@ -57,10 +57,10 @@ namespace OIShoppingListWinPhone
             // - it's a grid, that contain 'Add' button and TaxtBox to input new item's name.
             //Thus, for display the shopping lists from database it's necessary to add the control
             //with corresponding layout.
-            if ((bool)App.Settings.Filters)
+            if ((bool)App.Settings.FiltersSettings)
             {
                 //Using Pivot layout for the MainPage
-                Control elem = new PivotItemControl();
+                Control elem = new CustomFilterListControl();
                 LayoutRoot.Children.Insert(0, elem);
             }
             else
@@ -86,10 +86,10 @@ namespace OIShoppingListWinPhone
             //displaying control and inserting new control for corresponding settings.
             if (LayoutRoot.Children.Count == 1)
             {
-                if ((bool)App.Settings.Filters)
+                if ((bool)App.Settings.FiltersSettings)
                 {
                     //Using Pivot layout for the MainPage
-                    Control elem = new PivotItemControl();
+                    Control elem = new CustomFilterListControl();
                     LayoutRoot.Children.Insert(0, elem);
                 }
                 else
@@ -105,14 +105,14 @@ namespace OIShoppingListWinPhone
                 Type type = currentControl.GetType();
 
                 //Displaying Pivot control
-                if ((bool)App.Settings.Filters && type == typeof(CustomPivotControl))
+                if ((bool)App.Settings.FiltersSettings && type == typeof(CustomPivotControl))
                 {
                     LayoutRoot.Children.RemoveAt(0);
-                    Control newControl = new PivotItemControl();
+                    Control newControl = new CustomFilterListControl();
                     LayoutRoot.Children.Insert(0, newControl);
                 }
                 //Displaying Filtered list
-                else if (!(bool)App.Settings.Filters && type == typeof(PivotItemControl))
+                else if (!(bool)App.Settings.FiltersSettings && type == typeof(CustomFilterListControl))
                 {
                     LayoutRoot.Children.RemoveAt(0);
                     Control newControl = new CustomPivotControl();
@@ -419,12 +419,23 @@ namespace OIShoppingListWinPhone
 
         private void ApplicationBarMenuAbout_Click(object sender, EventArgs e)
         {
-
+            //Navigate to About page
+            NavigationService.Navigate(new Uri("/AboutPage.xaml", UriKind.Relative));
         }
 
         private void ApplicationBarMenuSettings_Click(object sender, EventArgs e)
         {
+            //Navigate to Settings page
             NavigationService.Navigate(new Uri("/SettingsPage.xaml", UriKind.Relative));
+        }
+
+        private void ApplicationBarMenuSaveToSkyDrive_Click(object sender, EventArgs e)
+        {            
+            //Creating query body for navigation to SkyDrive page
+            ShoppingList list = this.GetCurrentShoppingList();
+            string queryBody = "?ListID=" + list.ListID.ToString();
+            //Navigate to SkyDrive page
+            NavigationService.Navigate(new Uri("/SkyDrivePage.xaml" + queryBody, UriKind.Relative));
         }
 
         private void ApplicationBarMenuMarkAllItems_Click(object sender, EventArgs e)
@@ -500,6 +511,6 @@ namespace OIShoppingListWinPhone
                         newName, newQuantity, newUnits, newPrice, newTag, newPriority, newNote);
                 }
             }
-        }
+        }        
     }
 }

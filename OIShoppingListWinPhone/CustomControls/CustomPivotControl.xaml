@@ -7,7 +7,7 @@
 	xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:custom="clr-namespace:OIShoppingListWinPhone.CustomLayout"
     xmlns:settings="clr-namespace:OIShoppingListWinPhone.Settings"
-    
+    xmlns:utils="clr-namespace:OIShoppingListWinPhone.Utils"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -15,21 +15,20 @@
     d:DesignHeight="800" d:DesignWidth="480">
     
     <UserControl.Resources>
-        <settings:ApplicationSettings x:Key="Settings"/>
+        <settings:ApplicationSettings x:Key="Settings"/>        
     </UserControl.Resources>
     
     <Grid x:Name="LayoutRoot">
+        <Grid.Resources>
+            <utils:FloatToVisibilityConverter x:Key="floatToVisibilityConverter"/>
+        </Grid.Resources>
         <!--Pivot Control-->
         <controls:Pivot Name="PivotControl"
                         ItemsSource="{Binding ShoppingLists}"
                         Margin="0,0,0,120"
+                        Title="OI SHOPPING LIST"
                         SelectedIndex="{Binding Source={StaticResource Settings}, Path=SelectedListIndexSetting, Mode=TwoWay}">
-            <controls:Pivot.Title>
-                <Grid Background="{StaticResource PhoneAccentBrush}">
-                    <TextBlock Text="OI SHOPPING LIST"/>
-                </Grid>
-            </controls:Pivot.Title>
-            <controls:Pivot.HeaderTemplate>
+           <controls:Pivot.HeaderTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding ListName}"/>
                 </DataTemplate>
@@ -48,17 +47,32 @@
                 <ColumnDefinition Width="60"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="#" FontSize="18" TextAlignment="Right"  TextWrapping="Wrap"/>
-                <TextBlock Grid.Column="1" Text="{Binding CheckedCount}" x:Name="checkItemsCount" Margin="0,0,5,0"  FontSize="18" TextAlignment="Left"  TextWrapping="Wrap"/>
-            </Grid>
-            <TextBlock Grid.Column="1" Text="{Binding CheckedPrice}" x:Name="checkItemsPrice" Margin="0,0,5,0"  FontSize="18" TextAlignment="Left" TextWrapping="Wrap"/>
-            <TextBlock Grid.Column="2" Text="{Binding TotalPrice}" x:Name="totalItemsPrice" Margin="1,0,5,0" FontSize="18" TextAlignment="Right" TextWrapping="Wrap"/>
+            </Grid.ColumnDefinitions>            
+            
+            <TextBlock Grid.Column="0"
+                       Text="{Binding CheckedCount}" 
+                       x:Name="checkItemsCount" 
+                       Margin="0,0,5,0"  
+                       FontSize="18" 
+                       TextAlignment="Left"  
+                       TextWrapping="Wrap"
+                       Visibility="{Binding CheckedPrice, Converter={StaticResource floatToVisibilityConverter}}"/>
+            <TextBlock Grid.Column="1"
+                       Text="{Binding CheckedPrice}" 
+                       x:Name="checkItemsPrice" 
+                       Margin="0,0,5,0"  
+                       FontSize="18" 
+                       TextAlignment="Left" 
+                       TextWrapping="Wrap"
+                       Visibility="{Binding CheckedPrice, Converter={StaticResource floatToVisibilityConverter}}"/>
+            <TextBlock Grid.Column="2"
+                       Text="{Binding TotalPrice}" 
+                       x:Name="totalItemsPrice" 
+                       Margin="1,0,5,0" 
+                       FontSize="18" 
+                       TextAlignment="Right" 
+                       TextWrapping="Wrap"
+                       Visibility="{Binding TotalPrice, Converter={StaticResource floatToVisibilityConverter}}"/>
         </Grid>
     </Grid>
 </UserControl>

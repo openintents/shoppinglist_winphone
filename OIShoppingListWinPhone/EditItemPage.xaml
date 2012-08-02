@@ -4,6 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:effects="clr-namespace:OIShoppingListWinPhone.Effects"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
@@ -11,7 +13,30 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
-    shell:SystemTray.IsVisible="True">
+    shell:SystemTray.IsVisible="True"
+    effects:TiltEffect.IsTiltEnabled="True">
+
+    <!--Implementation for Page navigation transitions-->
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:SwivelTransition Mode="BackwardIn"/>
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:SwivelTransition Mode="ForwardIn"/>
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:SwivelTransition Mode="BackwardOut"/>
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:SwivelTransition Mode="ForwardOut"/>
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
@@ -66,15 +91,16 @@
 								   Grid.ColumnSpan="2"
 								   Margin="5,0,0,0"
 								   Text="Quantity"/>
-						<TextBox Name="itemQuantity"
+                        <TextBox Name="itemQuantity"
 								 Grid.Row="1"
 								 Grid.Column="0"
 								 Grid.ColumnSpan="2"
 								 Margin="5,20,5,5"
 								 Padding="10"
-								 InputScope="Number"/>
-								 
-						<TextBlock Grid.Row="1"
+                                 InputScope="Digits"
+                                 KeyUp="NumericKeyUp"/>
+
+                        <TextBlock Grid.Row="1"
 								   Grid.Column="2"
 								   Grid.ColumnSpan="2"
 								   Margin="5,0,0,0"
@@ -85,7 +111,8 @@
 								 Grid.ColumnSpan="2"
 								 Margin="5,20,5,5"
 								 Padding="10"
-								 InputScope="Number"/>
+								 InputScope="Digits"
+                                 KeyUp="NumericKeyUp"/>
 								 
 						<TextBlock Grid.Row="1"
 								   Grid.Column="4"
@@ -124,7 +151,8 @@
 								 Grid.ColumnSpan="4"
 								 Margin="5,20,5,5"
 								 Padding="10"
-								 InputScope="Number"/>
+								 InputScope="Digits"
+                                 KeyUp="itemPriority_KeyUp"/>
 								 
 						<TextBlock Grid.Row="3"
 								   Grid.Column="4"
@@ -144,9 +172,6 @@
 									<GradientStop Color="White"/>
 								</LinearGradientBrush>
 							</Border.Background>
-							<Image Height="63"
-								   Margin="2"
-								   Source="\Images\edit.png"/>
 						</Border>
 					</Grid>
 				</StackPanel>
@@ -157,8 +182,7 @@
     <!--Sample code showing usage of ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.check.rest.png" Text="ok" Click="ApplicationBarIconButtonOk_Click"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.cancel.rest.png" Text="cancel" Click="ApplicationBarIconButtonCancel_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.save.rest.png" Text="save" Click="ApplicationBarIconButtonSave_Click"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

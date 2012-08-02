@@ -10,12 +10,30 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Collections.Generic;
 using Microsoft.Phone.Controls;
+using System.Windows.Data;
+using System.Globalization;
 
 using OIShoppingListWinPhone.DataModel;
 using OIShoppingListWinPhone.ViewModel;
 
-namespace OIShoppingListWinPhone
+namespace OIShoppingListWinPhone.Utils
 {
+    public class FloatToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is float)
+             return (float)value == 0.0F ? Visibility.Collapsed : Visibility.Visible;
+
+            return Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value;
+        }
+    }
+
     public sealed class UncheckedFirst_Alphabetical : IComparer<ShoppingListItem>
     {
         public int Compare(ShoppingListItem first, ShoppingListItem second)

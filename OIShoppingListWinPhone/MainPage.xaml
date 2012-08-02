@@ -6,11 +6,13 @@
 	xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:effects="clr-namespace:OIShoppingListWinPhone.Effects"
     
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
 	xmlns:ec="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
 	xmlns:eim="clr-namespace:Microsoft.Expression.Interactivity.Media;assembly=Microsoft.Expression.Interactions"
-        
-	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	
     x:Class="OIShoppingListWinPhone.MainPage" 
@@ -47,10 +49,10 @@
   	</toolkit:TransitionService.NavigationOutTransition>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot" Background="Transparent" Margin="0">
         
         <!--Layout for Add new item button and Item name TextBox-->
-        <Grid Height="72" VerticalAlignment="Bottom">
+        <Grid Height="72" VerticalAlignment="Bottom">            
             <TextBox x:Name="newListItemName" Margin="0,0,125,0" TextWrapping="NoWrap" FontSize="24"/>
             <Button Content="add" HorizontalAlignment="Right" Width="130" Click="Button_Add_Click"/>
         </Grid>
@@ -64,10 +66,11 @@
                 <shell:ApplicationBarMenuItem Text="clean up list" Click="ApplicationBarMenuCleanUpList_Click"/>
                 <shell:ApplicationBarMenuItem Text="pick items" Click="ApplicationBarMenuPickItems_Click"/>
                 <shell:ApplicationBarMenuItem Text="mark all items" Click="ApplicationBarMenuMarkAllItems_Click"/>
+                <shell:ApplicationBarMenuItem Text="save to SkyDrive storage" Click="ApplicationBarMenuSaveToSkyDrive_Click"/>
                 <shell:ApplicationBarMenuItem Text="settings" Click="ApplicationBarMenuSettings_Click"/>
                 <shell:ApplicationBarMenuItem Text="about..." Click="ApplicationBarMenuAbout_Click"/>
             </shell:ApplicationBar.MenuItems>
-            <shell:ApplicationBarIconButton IconUri="/Images/add.png" Text="new list" Click="ApplicationBarIconButtonNewList_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.new.rest.png" Text="new list" Click="ApplicationBarIconButtonNewList_Click"/>
             <shell:ApplicationBarIconButton IconUri="/Images/mail.png" Text="send list" Click="ApplicationBarIconButtonSendList_Click"/>
             <shell:ApplicationBarIconButton IconUri="/Images/edit.png" Text="rename list" Click="ApplicationBarIconButtonRenameList_Click"/>
             <shell:ApplicationBarIconButton IconUri="/Images/delete.png" Text="delete list" Click="ApplicationBarIconButtonDeleteList_Click"/>
