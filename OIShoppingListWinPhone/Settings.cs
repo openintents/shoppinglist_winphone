@@ -28,7 +28,7 @@ namespace OIShoppingListWinPhone.Settings
         private const string SelectedListIndexSettingKeyName = "SelectedListIndex";
 
         private const string FontSizeSettingKeyName = "FontSize";
-        private const string SortOrdeSettingKeyName = "SortOrder";
+        private const string SortOrderSettingKeyName = "SortOrder";
 
         private const string ShowPriceSettingKeyName = "ShowPrice";
         private const string ShowTagsSettingKeyName = "ShowTags";
@@ -37,13 +37,15 @@ namespace OIShoppingListWinPhone.Settings
         private const string ShowPrioritySettingKeyName = "ShowPriority";
 
         private const string HideCheckedItemsSettingKeyName = "HideCheckedItems";
-        private const string FastScrollingSettingKeyName = "FastScrolling";
         private const string ShakeToCleanUpSettingKeyName = "ShakeToCleanUp";
         private const string TrackPerStorePricesSettingKeyName = "TrackPerStorePrices";
-        private const string DisableScreenLockSettingKeyName = "DisableScreenLock";
         private const string QuickModeEditSettingKeyName = "QuickModeEdit";
         private const string FiltersSettingKeyName = "Filters";
         private const string ResetQuantitySettingKeyName = "ResetQuantity";
+
+        private const string AlwaysSameSortOrderSettingKeyName = "AlwaysSameSortOrder";
+        private const string SortOdrerPickItemsSettingKeyName = "SortOrderPickItems";
+        private const string PickItemsDirectlyInListSettingKeyName = "PickItemsDirectlyInList";
         //End of const fielвы for Settings Keys
 
         //Default Application Settings
@@ -52,39 +54,23 @@ namespace OIShoppingListWinPhone.Settings
         private const int FontSizeSettingDefault = (int)FontSizeSettings.Default;
         private const int SortOrderSettingDefault = (int)SortOrderSettings.OldestFirst;
 
-        private const bool ShowPriceSettingDefault = false;
+        private const bool ShowPriceSettingDefault = true;
         private const bool ShowTagsSettingDefault = true;
-        private const bool ShowUnitsSettingDefault = false;
-        private const bool ShowQuantitySettingDefault = false;
-        private const bool ShowPrioritySettingDefault = false;
+        private const bool ShowUnitsSettingDefault = true;
+        private const bool ShowQuantitySettingDefault = true;
+        private const bool ShowPrioritySettingDefault = true;
 
         private const bool HideCheckedItemsSettingDefault = false;
-        private const bool FastScrollingSettingDefault = false;
         private const bool ShakeToCleanUpSettingDefault = false;
         private const bool TrackPerStorePricesSettingDefault = false;
-        private const bool DisableScreenLockSettingDefault = false;
-        private const bool QuickModeeditSettingDefault = false;
+        private const bool QuickModeEditSettingDefault = false;
         private const bool FiltersSettingDefault = false;
         private const bool ResetQuantitySettingDefault = false;
+
+        private const bool AlwaysSameSortOrderSettingDefault = false;
+        private const int SortOrderPickItemsSettingDefault = (int)SortOrderSettings.Alphabetical;
+        private const bool PickItemsDirectlyInListSettingDefault = false;
         //End of default Application Settings
-
-        public int FontSize { get; set; }
-        public int SortOrder { get; set; }
-
-        public bool ShowPrice { get; set; }
-        public bool ShowTags { get; set; }
-        public bool ShowUnits { get; set; }
-        public bool ShowQuantity { get; set; }
-        public bool ShowPriority { get; set; }
-
-        public bool HideCheckedItems { get; set; }
-        public bool FastScrolling { get; set; }
-        public bool ShakeToCleanUp { get; set; }
-        public bool TrackPerStorePrices { get; set; }
-        public bool DisableScreenLock { get; set; }
-        public bool QuickEditMode { get; set; }
-        public bool Filters { get; set; }
-        public bool ResetQuality { get; set; }
 
         /// <summary>
         /// Enumeration for Font Size settings.
@@ -123,7 +109,7 @@ namespace OIShoppingListWinPhone.Settings
             // Get the settings for the application.
             currentSettings = IsolatedStorageSettings.ApplicationSettings;
         }
-
+        
         /// <summary>
         /// Load current instance of application settings for global access.
         /// </summary>
@@ -134,6 +120,32 @@ namespace OIShoppingListWinPhone.Settings
                 instance = new ApplicationSettings();
 
             return instance;
+        }
+
+        /// <summary>
+        /// Set all Application settings to default values
+        /// </summary>
+        public void SetAllSettingsToDefault()
+        {
+            this.FontSizeSetting = FontSizeSettingDefault;
+            this.SortOrderSetting = SortOrderSettingDefault;
+
+            this.ShowPriceSettings = ShowPriceSettingDefault;
+            this.ShowTagsSettings = ShowTagsSettingDefault;
+            this.ShowUnitsSettings = ShowUnitsSettingDefault;
+            this.ShowQuantitySettings = ShowQuantitySettingDefault;
+            this.ShowPrioritySettings = ShowPrioritySettingDefault;
+
+            this.HideCheckedItemsSettings = HideCheckedItemsSettingDefault;
+            this.ShakeToCleanUpSettings = ShakeToCleanUpSettingDefault;
+            this.TrackPerStorePricesSettings = TrackPerStorePricesSettingDefault;
+            this.QuickEditModeSettings = QuickModeEditSettingDefault;
+            this.FiltersSettings = FiltersSettingDefault;
+            this.ResetQuantitySettings = ResetQuantitySettingDefault;
+
+            this.AlwaysSameSortOrderSetting = AlwaysSameSortOrderSettingDefault;
+            this.SortOrderPickItemsSetting = SortOrderPickItemsSettingDefault;
+            this.PickItemsDirectlyInListSetting = PickItemsDirectlyInListSettingDefault;
         }
 
         /// <summary>
@@ -199,77 +211,243 @@ namespace OIShoppingListWinPhone.Settings
         {
             currentSettings.Save();
         }
+        
+        #region Application Settings
 
         /// <summary>
-        /// Property to get and set a Font Size Setting Key.
+        /// Property to get and set a SlectedListIndex Key.
         /// </summary>
         public int SelectedListIndexSetting
         {
-            get
-            {
-                return GetValueOrDefault<int>(SelectedListIndexSettingKeyName, SelectedListIndexSettingDefault);
-            }
+            get { return GetValueOrDefault<int>(SelectedListIndexSettingKeyName, SelectedListIndexSettingDefault); }
             set
             {
                 if (AddOrUpdateValue(SelectedListIndexSettingKeyName, value))
-                {
                     Save();
-                }
             }
         }
 
         /// <summary>
-        /// Property to get and set a Font Size Setting Key.
+        /// Property to get and set a FontSizeSetting Key.
         /// </summary>
         public int FontSizeSetting
         {
-            get
-            {
-                return GetValueOrDefault<int>(FontSizeSettingKeyName, FontSizeSettingDefault);
-            }
+            get { return GetValueOrDefault<int>(FontSizeSettingKeyName, FontSizeSettingDefault); }
             set
             {
                 if (AddOrUpdateValue(FontSizeSettingKeyName, value))
-                {
                     Save();
-                }
             }
         }
 
         /// <summary>
-        /// Property to get and set a Font Size Setting Key.
+        /// Property to get and set a SortOrderSetting Key.
         /// </summary>
-        public bool ShowTagsSettings
+        public int SortOrderSetting
         {
-            get
-            {
-                return GetValueOrDefault<bool>(ShowTagsSettingKeyName, ShowTagsSettingDefault);
-            }
+            get { return GetValueOrDefault<int>(SortOrderSettingKeyName, SortOrderSettingDefault); }
             set
             {
-                if (AddOrUpdateValue(ShowTagsSettingKeyName, value))
-                {
+                if (AddOrUpdateValue(SortOrderSettingKeyName, value))
                     Save();
-                }
+            }
+        }
+
+        #endregion
+
+        #region General Settings
+
+        /// <summary>
+        /// Property to get and set a HideCheckedItems Setting Key.
+        /// </summary>
+        public bool HideCheckedItemsSettings
+        {
+            get { return GetValueOrDefault<bool>(HideCheckedItemsSettingKeyName, HideCheckedItemsSettingDefault); }
+            set
+            {
+                if (AddOrUpdateValue(HideCheckedItemsSettingKeyName, value))
+                    Save();
             }
         }
 
         /// <summary>
-        /// Property to get and set a Font Size Setting Key.
+        /// Property to get and set a ShakeToCleanUp Setting Key.
+        /// </summary>
+        public bool ShakeToCleanUpSettings
+        {
+            get { return GetValueOrDefault<bool>(ShakeToCleanUpSettingKeyName, ShakeToCleanUpSettingDefault); }
+            set
+            {
+                if (AddOrUpdateValue(ShakeToCleanUpSettingKeyName, value))
+                    Save();
+            }
+        }
+
+        /// <summary>
+        /// Property to get and set a TrackPerStorePrices Setting Key.
+        /// </summary>
+        public bool TrackPerStorePricesSettings
+        {
+            get { return GetValueOrDefault<bool>(TrackPerStorePricesSettingKeyName, TrackPerStorePricesSettingDefault); }
+            set
+            {
+                if (AddOrUpdateValue(TrackPerStorePricesSettingKeyName, value))
+                    Save();
+            }
+        }
+
+        /// <summary>
+        /// Property to get and set a QuickEditMode Setting Key.
+        /// </summary>
+        public bool QuickEditModeSettings
+        {
+            get { return GetValueOrDefault<bool>(QuickModeEditSettingKeyName, QuickModeEditSettingDefault); }
+            set
+            {
+                if (AddOrUpdateValue(QuickModeEditSettingKeyName, value))
+                    Save();
+            }
+        }
+
+        /// <summary>
+        /// Property to get and set a Filters Setting Key.
         /// </summary>
         public bool FiltersSettings
         {
-            get
-            {
-                return GetValueOrDefault<bool>(FiltersSettingKeyName, FiltersSettingDefault);
-            }
+            get { return GetValueOrDefault<bool>(FiltersSettingKeyName, FiltersSettingDefault); }
             set
             {
                 if (AddOrUpdateValue(FiltersSettingKeyName, value))
-                {
                     Save();
-                }
             }
         }
+
+        /// <summary>
+        /// Property to get and set a ResetQuantity Setting Key.
+        /// </summary>
+        public bool ResetQuantitySettings
+        {
+            get { return GetValueOrDefault<bool>(ResetQuantitySettingKeyName, ResetQuantitySettingDefault); }
+            set
+            {
+                if (AddOrUpdateValue(ResetQuantitySettingKeyName, value))
+                    Save();
+            }
+        }
+
+        #endregion
+
+        #region Appearance Settings
+
+        /// <summary>
+        /// Property to get and set a Show Price Setting Key.
+        /// </summary>
+        public bool ShowPriceSettings
+        {
+            get { return GetValueOrDefault<bool>(ShowPriceSettingKeyName, ShowPriceSettingDefault); }
+            set
+            {
+                if (AddOrUpdateValue(ShowPriceSettingKeyName, value))
+                    Save();
+            }
+        }
+
+        /// <summary>
+        /// Property to get and set a Show Tags Setting Key.
+        /// </summary>
+        public bool ShowTagsSettings
+        {
+            get { return GetValueOrDefault<bool>(ShowTagsSettingKeyName, ShowTagsSettingDefault); }
+            set
+            {
+                if (AddOrUpdateValue(ShowTagsSettingKeyName, value))
+                    Save();
+            }
+        }
+
+        /// <summary>
+        /// Property to get and set a Show Units Setting Key.
+        /// </summary>
+        public bool ShowUnitsSettings
+        {
+            get { return GetValueOrDefault<bool>(ShowUnitsSettingKeyName, ShowUnitsSettingDefault); }
+            set
+            {
+                if (AddOrUpdateValue(ShowUnitsSettingKeyName, value))
+                    Save();
+            }
+        }
+
+        /// <summary>
+        /// Property to get and set a Show Quantity Setting Key.
+        /// </summary>
+        public bool ShowQuantitySettings
+        {
+            get { return GetValueOrDefault<bool>(ShowQuantitySettingKeyName, ShowQuantitySettingDefault); }
+            set
+            {
+                if (AddOrUpdateValue(ShowQuantitySettingKeyName, value))
+                    Save();
+            }
+        }
+
+        /// <summary>
+        /// Property to get and set a Show Priority Setting Key.
+        /// </summary>
+        public bool ShowPrioritySettings
+        {
+            get { return GetValueOrDefault<bool>(ShowPrioritySettingKeyName, ShowPrioritySettingDefault); }
+            set
+            {
+                if (AddOrUpdateValue(ShowPrioritySettingKeyName, value))
+                    Save();
+            }
+        }
+
+        #endregion
+
+        #region Pick Items Settings
+
+        /// <summary>
+        /// Property to get and set a AlwaysSameSortOrder Setting Key.
+        /// </summary>
+        public bool AlwaysSameSortOrderSetting
+        {
+            get { return GetValueOrDefault<bool>(AlwaysSameSortOrderSettingKeyName, AlwaysSameSortOrderSettingDefault); }
+            set
+            {
+                if (AddOrUpdateValue(AlwaysSameSortOrderSettingKeyName, value))
+                    Save();
+            }
+        }
+
+        /// <summary>
+        /// Property to get and set a SortOrderPickItems Setting Key.
+        /// </summary>
+        public int SortOrderPickItemsSetting
+        {
+            get { return GetValueOrDefault<int>(SortOdrerPickItemsSettingKeyName, SortOrderPickItemsSettingDefault); }
+            set
+            {
+                if (AddOrUpdateValue(SortOdrerPickItemsSettingKeyName, value))
+                    Save();
+            }
+        }
+
+        /// <summary>
+        /// Property to get and set a PickItemsDirectlyInList Setting Key.
+        /// </summary>
+        public bool PickItemsDirectlyInListSetting
+        {
+            get { return GetValueOrDefault<bool>(PickItemsDirectlyInListSettingKeyName,
+                PickItemsDirectlyInListSettingDefault); }
+            set
+            {
+                if (AddOrUpdateValue(PickItemsDirectlyInListSettingKeyName, value))
+                    Save();
+            }
+        }
+
+        #endregion
     }
 }

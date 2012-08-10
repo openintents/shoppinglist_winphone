@@ -41,20 +41,56 @@
 
                     <!--Context Menu for ListBox Item-->
                     <toolkit:ContextMenuService.ContextMenu>
-                        <toolkit:ContextMenu>
+                        <toolkit:ContextMenu VerticalOffset="-20">
                             <toolkit:MenuItem Height="45" Header="edit item" Click="element_OnMenuEditItemClick">
                                 <toolkit:MenuItem.HeaderTemplate>
                                     <DataTemplate>
-                                        <TextBlock FontSize="20" Margin="5,-10,2,2" Text="{Binding}"/>
+                                        <TextBlock FontSize="22" Margin="5,-10,2,2" Text="{Binding}"/>
                                     </DataTemplate>
                                 </toolkit:MenuItem.HeaderTemplate>
                             </toolkit:MenuItem>
-                            <toolkit:MenuItem Height="45" Header="mark item" Click="element_OnMenuMarkItemClick"/>
-                            <toolkit:MenuItem Height="45" Header="stores..." Click="element_OnMenuStoresClick"/>
-                            <toolkit:MenuItem Height="45" Header="remove item from list" Click="element_OnMenuRemoveItemClick"/>
-                            <toolkit:MenuItem Height="45" Header="copy item" Click="element_OnMenuCopyItemClick"/>
-                            <toolkit:MenuItem Height="45" Header="delete item permanently" Click="element_OnMenuDeleteItemClick"/>
-                            <toolkit:MenuItem Height="45" Header="move item to other list" Click="element_OnMenuMoveItemClick"/>
+                            <toolkit:MenuItem Height="45" Header="mark item" Click="element_OnMenuMarkItemClick">
+                                <toolkit:MenuItem.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock FontSize="22" Margin="5,-10,2,2" Text="{Binding}"/>
+                                    </DataTemplate>
+                                </toolkit:MenuItem.HeaderTemplate>
+                            </toolkit:MenuItem>
+                            <toolkit:MenuItem Height="45" Header="stores..." Click="element_OnMenuStoresClick">
+                                <toolkit:MenuItem.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock FontSize="22" Margin="5,-10,2,2" Text="{Binding}"/>
+                                    </DataTemplate>
+                                </toolkit:MenuItem.HeaderTemplate>
+                            </toolkit:MenuItem>
+                            <toolkit:MenuItem Height="45" Header="remove item from list" Click="element_OnMenuRemoveItemClick">
+                                <toolkit:MenuItem.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock FontSize="22" Margin="5,-10,2,2" Text="{Binding}"/>
+                                    </DataTemplate>
+                                </toolkit:MenuItem.HeaderTemplate>
+                            </toolkit:MenuItem>
+                            <toolkit:MenuItem Height="45" Header="copy item" Click="element_OnMenuCopyItemClick">
+                                <toolkit:MenuItem.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock FontSize="22" Margin="5,-10,2,2" Text="{Binding}"/>
+                                    </DataTemplate>
+                                </toolkit:MenuItem.HeaderTemplate>
+                            </toolkit:MenuItem>
+                            <toolkit:MenuItem Height="45" Header="delete item permanently" Click="element_OnMenuDeleteItemClick">
+                                <toolkit:MenuItem.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock FontSize="22" Margin="5,-10,2,2" Text="{Binding}"/>
+                                    </DataTemplate>
+                                </toolkit:MenuItem.HeaderTemplate>
+                            </toolkit:MenuItem>
+                            <toolkit:MenuItem Height="45" Header="move item to other list" Click="element_OnMenuMoveItemClick">
+                                <toolkit:MenuItem.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock FontSize="22" Margin="5,-10,2,2" Text="{Binding}"/>
+                                    </DataTemplate>
+                                </toolkit:MenuItem.HeaderTemplate>
+                            </toolkit:MenuItem>
                         </toolkit:ContextMenu>
                     </toolkit:ContextMenuService.ContextMenu>
 

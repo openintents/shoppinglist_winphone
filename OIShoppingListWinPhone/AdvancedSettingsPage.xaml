@@ -7,6 +7,8 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:effects="clr-namespace:OIShoppingListWinPhone.Effects"
+    xmlns:settings="clr-namespace:OIShoppingListWinPhone.Settings"
+    xmlns:utils="clr-namespace:OIShoppingListWinPhone.Utils"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
 	x:Class="OIShoppingListWinPhone.AdvancedSettingsPage"
 	FontFamily="{StaticResource PhoneFontFamilyNormal}"
@@ -53,122 +55,107 @@
 
 		<!--ContentPanel - place additional content here-->
 		<Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-			<ScrollViewer>
+            <Grid.Resources>
+                <settings:ApplicationSettings x:Key="Settings"/>
+                <utils:BoolToVisibilityPositiveConverter x:Key="BoolToVisibilityPositiveConverter"/>
+                <utils:BoolToVisibilityNegativeConverter x:Key="BoolToVisibilityNegativeConverter"/>
+            </Grid.Resources>
+                <ScrollViewer>
 				<StackPanel>
+                    
 					<Border x:Name="LabelBorder" Background="#FF646464">
 	        			<TextBlock x:Name="ChapterLabel" FontSize="20" TextWrapping="Wrap" Text="General" FontWeight="Bold" Foreground="White"/>    		
 	        		</Border>
-					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">						
-						<toolkit:ListPicker Name="FontSizeSettings">
-			        		<toolkit:ListPicker.HeaderTemplate>
-			        			<DataTemplate>
-			        				<StackPanel>
-			        					<TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Capitalization" FontWeight="Bold"/>
-										<TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Automatic capitalization of entries"/>  				
-									</StackPanel>
-								</DataTemplate>
-							</toolkit:ListPicker.HeaderTemplate>
-			        		<toolkit:ListPickerItem Content="None"/>
-							<toolkit:ListPickerItem Content="Per sentence"/>
-							<toolkit:ListPickerItem Content="Per word"/>
-		        		</toolkit:ListPicker>
-					</Border>
+                    
 					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">
-						<CheckBox Name="HideCheckedItems">
-							<CheckBox.ContentTemplate>
-								<DataTemplate>
-									<StackPanel>
-			        					<TextBlock Margin="15,-10,0,0" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Hide checked items" FontWeight="Bold"/>
-										<TextBlock Margin="15,0,0,-10" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Immediately hide items checked off"/>  				
-									</StackPanel>
-								</DataTemplate>
-							</CheckBox.ContentTemplate>
-						</CheckBox>
-					</Border>
+                        <toolkit:ToggleSwitch Name="HideCheckedItems"
+                                              IsChecked="{Binding Source={StaticResource Settings}, Path=HideCheckedItemsSettings, Mode=TwoWay}">
+                            <toolkit:ToggleSwitch.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Hide checked items" FontWeight="Bold"/>
+                                </DataTemplate>
+                            </toolkit:ToggleSwitch.HeaderTemplate>
+                            <toolkit:ToggleSwitch.Content>
+                                <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Immediately hide checked items off"/>
+                            </toolkit:ToggleSwitch.Content>
+                        </toolkit:ToggleSwitch>
+                    </Border>
+                    
 					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">
-						<CheckBox Name="FastScrolling">
-							<CheckBox.ContentTemplate>
-								<DataTemplate>
-									<StackPanel>
-			        					<TextBlock Margin="15,-10,0,0" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Fast scrolling" FontWeight="Bold"/>
-										<TextBlock Margin="15,0,0,-10" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Scroll handle appears when scrolling 35 items or more"/>  				
-									</StackPanel>
-								</DataTemplate>
-							</CheckBox.ContentTemplate>
-						</CheckBox>
+                        <toolkit:ToggleSwitch Name="ShakeToCleanUp"
+                                              IsChecked="{Binding Source={StaticResource Settings}, Path=ShakeToCleanUpSettings, Mode=TwoWay}">
+                            <toolkit:ToggleSwitch.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Shake to clean up" FontWeight="Bold"/>
+                                </DataTemplate>
+                            </toolkit:ToggleSwitch.HeaderTemplate>
+                            <toolkit:ToggleSwitch.Content>
+                                <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Shake the phone to clean up the list"/>
+                            </toolkit:ToggleSwitch.Content>
+                        </toolkit:ToggleSwitch>
 					</Border>
+                    
 					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">
-						<CheckBox Name="ShakeToCleanUp">
-							<CheckBox.ContentTemplate>
-								<DataTemplate>
-									<StackPanel>
-			        					<TextBlock Margin="15,-10,0,0" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Shake to clean up" FontWeight="Bold"/>
-										<TextBlock Margin="15,0,0,-10" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Shake the phone to clean up the list"/>  				
-									</StackPanel>
-								</DataTemplate>
-							</CheckBox.ContentTemplate>
-						</CheckBox>
+                        <toolkit:ToggleSwitch Name="TrackPerStorePrices"
+                                              IsChecked="{Binding Source={StaticResource Settings}, Path=TrackPerStorePricesSettings, Mode=TwoWay}">
+                            <toolkit:ToggleSwitch.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Track per-store prices" FontWeight="Bold"/>
+                                </DataTemplate>
+                            </toolkit:ToggleSwitch.HeaderTemplate>
+                            <toolkit:ToggleSwitch.Content>
+                                <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Keep track of separate prices for each item at each store"/>
+                            </toolkit:ToggleSwitch.Content>
+                        </toolkit:ToggleSwitch>                        
 					</Border>
+                    
 					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">
-						<CheckBox Name="TrackPerStorePrices">
-							<CheckBox.ContentTemplate>
-								<DataTemplate>
-									<StackPanel>
-			        					<TextBlock Margin="15,-10,0,0" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Track per-store prices" FontWeight="Bold"/>
-										<TextBlock Margin="15,0,0,-10" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Keep track of separate prices for each item at each store"/>  				
-									</StackPanel>
-								</DataTemplate>
-							</CheckBox.ContentTemplate>
-						</CheckBox>
-					</Border>
+                        <toolkit:ToggleSwitch Name="QuickEditMode"
+                                              IsChecked="{Binding Source={StaticResource Settings}, Path=QuickEditModeSettings, Mode=TwoWay}">
+                            <toolkit:ToggleSwitch.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Quick edit mode" FontWeight="Bold"/>
+                                </DataTemplate>
+                            </toolkit:ToggleSwitch.HeaderTemplate>
+                            <toolkit:ToggleSwitch.Content>
+                                <Grid>
+                                    <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Touching Priority or Quantity values summons the Edit Item dialog"
+                                               Visibility="{Binding ElementName=QuickEditMode, Path=IsChecked, Converter={StaticResource BoolToVisibilityNegativeConverter}}"/>
+                                    <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Touch Priority or Quantity values for a manu of common values"
+                                               Visibility="{Binding ElementName=QuickEditMode, Path=IsChecked, Converter={StaticResource BoolToVisibilityPositiveConverter}}"/>
+                                </Grid>
+                            </toolkit:ToggleSwitch.Content>
+                        </toolkit:ToggleSwitch>
+                    </Border>
+                    
 					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">
-						<CheckBox Name="DisableScreenLock">
-							<CheckBox.ContentTemplate>
-								<DataTemplate>
-									<StackPanel>
-			        					<TextBlock Margin="15,-10,0,0" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Disable screen lock" FontWeight="Bold"/>
-										<TextBlock Margin="15,0,0,-10" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Prevent the screen to be locked when checked"/>  				
-									</StackPanel>
-								</DataTemplate>
-							</CheckBox.ContentTemplate>
-						</CheckBox>
+                        <toolkit:ToggleSwitch Name="Filters"
+                                              IsChecked="{Binding Source={StaticResource Settings}, Path=FiltersSettings, Mode=TwoWay}">
+                            <toolkit:ToggleSwitch.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Filters" FontWeight="Bold"/>
+                                </DataTemplate>
+                            </toolkit:ToggleSwitch.HeaderTemplate>
+                            <toolkit:ToggleSwitch.Content>
+                                <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Lists can be filtered by tags or stores"/>
+                            </toolkit:ToggleSwitch.Content>
+                        </toolkit:ToggleSwitch>                        
 					</Border>
+                    
 					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">
-						<CheckBox Name="QuickEditMode">
-							<CheckBox.ContentTemplate>
-								<DataTemplate>
-									<StackPanel>
-			        					<TextBlock Margin="15,-10,0,0" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Quick edit mode" FontWeight="Bold"/>
-										<TextBlock Margin="15,0,0,-10" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Touching Priority or Quantity values summons the Edit Item dialog"/>  				
-									</StackPanel>
-								</DataTemplate>
-							</CheckBox.ContentTemplate>
-						</CheckBox>
+                        <toolkit:ToggleSwitch Name="ResetQuality"
+                                              IsChecked="{Binding Source={StaticResource Settings}, Path=ResetQuantitySettings, Mode=TwoWay}">
+                            <toolkit:ToggleSwitch.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Reset Quantity" FontWeight="Bold"/>
+                                </DataTemplate>
+                            </toolkit:ToggleSwitch.HeaderTemplate>
+                            <toolkit:ToggleSwitch.Content>
+                                <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Reset the quantity when adding items again"/>
+                            </toolkit:ToggleSwitch.Content>
+                        </toolkit:ToggleSwitch>
 					</Border>
-					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">
-                        <CheckBox Name="Filters">
-							<CheckBox.ContentTemplate>
-								<DataTemplate>
-									<StackPanel>
-			        					<TextBlock Margin="15,-10,0,0" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Filters" FontWeight="Bold"/>
-										<TextBlock Margin="15,0,0,-10" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Lists can be filtered by tags or stores"/>  				
-									</StackPanel>
-								</DataTemplate>
-							</CheckBox.ContentTemplate>
-						</CheckBox>
-					</Border>
-					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">
-						<CheckBox Name="ResetQuality">
-							<CheckBox.ContentTemplate>
-								<DataTemplate>
-									<StackPanel>
-			        					<TextBlock Margin="15,-10,0,0" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Reset Quantity" FontWeight="Bold"/>
-										<TextBlock Margin="15,0,0,-10" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Reset the quantity when adding items again"/>  				
-									</StackPanel>
-								</DataTemplate>
-							</CheckBox.ContentTemplate>
-						</CheckBox>
-					</Border>
+                    
 					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,-1,-1,0">
                         <Button Name="ResetAllSettings"
                                 BorderThickness="0"
@@ -182,89 +169,111 @@
                             </Button.Content>
                         </Button>
                     </Border>
+                    
 					<Border x:Name="LabelBorder2" Background="#FF646464">
 	        			<TextBlock x:Name="ChapterLabel2" FontSize="20" TextWrapping="Wrap" Text="Appearance" FontWeight="Bold" Foreground="White"/>    		
 	        		</Border>
+                    
 					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">
-						<CheckBox Name="ShowPrice">
-							<CheckBox.ContentTemplate>
-								<DataTemplate>
-									<StackPanel>
-			        					<TextBlock Margin="15,-10,0,0" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Show price" FontWeight="Bold"/>
-										<TextBlock Margin="15,0,0,-10" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Shown as extra column in list"/>  				
-									</StackPanel>
-								</DataTemplate>
-							</CheckBox.ContentTemplate>
-						</CheckBox>
+                        <toolkit:ToggleSwitch Name="ShowPrice"
+                                              IsChecked="{Binding Source={StaticResource Settings}, Path=ShowPriceSettings, Mode=TwoWay}">
+                            <toolkit:ToggleSwitch.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Show price" FontWeight="Bold"/>
+                                </DataTemplate>
+                            </toolkit:ToggleSwitch.HeaderTemplate>
+                            <toolkit:ToggleSwitch.Content>
+                                <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Shown as extra column in list"/>
+                            </toolkit:ToggleSwitch.Content>
+                        </toolkit:ToggleSwitch>                        
 					</Border>
+                    
 					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">
-						<CheckBox Name="ShowTags">
-							<CheckBox.ContentTemplate>
-								<DataTemplate>
-									<StackPanel>
-			        					<TextBlock Margin="15,-10,0,0" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Show tags" FontWeight="Bold"/>
-										<TextBlock Margin="15,0,0,-10" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Shown as extra column in list"/>  				
-									</StackPanel>
-								</DataTemplate>
-							</CheckBox.ContentTemplate>
-						</CheckBox>
+                        <toolkit:ToggleSwitch Name="ShowTags"
+                                              IsChecked="{Binding Source={StaticResource Settings}, Path=ShowTagsSettings, Mode=TwoWay}">
+                            <toolkit:ToggleSwitch.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Show tags" FontWeight="Bold"/>
+                                </DataTemplate>
+                            </toolkit:ToggleSwitch.HeaderTemplate>
+                            <toolkit:ToggleSwitch.Content>
+                                <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Shown as extra column in list"/>
+                            </toolkit:ToggleSwitch.Content>
+                        </toolkit:ToggleSwitch>
 					</Border>
+                    
 					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">
-						<CheckBox Name="ShowUnits">
-							<CheckBox.ContentTemplate>
-								<DataTemplate>
-									<StackPanel>
-			        					<TextBlock Margin="15,-10,0,0" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Show units" FontWeight="Bold"/>
-										<TextBlock Margin="15,0,0,-10" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Shown as extra column in list"/>  				
-									</StackPanel>
-								</DataTemplate>
-							</CheckBox.ContentTemplate>
-						</CheckBox>
+                        <toolkit:ToggleSwitch Name="ShowUnits"
+                                              IsChecked="{Binding Source={StaticResource Settings}, Path=ShowUnitsSettings, Mode=TwoWay}">
+                            <toolkit:ToggleSwitch.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Show units" FontWeight="Bold"/>
+                                </DataTemplate>
+                            </toolkit:ToggleSwitch.HeaderTemplate>
+                            <toolkit:ToggleSwitch.Content>
+                                <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Shown as extra column in list"/>
+                            </toolkit:ToggleSwitch.Content>
+                        </toolkit:ToggleSwitch>
 					</Border>
+                    
 					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">
-						<CheckBox Name="ShowQuantity">
-							<CheckBox.ContentTemplate>
-								<DataTemplate>
-									<StackPanel>
-			        					<TextBlock Margin="15,-10,0,0" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Show quantity" FontWeight="Bold"/>
-										<TextBlock Margin="15,0,0,-10" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Shown as extra column in list"/>  				
-									</StackPanel>
-								</DataTemplate>
-							</CheckBox.ContentTemplate>
-						</CheckBox>
+						<toolkit:ToggleSwitch Name="ShowQuantity"
+                                              IsChecked="{Binding Source={StaticResource Settings}, Path=ShowQuantitySettings, Mode=TwoWay}">
+                            <toolkit:ToggleSwitch.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Show quantity" FontWeight="Bold"/>
+                                </DataTemplate>
+                            </toolkit:ToggleSwitch.HeaderTemplate>
+                            <toolkit:ToggleSwitch.Content>
+                                <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Shown as extra column in list"/>
+                            </toolkit:ToggleSwitch.Content>
+                        </toolkit:ToggleSwitch>                        
 					</Border>
+                        
 					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">
-						<CheckBox Name="ShowPriority">
-							<CheckBox.ContentTemplate>
-								<DataTemplate>
-									<StackPanel>
-			        					<TextBlock Margin="15,-10,0,0" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Show priority" FontWeight="Bold"/>
-										<TextBlock Margin="15,0,0,-10" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Shown as extra column in list"/>  				
-									</StackPanel>
-								</DataTemplate>
-							</CheckBox.ContentTemplate>
-						</CheckBox>
-					</Border>
+                        <toolkit:ToggleSwitch Name="ShowPriority"
+                                              IsChecked="{Binding Source={StaticResource Settings}, Path=ShowPrioritySettings, Mode=TwoWay}">
+                            <toolkit:ToggleSwitch.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Show priority" FontWeight="Bold"/>
+                                </DataTemplate>
+                            </toolkit:ToggleSwitch.HeaderTemplate>
+                            <toolkit:ToggleSwitch.Content>
+                                <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Shown as extra column in list"/>
+                            </toolkit:ToggleSwitch.Content>
+                        </toolkit:ToggleSwitch>
+                    </Border>
+                    
 					<Border x:Name="LabelBorder3" Background="#FF646464">
 	        			<TextBlock x:Name="ChapterLabel3" FontSize="20" TextWrapping="Wrap" Text="Pick Items" FontWeight="Bold" Foreground="White"/>    		
 	        		</Border>
+                    
 					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">
-                        <CheckBox Name="SameSortOrder">
-							<CheckBox.ContentTemplate>
-								<DataTemplate>
-									<StackPanel>
-			        					<TextBlock Margin="15,-10,0,0" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Always same sort order" FontWeight="Bold"/>
-										<TextBlock Margin="15,0,0,-10" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Sort order for Pick Items mode can be chosen separately"/>  				
-									</StackPanel>
-								</DataTemplate>
-							</CheckBox.ContentTemplate>
-						</CheckBox>
+                        <toolkit:ToggleSwitch Name="SameSortOrder"
+                                              IsChecked="{Binding Source={StaticResource Settings}, Path=AlwaysSameSortOrderSetting, Mode=TwoWay}">
+                            <toolkit:ToggleSwitch.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Always same sort order" FontWeight="Bold"/>
+                                </DataTemplate>
+                            </toolkit:ToggleSwitch.HeaderTemplate>
+                            <toolkit:ToggleSwitch.Content>
+                                <Grid>
+                                    <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Sort order for Pick Items mode can be chosen separately"
+                                               Visibility="{Binding ElementName=QuickEditMode, Path=IsChecked, Converter={StaticResource BoolToVisibilityNegativeConverter}}"/>
+                                    <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Items are sorted in Pick Items mode just as in Shopping mode"
+                                               Visibility="{Binding ElementName=QuickEditMode, Path=IsChecked, Converter={StaticResource BoolToVisibilityPositiveConverter}}"/>
+                                </Grid>
+                            </toolkit:ToggleSwitch.Content>
+                        </toolkit:ToggleSwitch>                        
 					</Border>
+                    
 					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0" DataContext="{Binding}">						
-						<toolkit:ListPicker x:Name="SortOrderSettings"
+						<toolkit:ListPicker x:Name="PickItemsSortOrderSettings"
                                             ExpansionMode="FullScreenOnly"
                                             FullModeHeader="Sort Orders"
-											ItemsSource="{Binding Collection}">
+                                            IsEnabled="{Binding ElementName=SameSortOrder, Path=IsChecked}"
+											ItemsSource="{Binding Collection}"
+                                            SelectionChanged="PickItemsSortOrderSettings_SelectionChanged">
 							<toolkit:ListPicker.HeaderTemplate>
 			        			<DataTemplate>
 			        				<StackPanel>
@@ -285,50 +294,26 @@
 							</toolkit:ListPicker.FullModeItemTemplate>
 						</toolkit:ListPicker>
 					</Border>
+                    
 					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">
-                        <CheckBox Name="PickItemsDirectly">
-							<CheckBox.ContentTemplate>
-								<DataTemplate>
-									<StackPanel>
-			        					<TextBlock Margin="15,-10,0,0" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Pick items directly in list" FontWeight="Bold"/>
-										<TextBlock Margin="15,0,0,-10" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Add items to list using a dedicated dialog"/>  				
-									</StackPanel>
-								</DataTemplate>
-							</CheckBox.ContentTemplate>
-						</CheckBox>
+                        <toolkit:ToggleSwitch Name="PickItemsDirectly"
+                                              IsChecked="{Binding Source={StaticResource Settings}, Path=sPickItemsDirectlyInListSetting, Mode=TwoWay}">
+                            <toolkit:ToggleSwitch.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Pick items directly in list" FontWeight="Bold"/>
+                                </DataTemplate>
+                            </toolkit:ToggleSwitch.HeaderTemplate>
+                            <toolkit:ToggleSwitch.Content>
+                                <Grid>
+                                    <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Add items to list using a dedicated dialog"
+                                               Visibility="{Binding ElementName=QuickEditMode, Path=IsChecked, Converter={StaticResource BoolToVisibilityNegativeConverter}}"/>
+                                    <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Switch main list to edit mode to re-add existing item"
+                                               Visibility="{Binding ElementName=QuickEditMode, Path=IsChecked, Converter={StaticResource BoolToVisibilityPositiveConverter}}"/>
+                                </Grid>
+                            </toolkit:ToggleSwitch.Content>
+                        </toolkit:ToggleSwitch>                        
 					</Border>
-					<Border x:Name="LabelBorder4" Background="#FF646464">
-	        			<TextBlock x:Name="ChapterLabel4" FontSize="20" TextWrapping="Wrap" Text="Subtotal by Priority" FontWeight="Bold" Foreground="White"/>    		
-	        		</Border>
-					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">						
-						<toolkit:ListPicker Name="FontSizeSettingss">
-			        		<toolkit:ListPicker.HeaderTemplate>
-			        			<DataTemplate>
-			        				<StackPanel>
-			        					<TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Subtotal by priority" FontWeight="Bold"/>
-										<TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text=""/>  				
-									</StackPanel>
-								</DataTemplate>
-							</toolkit:ListPicker.HeaderTemplate>
-			        		<toolkit:ListPickerItem Content="Not shown"/>
-							<toolkit:ListPickerItem Content="Priority 1"/>
-							<toolkit:ListPickerItem Content="Priority 1-2"/>
-							<toolkit:ListPickerItem Content="Priority 1-3"/>
-							<toolkit:ListPickerItem Content="Priority 1-4"/>
-		        		</toolkit:ListPicker>
-					</Border>
-					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">
-						<CheckBox IsEnabled="False" Name="InclChItems">
-							<CheckBox.ContentTemplate>
-								<DataTemplate>
-									<StackPanel>
-			        					<TextBlock Margin="15,-10,0,0" FontSize="27" TextWrapping="Wrap" Text="Include checked items" FontWeight="Bold"/>
-										<TextBlock Margin="15,0,0,-10" FontSize="20" TextWrapping="Wrap" Text="Subtotal by priority includes shecked items"/>  				
-									</StackPanel>
-								</DataTemplate>
-							</CheckBox.ContentTemplate>
-						</CheckBox>
-					</Border>
+					
 				</StackPanel>
 			</ScrollViewer>
 		</Grid>

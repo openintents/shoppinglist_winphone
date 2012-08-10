@@ -77,9 +77,6 @@ namespace OIShoppingListWinPhone.ViewModel
             var listInDB = listDB.Lists.Where(c => c.ListID == renameList.ListID).FirstOrDefault();
             listInDB.ListName = newName;
             listDB.SubmitChanges();
-
-            var listInVM = ShoppingLists.Where(c => c.ListID == renameList.ListID).FirstOrDefault();
-            listInVM.ListName = newName;
         }
 
         public void AddNewListItem(ShoppingList currentList, ShoppingListItem newListItem)
@@ -90,9 +87,16 @@ namespace OIShoppingListWinPhone.ViewModel
 
             listDB.ListItems.InsertOnSubmit(newListItem);
             listDB.SubmitChanges();
+        }
 
-            /*var listInVM = ShoppingLists.Where(c => c.ListID == currentList.ListID).FirstOrDefault();
-            listInVM.ListItems.Add(newListItem);*/
+        public void UpdateItemStatus(ShoppingList currentList, ShoppingListItem item)
+        {
+            ShoppingListItem itemInDB = listDB.ListItems.Where(i => i.ItemID == item.ItemID).FirstOrDefault();
+            if (itemInDB.Status == (int)ShoppingListItem.StatusEnumerator.Unchecked)
+                itemInDB.Status = (int)ShoppingListItem.StatusEnumerator.Checked;
+            else
+                itemInDB.Status = (int)ShoppingListItem.StatusEnumerator.Unchecked;
+            listDB.SubmitChanges();
         }
 
         public void AddNewStore(ShoppingList list, ShoppingListStore store)
@@ -150,10 +154,11 @@ namespace OIShoppingListWinPhone.ViewModel
             listDB.SubmitChanges();
         }
 
-        public void UpdateListItem(int ID,
+        public void UpdateListItem(int listID,
+            int ID,
             string name,
             int? quantity,
-            int? units,
+            string units,
             float price,
             string tags,
             int? priority,
@@ -186,23 +191,37 @@ namespace OIShoppingListWinPhone.ViewModel
         #endregion                
     }
 
+    /// <summary>
+    /// Class for implementing database data context
+    /// </summary>
     public sealed class ShoppingListDataContext : DataContext
     {
-        // Pass the connection string to the base class.
+        /// <summary>
+        /// Pass the connection string to the base class.
+        /// </summary>
+        /// <param name="connectionString">Connection string</param>
         public ShoppingListDataContext(string connectionString)
             : base(connectionString)
         { }
 
-        // Specify a table for the Lists.
+        /// <summary>
+        /// Specify a table for the Lists.
+        /// </summary>
         public Table<ShoppingList> Lists;
 
-        // Specify a table for the Lists' items.
+        /// <summary>
+        /// Specify a table for the Lists' items.
+        /// </summary>
         public Table<ShoppingListItem> ListItems;
 
-        // Specify a table for the Lists' stores.
+        /// <summary>
+        /// Specify a table for the Lists' stores.
+        /// </summary>
         public Table<ShoppingListStore> ListStores;
 
-        // Specify a table for the Lists' itmes-stores.
+        /// <summary>
+        /// Specify a table for the Lists' itmes-stores.
+        /// </summary>
         public Table<ShoppingListItemsStores> ItemsStores;
     }
 }

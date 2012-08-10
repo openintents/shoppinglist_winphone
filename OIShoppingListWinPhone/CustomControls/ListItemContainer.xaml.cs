@@ -48,20 +48,8 @@ namespace OIShoppingListWinPhone.CustomLayout
 
             ShoppingListItem listItem = obj.GetValue(ListBoxItem.DataContextProperty) as ShoppingListItem;
             
-            string queryBody = "?ID=" + listItem.ItemID.ToString()
-                + "&Name=" + listItem.ItemName
-                + "&Price=" + String.Format("{0:F2}", listItem.Price)
-                + "&Tag=" + listItem.Tag
-                + "&Note=" + listItem.Note;
-
-            if (listItem.Priority != null)
-                queryBody += "&Priority=" + listItem.Priority.ToString();
-
-            if (listItem.Quantity != null)
-                queryBody += "&Quantity=" + listItem.Quantity.ToString();
-
-            if (listItem.Units != null)
-                queryBody += "&Units=" + listItem.Units.ToString();
+            string queryBody = "?ID=" + listItem.ItemID.ToString();
+            queryBody += "&ListID=" + listItem.ListID.ToString();
 
             (Application.Current.RootVisual as PhoneApplicationFrame).Navigate(new Uri("/EditItemPage.xaml"+ queryBody,
                 UriKind.Relative));

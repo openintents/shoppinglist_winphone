@@ -40,143 +40,159 @@
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+        <Grid>       
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="ApplicationTitle" Text="OI SHOPPING LIST" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="edit item" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
-        </StackPanel>
+            <!--TitlePanel contains the name of the application and page title-->
+            <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+                <TextBlock x:Name="ApplicationTitle" Text="OI SHOPPING LIST" Style="{StaticResource PhoneTextNormalStyle}"/>
+                <TextBlock x:Name="PageTitle" Text="edit item" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            </StackPanel>
 
-        <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-        	<Grid.RowDefinitions>
-        		<RowDefinition Height="*"/>
-        		<RowDefinition Height="Auto"/>
-        	</Grid.RowDefinitions>
-			<ScrollViewer Grid.Row="0">
-        		<StackPanel>
-        			<Grid>
-        				<Grid.RowDefinitions>
-        					<RowDefinition Height="*"/>
-							<RowDefinition Height="*"/>
-							<RowDefinition Height="*"/>
-							<RowDefinition Height="*"/>
-						</Grid.RowDefinitions>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="*"/>
-						</Grid.ColumnDefinitions>
-						<TextBlock Grid.Row="0"
-								   Grid.Column="0"
-								   Grid.ColumnSpan="2"
-								   Margin="5,0,0,0"
-								   Text="Item Name"/>
-						<TextBox Grid.Row="0"
-								 Grid.Column="0"
-								 Grid.ColumnSpan="6"
-								 Margin="10,25,10,10"
-								 Padding="10"
-								 Name="itemName"/>
+            <!--ContentPanel - place additional content here-->
+            <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+        	    <Grid.RowDefinitions>
+        		    <RowDefinition Height="*"/>
+        		    <RowDefinition Height="Auto"/>
+        	    </Grid.RowDefinitions>
+			    <ScrollViewer Grid.Row="0">
+        		    <StackPanel>
+        			    <Grid>
+        				    <Grid.RowDefinitions>
+        					    <RowDefinition Height="*"/>
+							    <RowDefinition Height="*"/>
+							    <RowDefinition Height="*"/>
+							    <RowDefinition Height="*"/>
+						    </Grid.RowDefinitions>
+						    <Grid.ColumnDefinitions>
+							    <ColumnDefinition Width="*"/>
+							    <ColumnDefinition Width="*"/>
+							    <ColumnDefinition Width="*"/>
+							    <ColumnDefinition Width="*"/>
+							    <ColumnDefinition Width="*"/>
+							    <ColumnDefinition Width="*"/>
+						    </Grid.ColumnDefinitions>
+						    <TextBlock Grid.Row="0"
+								       Grid.Column="0"
+								       Grid.ColumnSpan="2"
+								       Margin="5,0,0,0"
+								       Text="Item Name"/>
+						    <TextBox Grid.Row="0"
+								     Grid.Column="0"
+								     Grid.ColumnSpan="6"
+								     Margin="10,25,10,10"
+								     Padding="10"
+								     Name="itemName"/>
 								 
-						<TextBlock Grid.Row="1"
-								   Grid.Column="0"
-								   Grid.ColumnSpan="2"
-								   Margin="5,0,0,0"
-								   Text="Quantity"/>
-                        <TextBox Name="itemQuantity"
-								 Grid.Row="1"
-								 Grid.Column="0"
-								 Grid.ColumnSpan="2"
-								 Margin="5,20,5,5"
-								 Padding="10"
-                                 InputScope="Digits"
-                                 KeyUp="NumericKeyUp"/>
+						    <TextBlock Grid.Row="1"
+								       Grid.Column="0"
+								       Grid.ColumnSpan="2"
+								       Margin="5,0,0,0"
+								       Text="Quantity"/>
+                            <TextBox Name="itemQuantity"
+								     Grid.Row="1"
+								     Grid.Column="0"
+								     Grid.ColumnSpan="2"
+								     Margin="5,20,5,5"
+								     Padding="10"
+                                     InputScope="Digits"
+                                     KeyUp="NumericKeyUp"
+                                     TextChanged="itemQuantity_TextChanged"/>
 
-                        <TextBlock Grid.Row="1"
-								   Grid.Column="2"
-								   Grid.ColumnSpan="2"
-								   Margin="5,0,0,0"
-								   Text="Units"/>
-						<TextBox Name="itemUnits"
-								 Grid.Row="1"
-								 Grid.Column="2"
-								 Grid.ColumnSpan="2"
-								 Margin="5,20,5,5"
-								 Padding="10"
-								 InputScope="Digits"
-                                 KeyUp="NumericKeyUp"/>
+                            <TextBlock Grid.Row="1"
+								       Grid.Column="2"
+								       Grid.ColumnSpan="2"
+								       Margin="5,0,0,0"
+								       Text="Units"/>
+						    <TextBox Name="itemUnits"
+								     Grid.Row="1"
+								     Grid.Column="2"
+								     Grid.ColumnSpan="2"
+								     Margin="5,20,5,5"
+								     Padding="10"/>
+
+                            <Grid Grid.Row="1"
+                                  Grid.Column="4"
+                                  Grid.ColumnSpan="2">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                            
+                                <StackPanel Grid.Row="0"
+                                            Orientation="Horizontal">
+                                    <TextBlock Margin="5,0,0,0"
+                                               Text="Price"/>
+                                    <TextBlock Name="colonTextBlock"
+                                               Text=": "
+                                               Visibility="Collapsed"/>
+                                    <TextBlock Name="totalItemsPrice"
+                                               TextWrapping="Wrap"
+                                               Visibility="Collapsed"/>
+                                </StackPanel>
+                            
+                                <TextBox Name="itemPrice"
+								     Grid.Row="1"
+								     Padding="10"                                     
+								     Margin="5,-7,5,5"
+								     InputScope="Number"
+                                     KeyUp="itemPrice_KeyUp"
+                                     TextChanged="itemPrice_TextChanged"/>
+                            </Grid>                        
 								 
-						<TextBlock Grid.Row="1"
-								   Grid.Column="4"
-								   Grid.ColumnSpan="2"
-								   Margin="5,0,0,0"
-								   Text="Price"/>
-						<TextBox Name="itemPrice"
-								 Grid.Row="1"
-								 Grid.Column="4"
-								 Grid.ColumnSpan="2"
-								 Margin="5,20,5,5"
-								 Padding="10"
-								 InputScope="Number"/>
+						    <TextBlock Grid.Row="2"
+								       Grid.Column="0"
+								       Grid.ColumnSpan="6"
+								       Margin="5,0,0,0"
+								       Text="Tags"/>
+						    <TextBox Name="itemTag"
+								     Grid.Row="2"
+								     Grid.Column="0"
+								     Grid.ColumnSpan="6"
+								     Margin="5,20,5,5"
+								     Padding="10"
+								     InputScope="Text"/>
 								 
-						<TextBlock Grid.Row="2"
-								   Grid.Column="0"
-								   Grid.ColumnSpan="6"
-								   Margin="5,0,0,0"
-								   Text="Tags"/>
-						<TextBox Name="itemTag"
-								 Grid.Row="2"
-								 Grid.Column="0"
-								 Grid.ColumnSpan="6"
-								 Margin="5,20,5,5"
-								 Padding="10"
-								 InputScope="Text"/>
+						    <TextBlock Grid.Row="3"
+								       Grid.Column="0"
+								       Grid.ColumnSpan="4"
+								       Margin="5,0,0,0"
+								       Text="Priority"/>
+						    <TextBox Name="itemPriority"
+								     Grid.Row="3"
+								     Grid.Column="0"
+								     Grid.ColumnSpan="4"
+								     Margin="5,20,5,5"
+								     Padding="10"
+								     InputScope="Digits"
+                                     KeyUp="itemPriority_KeyUp"/>
 								 
-						<TextBlock Grid.Row="3"
-								   Grid.Column="0"
-								   Grid.ColumnSpan="4"
-								   Margin="5,0,0,0"
-								   Text="Priority"/>
-						<TextBox Name="itemPriority"
-								 Grid.Row="3"
-								 Grid.Column="0"
-								 Grid.ColumnSpan="4"
-								 Margin="5,20,5,5"
-								 Padding="10"
-								 InputScope="Digits"
-                                 KeyUp="itemPriority_KeyUp"/>
-								 
-						<TextBlock Grid.Row="3"
-								   Grid.Column="4"
-								   Grid.ColumnSpan="2"
-								   Margin="5,0,0,0"
-								   Text="Note"/>
-						<Border Grid.Row="3"
-								Grid.Column="4"
-								Grid.ColumnSpan="2"
-								Margin="5,32,5,17"
-								BorderBrush="#FF646464"
-								BorderThickness="1"
-								CornerRadius="7">
-							<Border.Background>
-								<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-									<GradientStop Color="#FF585858" Offset="1"/>
-									<GradientStop Color="White"/>
-								</LinearGradientBrush>
-							</Border.Background>
-						</Border>
-					</Grid>
-				</StackPanel>
-			</ScrollViewer>           	
-		</Grid>
+						    <TextBlock Grid.Row="3"
+								       Grid.Column="4"
+								       Grid.ColumnSpan="2"
+								       Margin="5,0,0,0"
+								       Text="Note"/>
+						    <Button Grid.Row="3"
+								    Grid.Column="4"
+								    Grid.ColumnSpan="2"
+                                    Name="ButtonNote"
+								    Margin="35,37,45,15"
+                                    BorderThickness="0"
+                                    Click="ButtonNote_Click">
+                                <Button.Content>
+                                    <Image Source="/Images/note.png"
+                                           Height="80"
+                                           Margin="-55,-35,-55,-25"/>    
+                                </Button.Content>
+						    </Button>
+					    </Grid>
+				    </StackPanel>
+			    </ScrollViewer>           	
+		    </Grid>
+        </Grid>
     </Grid>
  
     <!--Sample code showing usage of ApplicationBar-->

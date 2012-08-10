@@ -29,7 +29,7 @@ namespace OIShoppingListWinPhone
         public static ApplicationSettings Settings { get; set; }
 
         // Private static ViewModel field used by the views to bind against.
-        private static ShoppingListViewModel viewModel;
+        private static ShoppingListViewModel viewModel;       
 
         /// <summary>
         /// A static ViewModel used by the views to bind against.

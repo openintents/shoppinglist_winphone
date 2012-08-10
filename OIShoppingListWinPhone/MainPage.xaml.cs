@@ -355,21 +355,36 @@ namespace OIShoppingListWinPhone
                 ShoppingList currentList = this.GetCurrentShoppingList();
                 if (currentList != null)
                 {
-                    //Actually creating new list item
-                    ShoppingListItem newListItem = new ShoppingListItem()
+                    //Checking whether item is already exist in current list                    
+                    var itemNames = from ShoppingListItem item in currentList.ListItems
+                                     select item.ItemName;
+                    string newItemName = newListItemName.Text.Trim();
+                    //If NOT exist - adding new item
+                    if (!itemNames.Contains(newItemName))
                     {
-                        ItemName = newListItemName.Text.Trim(),
-                        List = currentList,
-                        Priority = null,
-                        Price = 0F,
-                        Units = null,
-                        Quantity = null,
-                        Tag = string.Empty,
-                        Status = (int)ShoppingListItem.StatusEnumerator.Unchecked,
-                        Note = string.Empty,
-                    };
-                    //Adding new list item to the database and updating current list's entries
-                    App.ViewModel.AddNewListItem(currentList, newListItem);
+                        //Actually creating new list item
+                        ShoppingListItem newListItem = new ShoppingListItem()
+                        {
+                            ItemName = newItemName,
+                            List = currentList,
+                            Priority = null,
+                            Price = 0F,
+                            Units = string.Empty,
+                            Quantity = null,
+                            Tag = string.Empty,
+                            Status = (int)ShoppingListItem.StatusEnumerator.Unchecked,
+                            Note = string.Empty,
+                        };
+                        //Adding new list item to the database and updating current list's entries
+                        App.ViewModel.AddNewListItem(currentList, newListItem);
+                    }
+                    //If EXIST - checking/unchecking existing item
+                    else
+                    {
+                        ShoppingListItem exItem = currentList.ListItems.FirstOrDefault(i => i.ItemName == newItemName);
+                        if (exItem != null)
+                            App.ViewModel.UpdateItemStatus(currentList, exItem);
+                    }
                 }
                 //Erasing 'new item's name' TextBox
                 newListItemName.Text = "";
@@ -433,9 +448,12 @@ namespace OIShoppingListWinPhone
         {            
             //Creating query body for navigation to SkyDrive page
             ShoppingList list = this.GetCurrentShoppingList();
-            string queryBody = "?ListID=" + list.ListID.ToString();
-            //Navigate to SkyDrive page
-            NavigationService.Navigate(new Uri("/SkyDrivePage.xaml" + queryBody, UriKind.Relative));
+            if (list != null)
+            {
+                string queryBody = "?ListID=" + list.ListID.ToString();
+                //Navigate to SkyDrive page
+                NavigationService.Navigate(new Uri("/SkyDrivePage.xaml" + queryBody, UriKind.Relative));
+            }
         }
 
         private void ApplicationBarMenuMarkAllItems_Click(object sender, EventArgs e)
@@ -474,43 +492,5 @@ namespace OIShoppingListWinPhone
 
             base.OnBackKeyPress(e);
         }
-                
-        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-
-            if (NavigationContext.QueryString.ContainsKey("Name"))
-            {
-                NavigationService.RemoveBackEntry();
-                if (NavigationContext.QueryString.ContainsKey("ID"))
-                {
-                    string newName = NavigationContext.QueryString["Name"].ToString();
-                    float newPrice = (float)Convert.ToDouble(NavigationContext.QueryString["Price"].ToString());
-                    string newTag = NavigationContext.QueryString["Tag"].ToString();
-                    string newNote = NavigationContext.QueryString["Note"].ToString();
-
-                    int? newQuantity;
-                    if (NavigationContext.QueryString["Quantity"].ToString() != "")
-                        newQuantity = Convert.ToInt32(NavigationContext.QueryString["Quantity"].ToString());
-                    else
-                        newQuantity = null;
-
-                    int? newUnits;
-                    if (NavigationContext.QueryString["Units"].ToString() != "")
-                        newUnits = Convert.ToInt32(NavigationContext.QueryString["Units"].ToString());
-                    else
-                        newUnits = null;
-                    
-                    int? newPriority;
-                    if (NavigationContext.QueryString["Priority"].ToString() != "")
-                        newPriority = Convert.ToInt32(NavigationContext.QueryString["Priority"].ToString());
-                    else
-                        newPriority = null;
-                    
-                    App.ViewModel.UpdateListItem(Convert.ToInt32(NavigationContext.QueryString["ID"].ToString()),
-                        newName, newQuantity, newUnits, newPrice, newTag, newPriority, newNote);
-                }
-            }
-        }        
     }
 }
