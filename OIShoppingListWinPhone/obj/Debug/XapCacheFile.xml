@@ -1,8 +1,8 @@
-﻿<xapCache source="C:\Users\Alex\Documents\GitHub\shoppinglist_winphone\OIShoppingListWinPhone\Bin\Debug\OIShoppingListWinPhone.xap" wasSigned="False" certificateThumbprint="" TimeStampUrl="" lastWriteTime="10.08.2012 9:42:32">
+﻿<xapCache source="C:\Users\Alex\Documents\GitHub\shoppinglist_winphone\OIShoppingListWinPhone\Bin\Debug\OIShoppingListWinPhone.xap" wasSigned="False" certificateThumbprint="" TimeStampUrl="" lastWriteTime="16.08.2012 17:01:50">
   <file source="C:\Users\Alex\Documents\GitHub\shoppinglist_winphone\OIShoppingListWinPhone\Bin\Debug\WMAppManifest.xml" archivePath="WMAppManifest.xml" lastWriteTime="10.08.2012 4:02:33" />
-  <file source="C:\Users\Alex\Documents\GitHub\shoppinglist_winphone\OIShoppingListWinPhone\Background.png" archivePath="Background.png" lastWriteTime="23.05.2012 18:45:20" />
-  <file source="C:\Users\Alex\Documents\GitHub\shoppinglist_winphone\OIShoppingListWinPhone\ApplicationIcon.png" archivePath="ApplicationIcon.png" lastWriteTime="23.07.2010 23:15:04" />
-  <file source="C:\Users\Alex\Documents\GitHub\shoppinglist_winphone\OIShoppingListWinPhone\obj\Debug\OIShoppingListWinPhone.dll" archivePath="OIShoppingListWinPhone.dll" lastWriteTime="10.08.2012 9:42:30" />
+  <file source="C:\Users\Alex\Documents\GitHub\shoppinglist_winphone\OIShoppingListWinPhone\Background.png" archivePath="Background.png" lastWriteTime="13.08.2012 13:07:56" />
+  <file source="C:\Users\Alex\Documents\GitHub\shoppinglist_winphone\OIShoppingListWinPhone\ApplicationIcon.png" archivePath="ApplicationIcon.png" lastWriteTime="13.08.2012 13:12:13" />
+  <file source="C:\Users\Alex\Documents\GitHub\shoppinglist_winphone\OIShoppingListWinPhone\obj\Debug\OIShoppingListWinPhone.dll" archivePath="OIShoppingListWinPhone.dll" lastWriteTime="16.08.2012 17:01:48" />
   <file source="c:\Program Files\Microsoft SDKs\Expression\Blend\Windows Phone\v7.1\Libraries\Microsoft.Expression.Interactions.dll" archivePath="Microsoft.Expression.Interactions.dll" lastWriteTime="17.08.2011 1:48:22" />
   <file source="C:\Program Files\Microsoft SDKs\Live\v5.0\Windows Phone\References\Microsoft.Live.Controls.dll" archivePath="Microsoft.Live.Controls.dll" lastWriteTime="28.11.2011 11:48:10" />
   <file source="C:\Program Files\Microsoft SDKs\Live\v5.0\Windows Phone\References\Microsoft.Live.dll" archivePath="Microsoft.Live.dll" lastWriteTime="28.11.2011 11:45:28" />

@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
+using System.Collections.ObjectModel;
+
+using OIShoppingListWinPhone.Settings;
+using OIShoppingListWinPhone.Utils;
 
 namespace OIShoppingListWinPhone.DataModel
 {
@@ -11,8 +15,8 @@ namespace OIShoppingListWinPhone.DataModel
     /// ShoppingList class for implementation database 'Lists' table and here are also added
     /// fields (not saved in DB) for organisation data binding and application work
     /// </summary>
-    [Table (Name="Lists")]
-    public sealed class ShoppingList: INotifyPropertyChanging, INotifyPropertyChanged
+    [Table(Name = "Lists")]
+    public sealed class ShoppingList : INotifyPropertyChanging, INotifyPropertyChanged
     {
         //List ID private field
         private int _listId;
@@ -55,7 +59,55 @@ namespace OIShoppingListWinPhone.DataModel
                 }
             }
         }
-                
+
+        //List filter tag private field
+        private string _filterTag = "Tag [Empty]";
+
+        /// <summary>
+        /// List filter tag (string with maximum length = 300 characters)
+        /// </summary>
+        [Column(DbType = "NVARCHAR(300)")]
+        public string FilterTag
+        {
+            get { return this._filterTag; }
+            set
+            {
+                if (this._filterTag != value)
+                {
+                    NotifyPropertyChanging("FilterTag");
+                    this._filterTag = value;
+                    NotifyPropertyChanged("FilterTag");
+                    //This method call SortedItemsCollection SET.
+                    //Thus, all UI will be updated.
+                    this.FilterItemsCollection();///////////////////////////////////////////////////////////ChangeTagFilter
+                }
+            }
+        }
+
+        //List filter store private field
+        private string _filterStore = "Store [Empty]";
+
+        /// <summary>
+        /// List filter store (string with maximum length = 300 characters)
+        /// </summary>
+        [Column(DbType = "NVARCHAR(300)")]
+        public string FilterStore
+        {
+            get { return this._filterStore; }
+            set
+            {
+                if (this._filterStore != value)
+                {
+                    NotifyPropertyChanging("FilterStore");
+                    this._filterStore = value;
+                    NotifyPropertyChanged("FilterStore");
+                    //This method call SortedItemsCollection SET.
+                    //Thus, all UI will be updated.
+                    this.FilterItemsCollection();/////////////////////////////////////////////////////////ChangeStoreFilter
+                }
+            }
+        }
+
         //List created date private field
         private DateTime _createdDate;
 
@@ -76,7 +128,7 @@ namespace OIShoppingListWinPhone.DataModel
                 }
             }
         }
-                
+
         //List last modified date private field
         private DateTime _modifiedDate;
 
@@ -104,24 +156,34 @@ namespace OIShoppingListWinPhone.DataModel
         /// <summary>
         /// List items entity set. List items associated with list in one-to-many relationship
         /// </summary>
-        [Association(Storage = "_listItems", OtherKey = "ListID", ThisKey = "ListID", DeleteRule="CASCADE")]
+        [Association(Storage = "_listItems", OtherKey = "ListID", ThisKey = "ListID", DeleteRule = "CASCADE")]
         public EntitySet<ShoppingListItem> ListItems
         {
             get { return this._listItems; }
-            set { _listItems.Assign(value); }
+            set
+            {
+                NotifyPropertyChanging("ListItems");
+                _listItems.Assign(value);
+                NotifyPropertyChanged("ListItems");
+            }
         }
-        
+
         //List stores entity set private field
         private EntitySet<ShoppingListStore> _listStores;
 
         /// <summary>
         /// List stores entity set. List stores associated with list in one-to-many relationship
         /// </summary>
-        [Association(Storage = "_listStores", OtherKey = "ListID", ThisKey = "ListID", DeleteRule="CASCADE")]
+        [Association(Storage = "_listStores", OtherKey = "ListID", ThisKey = "ListID", DeleteRule = "CASCADE")]
         public EntitySet<ShoppingListStore> ListStores
         {
             get { return this._listStores; }
-            set { this._listStores.Assign(value); }
+            set
+            {
+                NotifyPropertyChanging("ListStores");
+                this._listStores.Assign(value);
+                NotifyPropertyChanged("ListStores");
+            }
         }
 
         //Count of checked list items private field
@@ -139,7 +201,28 @@ namespace OIShoppingListWinPhone.DataModel
                 {
                     NotifyPropertyChanging("CheckedCount");
                     this._checkedCount = value;
+                    this.CheckedCountString = String.Format("#{0}", this._checkedCount);
                     NotifyPropertyChanged("CheckedCount");
+                }
+            }
+        }
+
+        //Formated string with count of checked list items private field
+        private string _checkedCountString = string.Empty;
+
+        /// <summary>
+        /// Formated string with count of checked list items
+        /// </summary>
+        public string CheckedCountString
+        {
+            get { return this._checkedCountString; }
+            set
+            {
+                if (this._checkedCountString != value)
+                {
+                    NotifyPropertyChanging("CheckedCountString");
+                    this._checkedCountString = value;
+                    NotifyPropertyChanged("CheckedCountString");
                 }
             }
         }
@@ -159,7 +242,28 @@ namespace OIShoppingListWinPhone.DataModel
                 {
                     NotifyPropertyChanging("CheckedPrice");
                     this._checkedPrice = value;
+                    this.CheckedPriceString = String.Format("Checked: {0:F2}", this._checkedPrice);
                     NotifyPropertyChanged("CheckedPrice");
+                }
+            }
+        }
+
+        //Formated string with total price of checked list items private field
+        private string _checkedPriceString = string.Empty;
+
+        /// <summary>
+        /// Formated string with total price of checked list items private field
+        /// </summary>
+        public string CheckedPriceString
+        {
+            get { return this._checkedPriceString; }
+            set
+            {
+                if (this._checkedPriceString != value)
+                {
+                    NotifyPropertyChanging("CheckedPriceString");
+                    this._checkedPriceString = value;
+                    NotifyPropertyChanged("CheckedPriceString");
                 }
             }
         }
@@ -172,19 +276,40 @@ namespace OIShoppingListWinPhone.DataModel
         /// </summary>
         public float TotalPrice
         {
-            get 
-            {
-                //Update CheckedCount, CheckedPrice and TotalPrice with getting the property
-                UpdatePrice();
-                return this._totalPrice;
-            }
+            get { return this._totalPrice; }
             set
             {
                 if (this._totalPrice != value)
                 {
                     NotifyPropertyChanging("TotalPrice");
                     this._totalPrice = value;
+                    this.TotalPriceString = String.Format("Total: {0:F2}", this._totalPrice);
                     NotifyPropertyChanged("TotalPrice");
+                }
+            }
+        }
+
+        //Formated string with total price of checked list items private field
+        private string _totalPriceString = string.Empty;
+
+        /// <summary>
+        /// Formated string with total price of checked list items private field
+        /// </summary>
+        public string TotalPriceString
+        {
+            get
+            {
+                //Update CheckedCount, CheckedPrice and TotalPrice
+                this.UpdatePrice();
+                return this._totalPriceString;
+            }
+            set
+            {
+                if (this._totalPriceString != value)
+                {
+                    NotifyPropertyChanging("TotalPriceString");
+                    this._totalPriceString = value;
+                    NotifyPropertyChanged("TotalPriceString");
                 }
             }
         }
@@ -207,7 +332,7 @@ namespace OIShoppingListWinPhone.DataModel
                 }
                 tags.Sort();
                 //Adding an '[Empty]' string to list for displaying in Custom Filter List Control
-                tags.Insert(0, "[Empty]");
+                tags.Insert(0, "Tag [Empty]");
                 return tags;
             }
         }
@@ -220,11 +345,57 @@ namespace OIShoppingListWinPhone.DataModel
             get
             {
                 List<string> stores = new List<string>();
-                stores = (List<string>) from store in this._listStores
-                         select store.StoreName;
+                foreach (ShoppingListStore store in this._listStores)
+                {
+                    stores.Add(store.StoreName);
+                }
                 //Adding an '[Empty]' string to list for displaying in Custom Filter List Control
-                stores.Insert(0, "[Empty]");
+                stores.Insert(0, "Store [Empty]");
                 return stores;
+            }
+        }
+
+        /// <summary>
+        /// Field for indicating whether items collection was filtered.
+        /// If change this field to FALSE -> items collection with the next GET will be filtered
+        /// </summary>
+        private bool bFiltered = false;
+
+        /// <summary>
+        /// Field for indicating whether items collection was sorted.
+        /// If change this field to FALSE -> items collection with the next GET will be sorted
+        /// </summary>
+        private bool bSorted = false;
+
+        //Sorted/filtered items collection (using for data binding).
+        //This collection creates with filtering and sorting ListItems EntitySet.
+        private IEnumerable<ShoppingListItem> _sortedItemsCollection;
+
+        /// <summary>
+        /// Sorted/filtered items collection (using for data binding).
+        /// This collection creates with filtering and sorting ListItems EntitySet.
+        /// </summary>
+        public IEnumerable<ShoppingListItem> SortedItemsCollection
+        {
+            get
+            {
+                //Filter items collection
+                if (!this.bFiltered)
+                    this.FilterItemsCollection();
+
+                if (!this.bSorted)
+                    this.SortItemsCollection();
+
+                return this._sortedItemsCollection;
+            }
+            set
+            {
+                if (this._sortedItemsCollection != value)
+                {
+                    NotifyPropertyChanging("SortedItemsCollection");
+                    this._sortedItemsCollection = value;
+                    NotifyPropertyChanged("SortedItemsCollection");
+                }
             }
         }
 
@@ -235,22 +406,106 @@ namespace OIShoppingListWinPhone.DataModel
         public void UpdatePrice()
         {
             int chCount = 0;
-            float chPrice = 0.0F; 
-            float totalPrice = 0.0F; 
+            float chPrice = 0.0F;
+            float totalPrice = 0.0F;
 
-            foreach (ShoppingListItem item in _listItems) 
-            { 
-                if (item.Status == (int)ShoppingListItem.StatusEnumerator.Checked) 
-                { 
-                    chCount++; 
-                    chPrice += item.Price; 
-                } 
-                totalPrice += item.Price; 
-            } 
+            foreach (ShoppingListItem item in _listItems)
+            {
+                if (item.Status == (int)ShoppingListItem.StatusEnumerator.Checked)
+                {
+                    chCount++;
+                    chPrice += item.Price;
+                }
+                totalPrice += item.Price;
+            }
 
-            CheckedCount = chCount; 
-            CheckedPrice = chPrice; 
+            CheckedCount = chCount;
+            CheckedPrice = chPrice;
             TotalPrice = totalPrice;
+        }
+
+        /// <summary>
+        /// Filter existing ListItems collection with corresponding application settings
+        /// If you filter your collection with this method - collection will be sorted automatically.
+        /// To prevent doubling of sorting DON'T call SortItemsCollection method after it.
+        /// </summary>
+        public void FilterItemsCollection()
+        {
+            IEnumerable<ShoppingListItem> collection = new ObservableCollection<ShoppingListItem>();
+            //Select all NOT picked items from list items collection
+            collection = from item in this.ListItems
+                         where item.Status < 2
+                         select item;
+
+            //Filtering collection
+            if (FilterTag != "Tag [Empty]")
+                //Selecting list items that contains current tag
+                collection = from item in collection
+                             where item.Tags.Contains(this._filterTag)
+                             select item;
+
+            if (FilterStore != "Store [Empty]")
+                //Selecting list items that contains current store
+                collection = from item in collection
+                             from item_store in item.ItemsStores
+                             where item_store.Store.StoreName == FilterStore
+                             select item;
+
+            this._sortedItemsCollection = collection;
+            this.bFiltered = true;
+            //If items collection has just filtered - it is necessary to sort this
+            //collection.
+            //Sort items collection
+            this.SortItemsCollection();
+        }
+
+        /// <summary>
+        /// Sort existing ListItems collection with corresponding application settings
+        /// </summary>
+        public void SortItemsCollection()
+        {
+            //Collection of list items occur if current sort order does not match with
+            //applicaion settings sort order (actually, after settings chenging)
+
+            //Collection sorting
+            IEnumerable<ShoppingListItem> collection = this._sortedItemsCollection;
+            switch (App.Settings.SortOrderSetting)
+            {
+                case (int)ApplicationSettings.SortOrderSettings.Alphabetical:
+                    collection = collection.OrderBy(i => i.ItemName);
+                    break;
+                case (int)ApplicationSettings.SortOrderSettings.MostExpensiveFirst:
+                    collection = collection.OrderBy(i => i, new MostExpensiveFirst());
+                    break;
+                case (int)ApplicationSettings.SortOrderSettings.NewestFirst:
+                    collection = collection.OrderBy(i => i, new NewestFirst());
+                    break;
+                case (int)ApplicationSettings.SortOrderSettings.OldestFirst:
+                    collection = collection.OrderBy(i => i.CreatedDate);
+                    break;
+                case (int)ApplicationSettings.SortOrderSettings.Priority_TagsAlphabetical:
+                    collection = collection.OrderBy(i => i, new Priority_TagsAlphabetical());
+                    break;
+                case (int)ApplicationSettings.SortOrderSettings.TagsAlphabetical:
+                    collection = collection.OrderBy(i => i.Tag);
+                    break;
+                case (int)ApplicationSettings.SortOrderSettings.UncheckedFirst_Alphabetical:
+                    collection = collection.OrderBy(i => i, new UncheckedFirst_Alphabetical());
+                    break;
+                case (int)ApplicationSettings.SortOrderSettings.UncheckedFirst_Priority_Alphabetical:
+                    collection = collection.OrderBy(i => i, new UncheckedFirst_Priority_Alphabetical());
+                    break;
+                case (int)ApplicationSettings.SortOrderSettings.UncheckedFirst_TagsAlphabetical:
+                    collection = collection.OrderBy(i => i, new UncheckedFirst_TagsAlphabetical());
+                    break;
+                case (int)ApplicationSettings.SortOrderSettings.UnckeckedFirst_Priority_TagsAlphabetical:
+                    collection = collection.OrderBy(i => i, new UnckeckedFirst_Priority_TagsAlphabetical());
+                    break;
+                default:
+                    break;
+            }
+            this.bSorted = true;
+            this.SortedItemsCollection = collection;
         }
 
         //Constructor of ShoppingList class
@@ -258,6 +513,7 @@ namespace OIShoppingListWinPhone.DataModel
         {
             _listItems = new EntitySet<ShoppingListItem>();
             _listStores = new EntitySet<ShoppingListStore>();
+            _sortedItemsCollection = new ObservableCollection<ShoppingListItem>();
 
             CheckedCount = 0;
             CheckedPrice = 0.0F;
@@ -295,14 +551,14 @@ namespace OIShoppingListWinPhone.DataModel
         #endregion
     }
 
-    
+
     /// <summary>
     /// ShoppingListItem class for implementation database 'Items' table and here are also added
     /// fields (not saved in DB) for organisation data binding and application work
     /// </summary>
     /// <returns></returns>
-    [Table (Name="Items")]
-    public sealed class ShoppingListItem: INotifyPropertyChanging, INotifyPropertyChanged
+    [Table(Name = "Items")]
+    public sealed class ShoppingListItem : INotifyPropertyChanging, INotifyPropertyChanged
     {
         //List item ID private field
         private int _itemId;
@@ -345,7 +601,7 @@ namespace OIShoppingListWinPhone.DataModel
                 }
             }
         }
-                
+
         //Item name private field
         private string _itemName;
 
@@ -373,7 +629,7 @@ namespace OIShoppingListWinPhone.DataModel
         /// <summary>
         /// Item status (Unchecked, Checked, Picked)
         /// </summary>
-        [Column (DbType="INT")]
+        [Column(DbType = "INT")]
         public int Status
         {
             get { return this._status; }
@@ -383,10 +639,10 @@ namespace OIShoppingListWinPhone.DataModel
                 {
                     NotifyPropertyChanging("Status");
                     this._status = value;
+                    NotifyPropertyChanged("Status");
                     //Updating list CheckedCount, CheckedPrice and TotalPrice fields
                     if (this.List != null)
                         this.List.UpdatePrice();
-                    NotifyPropertyChanged("Status");
                 }
             }
         }
@@ -411,14 +667,14 @@ namespace OIShoppingListWinPhone.DataModel
             get { return this._price; }
             set
             {
-                if (this._price!= value)
+                if (this._price != value)
                 {
                     NotifyPropertyChanging("Price");
                     this._price = value;
+                    NotifyPropertyChanged("Price");
                     //Updating list CheckedCount, CheckedPrice and TotalPrice fields
                     if (this.List != null)
                         this.List.UpdatePrice();
-                    NotifyPropertyChanged("Price");
                 }
             }
         }
@@ -502,6 +758,16 @@ namespace OIShoppingListWinPhone.DataModel
                 {
                     NotifyPropertyChanging("Tag");
                     this._tag = value;
+
+                    List<string> tags = new List<string>();
+                    string[] tags_array = this.Tag.Split(',');
+                    foreach (string tag in tags_array)
+                    {
+                        if (tag.Trim() != string.Empty)
+                            tags.Add(tag.Trim());
+                    }
+                    this.Tags = tags;
+
                     NotifyPropertyChanged("Tag");
                 }
             }
@@ -527,7 +793,7 @@ namespace OIShoppingListWinPhone.DataModel
                 }
             }
         }
-                
+
         //Item created date private field
         private DateTime _createdDate;
 
@@ -548,7 +814,7 @@ namespace OIShoppingListWinPhone.DataModel
                 }
             }
         }
-                
+
         //Item last modified date private field
         private DateTime _modifiedDate;
 
@@ -570,21 +836,19 @@ namespace OIShoppingListWinPhone.DataModel
             }
         }
 
+        private List<string> _Tags;
+
         /// <summary>
         /// List of parsed unique item tags
         /// </summary>
         public List<string> Tags
         {
-            get
+            get { return this._Tags; }
+            set
             {
-                List<string> tags = new List<string>();
-                string[] tags_array = this.Tag.Split(',');
-                foreach (string tag in tags_array)
-                {
-                    if(tag.Trim() != string.Empty)
-                    tags.Add(tag.Trim());
-                }
-                return tags;
+                NotifyPropertyChanging("Tags");
+                this._Tags = value;
+                NotifyPropertyChanged("Tags");
             }
         }
 
@@ -594,7 +858,7 @@ namespace OIShoppingListWinPhone.DataModel
         /// <summary>
         /// Corresponding list entity ref. List items associated with list in one-to-many relationship
         /// </summary>
-        [Association (Storage="_list", ThisKey="ListID", OtherKey="ListID", IsForeignKey=true, DeleteRule="CASCADE")]
+        [Association(Storage = "_list", ThisKey = "ListID", OtherKey = "ListID", IsForeignKey = true, DeleteRule = "CASCADE")]
         public ShoppingList List
         {
             get { return _list.Entity; }
@@ -605,7 +869,8 @@ namespace OIShoppingListWinPhone.DataModel
                 {
                     this._listId = value.ListID;
                     //Updating list CheckedCount, CheckedPrice and TotalPrice fields
-                    this.List.UpdatePrice();
+                    //with adding new item to list
+                    this.List.UpdatePrice();                    
                 }
             }
         }
@@ -618,7 +883,7 @@ namespace OIShoppingListWinPhone.DataModel
         /// - one store can contain zero or more list items;
         /// - one item can locate in zero or more stores.
         /// </summary>
-        [Association(Storage = "_itemsStores", OtherKey = "ItemID", ThisKey = "ItemID", DeleteRule="CASCADE")]
+        [Association(Storage = "_itemsStores", OtherKey = "ItemID", ThisKey = "ItemID", DeleteRule = "CASCADE")]
         public EntitySet<ShoppingListItemsStores> ItemsStores
         {
             get { return this._itemsStores; }
@@ -661,13 +926,13 @@ namespace OIShoppingListWinPhone.DataModel
         #endregion
     }
 
-    
+
     /// <summary>
     /// ShoppingListItem class for implementation database 'Stores' table
     /// </summary>
     /// <returns></returns>
-    [Table (Name="Stores")]
-    public sealed class ShoppingListStore: INotifyPropertyChanging, INotifyPropertyChanged
+    [Table(Name = "Stores")]
+    public sealed class ShoppingListStore : INotifyPropertyChanging, INotifyPropertyChanged
     {
         //List store ID private field
         private int _storeId;
@@ -778,7 +1043,7 @@ namespace OIShoppingListWinPhone.DataModel
         private EntityRef<ShoppingList> _list;
 
         //Corresponding list entity ref. List stores associated with list in one-to-many relationship
-        [Association(Storage = "_list", ThisKey = "ListID", OtherKey = "ListID", IsForeignKey = true, DeleteRule="CASCADE")]
+        [Association(Storage = "_list", ThisKey = "ListID", OtherKey = "ListID", IsForeignKey = true, DeleteRule = "CASCADE")]
         public ShoppingList List
         {
             get { return _list.Entity; }
@@ -798,7 +1063,7 @@ namespace OIShoppingListWinPhone.DataModel
         /// - one store can contain zero or more list items;
         /// - one item can locate in zero or more stores.
         /// </summary>
-        [Association(Storage = "_storesItems", OtherKey = "StoreID", ThisKey = "StoreID", DeleteRule="CASCADE")]
+        [Association(Storage = "_storesItems", OtherKey = "StoreID", ThisKey = "StoreID", DeleteRule = "CASCADE")]
         public EntitySet<ShoppingListItemsStores> StoresItems
         {
             get { return this._storesItems; }
@@ -914,7 +1179,7 @@ namespace OIShoppingListWinPhone.DataModel
                     this._itemId = value.ItemID;
             }
         }
-                
+
         private EntityRef<ShoppingListStore> _store;
 
         [Association(Name = "FK_StoresItems_List", Storage = "_store", ThisKey = "StoreID", OtherKey = "StoreID", IsForeignKey = true, DeleteRule = "CASCADE")]

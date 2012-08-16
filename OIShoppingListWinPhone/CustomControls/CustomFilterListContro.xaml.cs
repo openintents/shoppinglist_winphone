@@ -11,12 +11,16 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Collections.ObjectModel;
+using Microsoft.Phone.Controls;
+
+using OIShoppingListWinPhone.DataModel;
 
 namespace OIShoppingListWinPhone.CustomLayout
 {
     public partial class CustomFilterListControl : UserControl
     {
-        //IEnumerable<ShoppingListItem> FilteredItemsCollection;
+        //Bool flag for displaying whether control is loaded or not
+        private bool bLoaded = false;
 
         public CustomFilterListControl()
         {
@@ -27,40 +31,54 @@ namespace OIShoppingListWinPhone.CustomLayout
 
         void PivotItemControl_Loaded(object sender, RoutedEventArgs e)
         {
-            /*if (ListSelector.Items.Count != 0)
-                ListSelector.SelectedIndex = 0;
-             */
-            /*ShoppingList currentList = ListSelector.SelectedItem as ShoppingList;
-            if (currentList != null)
+            //Set ListPickers selections according to all settings
+            if (ListSelector.Items.Count > App.Settings.SelectedListIndexSetting)
             {
-                this.FilteredItemsCollection = currentList.ListItems;
-                //ItemContainer.ItemsSource = this.FilteredItemsCollection;
-            }*/
+                //Set ListSelector selection according to SelectedListIndexSetting
+                ListSelector.SelectedIndex = App.Settings.SelectedListIndexSetting;               
+                ShoppingList curList = ListSelector.SelectedItem as ShoppingList;
+
+                TagsSelector.ItemsSource = curList.Tags;
+                TagsSelector.SelectedItem = curList.FilterTag;
+
+                StoreSelector.ItemsSource = curList.ListStoreLabels;
+                StoreSelector.SelectedItem = curList.FilterStore;
+            }
+            //Changing flag to 'true' -> the page is loaded
+            this.bLoaded = true;
         }
 
         private void ListSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            /*this.FilteredItemsCollection = new EntitySet<ShoppingListItem>();
-            ShoppingList currentList = ListSelector.SelectedItem as ShoppingList;
-            if (currentList != null)
-                this.FilteredItemsCollection = currentList.ListItems;
-
-            if (TagsSelector.SelectedIndex > 0)
-                this.FilteredItemsCollection = this.FilteredItemsCollection.Where(x => x.Tags.Contains(TagsSelector.SelectedItem as string));
-            if (StoreSelector.SelectedIndex > 0)
+            //Changing app settings with ListSelector.SelectedIndex changing
+            if (ListSelector != null && this.bLoaded)
             {
-                EntitySet<ShoppingListItem> newCollection = new EntitySet<ShoppingListItem>();
-                foreach (ShoppingListItem item in this.FilteredItemsCollection)
-                {
-                    foreach (ShoppingListItemsStores item_store in item.ItemsStores)
-                    {
-                        if(item_store.Store == StoreSelector.SelectedItem as ShoppingListStore);
-                        newCollection.Add(item);
-                    }
-                }
-                this.FilteredItemsCollection = newCollection;
+                App.Settings.SelectedListIndexSetting = ListSelector.SelectedIndex;
+
+                ShoppingList curList = ListSelector.SelectedItem as ShoppingList;
+
+                TagsSelector.ItemsSource = curList.Tags;
+                TagsSelector.SelectedItem = curList.FilterTag;
+
+                StoreSelector.ItemsSource = curList.ListStoreLabels;
+                StoreSelector.SelectedItem = curList.FilterStore;
             }
-            ItemContainer.ItemsSource = this.FilteredItemsCollection;*/
+        }
+
+        private void TagsSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //Changing list filter tag with TagsSelector.SelectedIndex changing
+            if (TagsSelector != null && this.bLoaded)
+                App.ViewModel.UpdateListFilterTag(ListSelector.SelectedItem as ShoppingList,
+                    (string)TagsSelector.SelectedItem);
+        }
+
+        private void StoreSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //Changing list filter store with StoreSelector.SelectedIndex changing
+            if (StoreSelector != null && this.bLoaded)
+                App.ViewModel.UpdateListFilterStore(ListSelector.SelectedItem as ShoppingList,
+                    (string)StoreSelector.SelectedItem);
         }
     }
 }

@@ -150,11 +150,13 @@
                                     
                                         <TextBlock Grid.Column="0"
                                                    Text="Added by: "
-                                                   Margin="10,0,0,0"/>
+                                                   Margin="10,0,0,0"
+                                                   Foreground="{StaticResource PhoneForegroundBrush}"/>
                                         <TextBlock Grid.Column="1"
                                                    Text="{Binding UserName}"
                                                    Margin="10,0,0,0"
-                                                   FontWeight="SemiBold"/>
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{StaticResource PhoneForegroundBrush}"/>
                                     </Grid>
                                 
                                     <TextBlock Text="{Binding Message}"
@@ -164,12 +166,14 @@
                                                FontSize="32"
                                                FontWeight="Light"
                                                HorizontalAlignment="Stretch"
-                                               TextAlignment="Left"/>
+                                               TextAlignment="Left"
+                                               Foreground="{StaticResource PhoneForegroundBrush}"/>
                                 
                                     <TextBlock Text="{Binding CreatedDate}"
                                                Grid.Row="2"
                                                Grid.Column="0"
-                                               Margin="10,0,0,0"/>
+                                               Margin="10,0,0,0"
+                                               Foreground="{StaticResource PhoneForegroundBrush}"/>
                                     
                                     <Button Content="del"
                                             BorderThickness="1"

@@ -12,6 +12,8 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using System.Xml.Serialization;
 
+using OIShoppingListWinPhone.DataModel;
+
 namespace OIShoppingListWinPhone.Settings
 {
     public class ApplicationSettings
@@ -249,7 +251,13 @@ namespace OIShoppingListWinPhone.Settings
             set
             {
                 if (AddOrUpdateValue(SortOrderSettingKeyName, value))
+                {
                     Save();
+                    foreach (ShoppingList list in App.ViewModel.ShoppingLists)
+                    {
+                        list.SortItemsCollection();
+                    }
+                }
             }
         }
 

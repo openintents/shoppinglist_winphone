@@ -52,8 +52,12 @@
     <Grid x:Name="LayoutRoot" Background="Transparent" Margin="0">
         
         <!--Layout for Add new item button and Item name TextBox-->
-        <Grid Height="72" VerticalAlignment="Bottom">            
-            <TextBox x:Name="newListItemName" Margin="0,0,125,0" TextWrapping="NoWrap" FontSize="24"/>
+        <Grid Height="72"
+              VerticalAlignment="Bottom"
+              Background="{StaticResource PhoneBackgroundBrush}">    
+            
+            <TextBox x:Name="newListItemName" Margin="0,0,125,0" TextWrapping="NoWrap" FontSize="24"
+                     GotFocus="newListItemName_GotFocus"/>
             <Button Content="add" HorizontalAlignment="Right" Width="130" Click="Button_Add_Click"/>
         </Grid>
 	

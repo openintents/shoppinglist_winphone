@@ -143,7 +143,7 @@
 					</Border>
                     
 					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">
-                        <toolkit:ToggleSwitch Name="ResetQuality"
+                        <toolkit:ToggleSwitch Name="ResetQuantity"
                                               IsChecked="{Binding Source={StaticResource Settings}, Path=ResetQuantitySettings, Mode=TwoWay}">
                             <toolkit:ToggleSwitch.HeaderTemplate>
                                 <DataTemplate>

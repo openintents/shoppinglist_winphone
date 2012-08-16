@@ -452,6 +452,11 @@ namespace OIShoppingListWinPhone
             
         }
 
+        private void DownloadButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            e.Handled = true;
+        }
+
         
     }
 

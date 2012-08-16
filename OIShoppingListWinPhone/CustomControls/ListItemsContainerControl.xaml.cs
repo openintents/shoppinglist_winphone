@@ -21,6 +21,7 @@ namespace OIShoppingListWinPhone.CustomLayout
 
         private void ItemContainer_Loaded(object sender, RoutedEventArgs e)
         {
+            //To displaying currently selected item in the center of page
             if (this.ItemContainer.SelectedItem != null)
                 this.ItemContainer.ScrollIntoView(this.ItemContainer.SelectedItem);
         }

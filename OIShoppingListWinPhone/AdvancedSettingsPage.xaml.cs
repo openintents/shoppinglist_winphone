@@ -59,7 +59,7 @@ namespace OIShoppingListWinPhone
                 this.TrackPerStorePrices.IsChecked = App.Settings.TrackPerStorePricesSettings;
                 this.QuickEditMode.IsChecked = App.Settings.QuickEditModeSettings;
                 this.Filters.IsChecked = App.Settings.FiltersSettings;
-                this.ResetQuality.IsChecked = App.Settings.ResetQuantitySettings;
+                this.ResetQuantity.IsChecked = App.Settings.ResetQuantitySettings;
 
                 this.ShowPrice.IsChecked = App.Settings.ShowPriceSettings;
                 this.ShowTags.IsChecked = App.Settings.ShowTagsSettings;

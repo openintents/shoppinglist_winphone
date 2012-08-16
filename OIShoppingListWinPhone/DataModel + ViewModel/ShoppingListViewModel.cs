@@ -89,6 +89,33 @@ namespace OIShoppingListWinPhone.ViewModel
             listDB.SubmitChanges();
         }
 
+        public void SaveItemStatus(ShoppingListItem item, bool status)
+        {
+            item.Status = status ? 1 : 0;
+            item.List.FilterItemsCollection();
+            listDB.SubmitChanges();            
+        }
+
+        public void UpdateListFilterTag(ShoppingList list, string filterTag)
+        {
+            if (list != null)
+            {
+                var listInDB = listDB.Lists.Where(c => c.ListID == list.ListID).FirstOrDefault();
+                listInDB.FilterTag = filterTag;
+                listDB.SubmitChanges();
+            }
+        }
+
+        public void UpdateListFilterStore(ShoppingList list, string filterStore)
+        {
+            if (list != null)
+            {
+                var listInDB = listDB.Lists.Where(c => c.ListID == list.ListID).FirstOrDefault();
+                listInDB.FilterStore = filterStore;
+                listDB.SubmitChanges();
+            }
+        }
+
         public void UpdateItemStatus(ShoppingList currentList, ShoppingListItem item)
         {
             ShoppingListItem itemInDB = listDB.ListItems.Where(i => i.ItemID == item.ItemID).FirstOrDefault();

@@ -86,6 +86,10 @@ namespace OIShoppingListWinPhone
                 priority,
                 this.itemNote);
 
+            //Filter list items collection with adding new item to list
+            ShoppingList list = App.ViewModel.ShoppingLists.Where(l => l.ListID == this.listID).FirstOrDefault();
+            list.FilterItemsCollection();
+
             MessageBox.Show("Data was successfully saved", "Information", MessageBoxButton.OK);
             NavigationService.GoBack();
         }

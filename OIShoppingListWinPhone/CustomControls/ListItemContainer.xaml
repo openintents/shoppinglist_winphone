@@ -4,18 +4,31 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
-    
+    xmlns:settings="clr-namespace:OIShoppingListWinPhone.Settings"
+    xmlns:utils="clr-namespace:OIShoppingListWinPhone.Utils"
+    xmlns:effects="clr-namespace:OIShoppingListWinPhone.Effects"
+             
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     d:DesignHeight="100" d:DesignWidth="480">
 
+    <UserControl.Resources>
+        <settings:ApplicationSettings x:Key="Settings"/>
+    </UserControl.Resources>
+
     <Grid x:Name="ElementRoot">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+        <Grid.Resources>
+            <utils:FloatToVisibilityConverter x:Key="floatToVisibilityConverter"/>
+            <utils:FloatToHeightConverter x:Key="floatToHeightConverter"/>
+            <utils:BoolToVisibilityPositiveConverter x:Key="boolToVisibilityPositiveConverter"/>
+            <utils:IntToBoolConverter x:Key="intToBoolConverter"/>
+        </Grid.Resources>
         
         <CheckBox Grid.Column="0"
                   Width="60"
@@ -23,6 +36,7 @@
                   Margin="-5,-12,10,15"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
+                  IsChecked="{Binding Status, Mode=TwoWay, Converter={StaticResource intToBoolConverter}}"
                   Checked="ItemCheckBox_Checked"
                   Unchecked="ItemCheckBox_Unchecked">
             <CheckBox.RenderTransform>
@@ -41,7 +55,7 @@
 
                     <!--Context Menu for ListBox Item-->
                     <toolkit:ContextMenuService.ContextMenu>
-                        <toolkit:ContextMenu VerticalOffset="-20">
+                        <toolkit:ContextMenu VerticalOffset="-50">
                             <toolkit:MenuItem Height="45" Header="edit item" Click="element_OnMenuEditItemClick">
                                 <toolkit:MenuItem.HeaderTemplate>
                                     <DataTemplate>
@@ -102,8 +116,26 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="{Binding Priority}" Margin="5,0,5,0" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <TextBlock Grid.Column="1" Text="{Binding Quantity}" Margin="5,0,5,0" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <TextBlock Name="ItemPriority"
+                                   Grid.Column="0"
+                                   Text="{Binding Priority}" 
+                                   Margin="5,0,5,0"
+                                   TextWrapping="Wrap" 
+                                   Style="{StaticResource PhoneTextSubtleStyle}" 
+                                   HorizontalAlignment="Left" 
+                                   VerticalAlignment="Center"
+                                   effects:TiltEffect.SuppressTilt="True"/>
+                        
+                        <TextBlock Name="ItemQuantity"
+                                   Grid.Column="1"
+                                   Text="{Binding Quantity}" 
+                                   Margin="5,0,5,0" 
+                                   TextWrapping="Wrap" 
+                                   Style="{StaticResource PhoneTextExtraLargeStyle}" 
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   effects:TiltEffect.SuppressTilt="True"/>
+                        
                         <TextBlock Grid.Column="2" Text="{Binding Units}" Margin="5,0,5,0" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                         <TextBlock Grid.Column="3" Text="{Binding ItemName}" Margin="5,0,5,0" TextWrapping="Wrap"  Style="{StaticResource PhoneTextExtraLargeStyle}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                         <Image Grid.Column="4" Height="64" Width="64"/>
@@ -113,8 +145,16 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
+                        
                         <TextBlock Grid.Column="0" Text="{Binding Tag}" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}"/>
-                        <TextBlock Grid.Column="1" Text="{Binding Price}" HorizontalAlignment="Right" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                        
+                        <TextBlock Grid.Column="1" 
+                                   Text="{Binding Price}" 
+                                   HorizontalAlignment="Right"
+                                   TextWrapping="Wrap" 
+                                   Style="{StaticResource PhoneTextSubtleStyle}"
+                                   Visibility="{Binding Price, Converter={StaticResource floatToVisibilityConverter}}"/>
+                    
                     </Grid>
                 </Grid>
             </StackPanel>

@@ -18,12 +18,31 @@ using OIShoppingListWinPhone.ViewModel;
 
 namespace OIShoppingListWinPhone.Utils
 {
+    public sealed class IntToBoolConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is int)
+                return (int)value == 1 ? true : false;
+
+            return false;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is bool)
+                return (bool)value ? 1 : 0;
+
+            return 0;
+        }
+    }
+
     /// <summary>
     /// Float to Visibility converter.
     /// Using as Binding Converter for CheckedPrice and TotalPrice
     ///  - if item price = 0 => Visibility = Collapsed, else => Visibility = Visible
     /// </summary>
-    public class FloatToVisibilityConverter : IValueConverter
+    public sealed class FloatToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -44,7 +63,7 @@ namespace OIShoppingListWinPhone.Utils
     /// Using as Binding Converter for Grid.Height (to rebuild the layout)
     ///  - if TotalPrice = 0 => Grid.Height = 0, else => Grid.Height = 25
     /// </summary>
-    public class FloatToHeightConverter : IValueConverter
+    public sealed class FloatToHeightConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -65,7 +84,7 @@ namespace OIShoppingListWinPhone.Utils
     /// When bool value = true => Visibility = Visible,
     /// else => Visibility = Collapsed
     /// </summary>
-    public class BoolToVisibilityPositiveConverter : IValueConverter
+    public sealed class BoolToVisibilityPositiveConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -86,7 +105,7 @@ namespace OIShoppingListWinPhone.Utils
     /// When bool value = true => Visibility = Collapsed,
     /// else => Visibility = Visible
     /// </summary>
-    public class BoolToVisibilityNegativeConverter : IValueConverter
+    public sealed class BoolToVisibilityNegativeConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -119,7 +138,7 @@ namespace OIShoppingListWinPhone.Utils
     {
         public int Compare(ShoppingListItem first, ShoppingListItem second)
         {
-            return 0;// -first.CreatedDate.CompareTo(second.CreatedDate);
+            return 0 - first.CreatedDate.CompareTo(second.CreatedDate);
         }
     }
     

@@ -12,7 +12,7 @@
     
     <Grid x:Name="LayoutRoot">
         <ListBox Name="ItemContainer" 
-                 ItemsSource="{Binding ListItems}"
+                 ItemsSource="{Binding SortedItemsCollection}"
                  Loaded="ItemContainer_Loaded">
 
             <ListBox.ItemContainerStyle>

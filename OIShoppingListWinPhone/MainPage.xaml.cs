@@ -61,7 +61,7 @@ namespace OIShoppingListWinPhone
             {
                 //Using Pivot layout for the MainPage
                 Control elem = new CustomFilterListControl();
-                LayoutRoot.Children.Insert(0, elem);
+                LayoutRoot.Children.Insert(0, elem);                
             }
             else
             {
@@ -90,7 +90,7 @@ namespace OIShoppingListWinPhone
                 {
                     //Using Pivot layout for the MainPage
                     Control elem = new CustomFilterListControl();
-                    LayoutRoot.Children.Insert(0, elem);
+                    LayoutRoot.Children.Insert(0, elem);                    
                 }
                 else
                 {
@@ -102,7 +102,7 @@ namespace OIShoppingListWinPhone
             else if (LayoutRoot.Children.Count == 2)
             {
                 Control currentControl = LayoutRoot.Children[0] as Control;
-                Type type = currentControl.GetType();
+                Type type = currentControl.GetType();                
 
                 //Displaying Pivot control
                 if ((bool)App.Settings.FiltersSettings && type == typeof(CustomPivotControl))
@@ -385,6 +385,8 @@ namespace OIShoppingListWinPhone
                         if (exItem != null)
                             App.ViewModel.UpdateItemStatus(currentList, exItem);
                     }
+                    //Filter list items collection with adding new item to list
+                    currentList.FilterItemsCollection();
                 }
                 //Erasing 'new item's name' TextBox
                 newListItemName.Text = "";
@@ -403,11 +405,10 @@ namespace OIShoppingListWinPhone
             DependencyObject listContainer = LayoutRoot.Children[0];
             Grid grid = VisualTreeHelper.GetChild(listContainer, 0) as Grid;
             UIElement obj = grid.Children[0] as ItemsControl;
-            ShoppingList currentList = new ShoppingList();
             if (obj is Pivot)
-                return currentList = (obj as Pivot).SelectedItem as ShoppingList;
+                return (obj as Pivot).SelectedItem as ShoppingList;
             else if (obj is ListPicker)
-                return currentList = (obj as ListPicker).SelectedItem as ShoppingList;
+                return (obj as ListPicker).SelectedItem as ShoppingList;
             else
                 return null;
         }
@@ -491,6 +492,11 @@ namespace OIShoppingListWinPhone
             }
 
             base.OnBackKeyPress(e);
+        }
+
+        private void newListItemName_GotFocus(object sender, RoutedEventArgs e)
+        {
+            int y = 0;
         }
     }
 }

@@ -73,7 +73,6 @@
     <Compile Include="AdvancedSettingsPage.xaml.cs">
       <DependentUpon>AdvancedSettingsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CustomControls\ComboBox.cs" />
     <Compile Include="CustomControls\CustomFilterListContro.xaml.cs">
       <DependentUpon>CustomFilterListContro.xaml</DependentUpon>
     </Compile>
@@ -199,10 +198,6 @@
     <Page Include="StoreItemPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\Generic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

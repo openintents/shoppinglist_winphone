@@ -175,7 +175,8 @@
                                            Text="{Binding Name}"
                                            HorizontalAlignment="Left"
                                            Margin="5,0,0,0"
-                                           FontSize="28"/>
+                                           FontSize="28"
+                                           Foreground="{StaticResource PhoneForegroundBrush}"/>
                                 
                                 <Grid Grid.Column="1"
                                       Grid.Row="1">
@@ -189,7 +190,8 @@
                                                HorizontalAlignment="Left"
                                                Margin="5,0,0,0"
                                                FontSize="18"
-                                               FontWeight="SemiBold"/>
+                                               FontWeight="SemiBold"
+                                               Foreground="{StaticResource PhoneForegroundBrush}"/>
 
                                     <TextBlock Grid.Column="1"
                                                Text="{Binding UserName}"
@@ -197,7 +199,8 @@
                                                TextWrapping="Wrap"
                                                FontSize="18"
                                                FontWeight="Light"
-                                               Margin="5,0,0,0"/>
+                                               Margin="5,0,0,0"
+                                               Foreground="{StaticResource PhoneForegroundBrush}"/>
 
                                 </Grid>
                                 
@@ -206,18 +209,20 @@
                                            Text="{Binding CreatedDate}"
                                            HorizontalAlignment="Left"
                                            FontSize="18"
-                                           Margin="5,0,0,0"/>
+                                           Margin="5,0,0,0"
+                                           Foreground="{StaticResource PhoneForegroundBrush}"/>
                                 
                                 <Button Grid.Row="0"
                                         Grid.Column="2"
                                         Grid.RowSpan="2"
                                         BorderThickness="0"
                                         Name="DownloadButton"
+                                        Tap="DownloadButton_Tap"
                                         Click="DownloadButton_Click">
                                     <Button.Content>
-                                        <Image Width="64"
-                                               Height="64"
-                                               Margin="-64,-64,-64,-64"
+                                        <Image Width="20"
+                                               Height="20"
+                                               Margin="-50,-50,-50,-50"
                                                Source="/Images/download.png"/>
                                     </Button.Content>
                                 </Button>
@@ -226,9 +231,10 @@
                                            Grid.Column="2"
                                            Text="Download"
                                            TextWrapping="Wrap"
-                                           FontSize="15"
+                                           FontSize="12"
                                            VerticalAlignment="Bottom"
-                                           HorizontalAlignment="Center"/>
+                                           HorizontalAlignment="Center"
+                                           Foreground="{StaticResource PhoneForegroundBrush}"/>
 
                             </Grid>
                         </DataTemplate>

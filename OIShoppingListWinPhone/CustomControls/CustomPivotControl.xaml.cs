@@ -10,6 +10,8 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
+using OIShoppingListWinPhone.DataModel;
+
 namespace OIShoppingListWinPhone.CustomLayout
 {
     public partial class CustomPivotControl : UserControl
@@ -17,6 +19,6 @@ namespace OIShoppingListWinPhone.CustomLayout
         public CustomPivotControl()
         {
             InitializeComponent();
-        }        
+        }
     }
 }

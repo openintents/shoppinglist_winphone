@@ -31,6 +31,7 @@
         <controls:Pivot Name="PivotControl"
                         ItemsSource="{Binding ShoppingLists}"
                         Title="OI SHOPPING LIST"
+                        Margin="0,0,0,5"
                         SelectedIndex="{Binding Source={StaticResource Settings}, Path=SelectedListIndexSetting, Mode=TwoWay}">
            <controls:Pivot.HeaderTemplate>
                 <DataTemplate>
@@ -45,10 +46,11 @@
         </controls:Pivot>
         <!--Pivot Control-->
 
-        <Grid Grid.Row="1" 
-              Height="{Binding TotalPrice, Converter={StaticResource floatToHeightConverter}}"
-              Margin="12,0,12,65" 
+        <Grid Name="BottomPanel"
+              Grid.Row="1" 
+              Margin="12,0,12,67" 
               VerticalAlignment="Bottom"
+              Height="{Binding TotalPrice, Converter={StaticResource floatToHeightConverter}}"
               DataContext="{Binding ElementName=PivotControl, Path=SelectedItem}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="60"/>
@@ -56,71 +58,32 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Grid Grid.Column="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0"
+                       Text="{Binding CheckedCountString}" 
+                       x:Name="checkItemsCount" 
+                       Margin="0,0,5,0"  
+                       FontSize="18" 
+                       TextAlignment="Left"  
+                       TextWrapping="Wrap"
+                       Visibility="{Binding CheckedPrice, Converter={StaticResource floatToVisibilityConverter}}"/>
 
-                <TextBlock Grid.Column="0"
-                           Text="#"
-                           FontSize="18" 
-                           TextAlignment="Center" 
-                           Visibility="{Binding CheckedPrice, Converter={StaticResource floatToVisibilityConverter}}"/>
-                <TextBlock Grid.Column="1"
-                           Text="{Binding CheckedCount}" 
-                           x:Name="checkItemsCount" 
-                           Margin="0,0,5,0"  
-                           FontSize="18" 
-                           TextAlignment="Left"  
-                           TextWrapping="Wrap"
-                           Visibility="{Binding CheckedPrice, Converter={StaticResource floatToVisibilityConverter}}"/>
-            </Grid>
-
-            <Grid Grid.Column="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Grid.Column="0"
-                           Text="Checked:"
-                           FontSize="18" 
-                           TextAlignment="Center" 
-                           Visibility="{Binding CheckedPrice, Converter={StaticResource floatToVisibilityConverter}}"/>
-
-                <TextBlock Grid.Column="1"
-                       Text="{Binding CheckedPrice}" 
+            <TextBlock Grid.Column="1"
+                       Text="{Binding CheckedPriceString}" 
                        x:Name="checkItemsPrice" 
                        Margin="5,0,5,0"  
                        FontSize="18" 
                        TextAlignment="Left" 
                        TextWrapping="Wrap"
-                       Visibility="{Binding CheckedPrice, Converter={StaticResource floatToVisibilityConverter}}"/>                
-            </Grid>
+                       Visibility="{Binding CheckedPrice, Converter={StaticResource floatToVisibilityConverter}}"/>
 
-            <Grid Grid.Column="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Grid.Column="0"
-                           Text="Total:"
-                           FontSize="18" 
-                           TextAlignment="Center" 
-                           Visibility="{Binding TotalPrice, Converter={StaticResource floatToVisibilityConverter}}"/>
-
-                <TextBlock Grid.Column="1"
-                       Text="{Binding TotalPrice}" 
+            <TextBlock Grid.Column="2"
+                       Text="{Binding TotalPriceString}" 
                        x:Name="totalItemsPrice" 
                        Margin="1,0,5,0" 
                        FontSize="18" 
-                       TextAlignment="Right" 
+                       TextAlignment="Right"
                        TextWrapping="Wrap"
                        Visibility="{Binding TotalPrice, Converter={StaticResource floatToVisibilityConverter}}"/>
-                
-            </Grid>
             
         </Grid>
     </Grid>
