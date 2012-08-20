@@ -18,6 +18,7 @@ using Microsoft.Live;
 using System.Collections.ObjectModel;
 
 using OIShoppingListWinPhone.DataModel;
+using OIShoppingListWinPhone.CustomLayout;
 
 namespace OIShoppingListWinPhone
 {
@@ -28,12 +29,17 @@ namespace OIShoppingListWinPhone
         //Live Connect Client handler
         private LiveConnectClient client;
 
+        //Private control for input new list's name and edeting name of existing list
+        private EditNameDialog editNameDlg;
+
         //SkyDrive ID of 'OI Shopping List' folder
         private string folder_id = string.Empty;
         //String body of uploading file
         private string fileBody = string.Empty;
         //String file name of uploading file
         private string fileName = string.Empty;
+        //Rename file ID
+        private string renameFileId = string.Empty;
         //Private field for saving collection of SkyDrive files
         private ObservableCollection<SkyDriveFileInfo> SkyDriveFilesCollection
             = new ObservableCollection<SkyDriveFileInfo>();
@@ -242,14 +248,28 @@ namespace OIShoppingListWinPhone
                         //If 'Rewrite existing file?' message box result == OK -> delete existing file
                         //and upload new
                         //At first it's needed to get existing file ID
-                        LiveConnectClient client = new LiveConnectClient(LiveSession);
-                        //client.GetCompleted += new EventHandler<LiveOperationCompletedEventArgs>(client_GetDataFolderEntriesCompleted);
-                        //client.GetAsync(folder_id + "/files");
+                        if (this.SkyDriveFilesCollection != null)
+                        {
+                            SkyDriveFileInfo fi = this.SkyDriveFilesCollection.Where(f => f.Name ==
+                                this.fileName).FirstOrDefault();
+
+                            //Set SystemTray.ProgressIndicator
+                            ProgressIndicator prog = new ProgressIndicator();
+                            prog.IsIndeterminate = true;
+                            prog.IsVisible = true;
+                            prog.Text = "File uploading...";
+                            SystemTray.SetProgressIndicator(this, prog);
+                            
+                            LiveConnectClient client = new LiveConnectClient(LiveSession);
+                            client.DeleteCompleted += new EventHandler<LiveOperationCompletedEventArgs>(client_DeleteExistingCompleted);
+                            client.DeleteAsync(fi.FileID);
+                        }
                     }
                     else
                     {
                         //If 'Rewrite existing file?' message box result == Cancel -> stop uploading file.
-                        //In this case user will be able to rename existing 
+                        //In this case user will be able to rename existing
+                        SystemTray.ProgressIndicator.IsVisible = false;
                     }
                 }
                 else
@@ -260,30 +280,19 @@ namespace OIShoppingListWinPhone
             }
         }
 
-        /*void client_GetDataFolderEntriesCompleted(object sender, LiveOperationCompletedEventArgs e)
+        void client_DeleteExistingCompleted(object sender, LiveOperationCompletedEventArgs e)
         {
             if (e.Error == null)
             {
-                string exFileID = string.Empty;
-                exFileID = this.GetUploadedFileID(fileName + ".txt", e);
-                if (exFileID != string.Empty)
-                {
-                    //Deleting existing file
-                    LiveConnectClient delCilent = new LiveConnectClient(LiveSession);
-                }
-                else
-                {
-                }
+                SystemTray.ProgressIndicator.IsVisible = false;
+                this.UploadFile();
             }
             else
-            {
-                MessageBox.Show("There is an error occur during file uploading: " + e.Error.Message, "Warning", MessageBoxButton.OK);
-                SystemTray.ProgressIndicator.IsVisible = false;
-            }
-        }*/
+                MessageBox.Show("There is an error occur during loading data from SkyDrive: " + e.Error.Message, "Warning", MessageBoxButton.OK);
+        }
 
         /// <summary>
-        /// Get unique of uloaded file
+        /// Get unique ID of uloaded file
         /// </summary>
         /// <param name="existingFileName">String name of uploaded file</param>
         /// <param name="e">Live operation completed event argument</param>
@@ -406,19 +415,98 @@ namespace OIShoppingListWinPhone
         private void RenameMenu_Click(object sender, RoutedEventArgs e)
         {
             MenuItem menu = sender as MenuItem;
-            DependencyObject obj = menu.Tag as DependencyObject;
-            while (obj != null && !(obj is ListBoxItem))
-                obj = VisualTreeHelper.GetParent(obj);
+            SkyDriveFileInfo info = menu.DataContext as SkyDriveFileInfo;
+            this.renameFileId = info.FileID;
 
-            if (obj != null)
+            editNameDlg = new EditNameDialog();
+
+            //Handlers for processing dialog's events
+            editNameDlg.ButtonOK.Click += new RoutedEventHandler(ButtonOK_Click);
+            editNameDlg.ButtonCancel.Click += new RoutedEventHandler(ButtonCancel_Click);
+            editNameDlg.CollapsedVisualState.Storyboard.Completed += new EventHandler(Storyboard_Completed);
+
+            //Actually activating the dialog
+            LayoutRoot.Children.Add(editNameDlg);
+            editNameDlg.Activate(EditNameDialog.EditNameDialogMode.RenamingList, info.Name);
+        }
+
+        void Storyboard_Completed(object sender, EventArgs e)
+        {
+            LayoutRoot.Children.Remove(editNameDlg);
+        }
+
+        void ButtonCancel_Click(object sender, RoutedEventArgs e)
+        {
+            editNameDlg.Deactivate();
+        }
+
+        void ButtonOK_Click(object sender, RoutedEventArgs e)
+        {
+            //Is 'new list name' TextBox.Text Empty?
+            if (editNameDlg.DialogData.Text.Trim() != String.Empty)
             {
-                SkyDriveFileInfo info = SkyDriveDataListBox.SelectedItem as SkyDriveFileInfo;
+                Dictionary<string, object> fileData = new Dictionary<string, object>();
+                fileData.Add("name", editNameDlg.DialogData.Text.Trim() + ".txt");
+
+                editNameDlg.Deactivate();
+
+                //Set SystemTray.ProgressIndicator
+                ProgressIndicator prog = new ProgressIndicator();
+                prog.IsIndeterminate = true;
+                prog.IsVisible = true;
+                prog.Text = "File renaming...";
+                SystemTray.SetProgressIndicator(this, prog);
+
+                LiveConnectClient client = new LiveConnectClient(this.LiveSession);
+                client.PutCompleted += new EventHandler<LiveOperationCompletedEventArgs>(client_PutCompleted);
+                client.PutAsync(this.renameFileId, fileData);
             }
+        }
+
+        void client_PutCompleted(object sender, LiveOperationCompletedEventArgs e)
+        {
+            if (e.Error == null)
+            {                
+                //Update SkyDrive data list
+                this.DownloadSkyDriveDataList();
+            }
+            else
+                MessageBox.Show("There is an error occur during loading data from SkyDrive: " + e.Error.Message, "Warning", MessageBoxButton.OK);
+            SystemTray.ProgressIndicator.IsVisible = false;
         }
 
         private void DeleteMenu_Click(object sender, RoutedEventArgs e)
         {
+            if (MessageBox.Show("Are you sure you want to delete this file?", "Delete", MessageBoxButton.OKCancel)
+                == MessageBoxResult.OK)
+            {
+                MenuItem menu = sender as MenuItem;
+                SkyDriveFileInfo info = menu.DataContext as SkyDriveFileInfo;
 
+                //Set SystemTray.ProgressIndicator
+                ProgressIndicator prog = new ProgressIndicator();
+                prog.IsIndeterminate = true;
+                prog.IsVisible = true;
+                prog.Text = "File deleting...";
+                SystemTray.SetProgressIndicator(this, prog);
+
+                LiveConnectClient client = new LiveConnectClient(this.LiveSession);
+                client.DeleteCompleted += new EventHandler<LiveOperationCompletedEventArgs>(client_DeleteCompleted);
+                client.DeleteAsync(info.FileID);
+            }
+        }
+
+        void client_DeleteCompleted(object sender, LiveOperationCompletedEventArgs e)
+        {
+            if (e.Error == null)
+            {
+                SystemTray.ProgressIndicator.IsVisible = false;
+                //Update SkyDrive data list
+                this.DownloadSkyDriveDataList();
+            }
+            else
+                MessageBox.Show("There is an error occur during loading data from SkyDrive: " + e.Error.Message, "Warning", MessageBoxButton.OK);
+            SystemTray.ProgressIndicator.IsVisible = false;
         }
 
         //SkyDriveDataListBox.Item.Grid Taped event handler.
@@ -446,18 +534,17 @@ namespace OIShoppingListWinPhone
             }
         }
 
-        //Download button click event handler
-        private void DownloadButton_Click(object sender, RoutedEventArgs e)
+        protected override void OnBackKeyPress(CancelEventArgs e)
         {
-            
-        }
+            //Deactivate EditNameDialog and supress GoBack() navigation
+            if (LayoutRoot.Children.Contains(editNameDlg))
+            {
+                editNameDlg.Deactivate();
+                e.Cancel = true;
+            }
 
-        private void DownloadButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            e.Handled = true;
+            base.OnBackKeyPress(e);
         }
-
-        
     }
 
     /// <summary>

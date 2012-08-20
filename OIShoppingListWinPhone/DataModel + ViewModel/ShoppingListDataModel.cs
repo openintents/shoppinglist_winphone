@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 
 using OIShoppingListWinPhone.Settings;
 using OIShoppingListWinPhone.Utils;
+using System.Windows.Data;
 
 namespace OIShoppingListWinPhone.DataModel
 {
@@ -76,10 +77,13 @@ namespace OIShoppingListWinPhone.DataModel
                 {
                     NotifyPropertyChanging("FilterTag");
                     this._filterTag = value;
+
+                    //This method calls when the FilterTag changing with loading of application
+                    //and when the TagsSelector ListPicker change it's selection
+                    //(ShoppingList.FilterTag is binded for it as ListPicker.SelectedItem)
+                    this.FilterItemsCollection();
+
                     NotifyPropertyChanged("FilterTag");
-                    //This method call SortedItemsCollection SET.
-                    //Thus, all UI will be updated.
-                    this.FilterItemsCollection();///////////////////////////////////////////////////////////ChangeTagFilter
                 }
             }
         }
@@ -101,9 +105,11 @@ namespace OIShoppingListWinPhone.DataModel
                     NotifyPropertyChanging("FilterStore");
                     this._filterStore = value;
                     NotifyPropertyChanged("FilterStore");
-                    //This method call SortedItemsCollection SET.
-                    //Thus, all UI will be updated.
-                    this.FilterItemsCollection();/////////////////////////////////////////////////////////ChangeStoreFilter
+
+                    //This method calls when the FilterStore changing with loading of application
+                    //and when the StoreSelector ListPicker change it's selection
+                    //(ShoppingList.FilterStore is binded for it as ListPicker.SelectedItem)
+                    this.FilterItemsCollection();
                 }
             }
         }
@@ -314,6 +320,15 @@ namespace OIShoppingListWinPhone.DataModel
             }
         }
 
+        //List unique tags of all list items private field
+        private List<string> _tags;
+
+        /// <summary>
+        /// Field for indicating whether list tags of List<string> was initialised.
+        /// If change this field to FALSE -> list tags of List<string> with the next GET will be initialised.
+        /// </summary>
+        private bool bTags = false;
+
         /// <summary>
         /// List of unique tags of all list items
         /// </summary>
@@ -321,21 +336,24 @@ namespace OIShoppingListWinPhone.DataModel
         {
             get
             {
-                List<string> tags = new List<string>();
-                foreach (ShoppingListItem item in this.ListItems)
-                {
-                    foreach (string tag in item.Tags)
-                    {
-                        if (!tags.Contains(tag))
-                            tags.Add(tag);
-                    }
-                }
-                tags.Sort();
-                //Adding an '[Empty]' string to list for displaying in Custom Filter List Control
-                tags.Insert(0, "Tag [Empty]");
-                return tags;
+                if (!bTags)
+                    //Method calls with the first Tags GET when the application is starting
+                    //(when the bTags = false)
+                    this.UpdateListTags();
+
+                return this._tags;
+            }
+            set
+            {
+                NotifyPropertyChanging("Tags");
+                this._tags = value;
+                NotifyPropertyChanged("Tags");
             }
         }
+
+        private List<string> _storeLabels;
+
+        private bool bStoreLabels = false;
 
         /// <summary>
         /// List of unique list stores names
@@ -344,14 +362,15 @@ namespace OIShoppingListWinPhone.DataModel
         {
             get
             {
-                List<string> stores = new List<string>();
-                foreach (ShoppingListStore store in this._listStores)
-                {
-                    stores.Add(store.StoreName);
-                }
-                //Adding an '[Empty]' string to list for displaying in Custom Filter List Control
-                stores.Insert(0, "Store [Empty]");
-                return stores;
+                if (!bStoreLabels)
+                    this.UpdateListStoreLabels();
+                return this._storeLabels;
+            }
+            set
+            {
+                NotifyPropertyChanging("StoreLabels");
+                this._storeLabels = value;
+                NotifyPropertyChanged("StoreLabels");
             }
         }
 
@@ -411,7 +430,7 @@ namespace OIShoppingListWinPhone.DataModel
 
             foreach (ShoppingListItem item in _listItems)
             {
-                if (item.Status == (int)ShoppingListItem.StatusEnumerator.Checked)
+                if (item.Status == 1)
                 {
                     chCount++;
                     chPrice += item.Price;
@@ -425,7 +444,46 @@ namespace OIShoppingListWinPhone.DataModel
         }
 
         /// <summary>
-        /// Filter existing ListItems collection with corresponding application settings
+        /// Updating ShoppingList.Tags property. 
+        /// Calls when the ShoppingList.ListItems collection was changed and 
+        /// it's necessary to update list of unique list tags
+        /// </summary>
+        public void UpdateListTags()
+        {
+            List<string> tags = new List<string>();
+            //Enumerating all shopping list items and adding all
+            //unique tags to Shoppingist.Tags List
+            foreach (ShoppingListItem item in this.ListItems)
+            {
+                foreach (string tag in item.Tags)
+                {
+                    if (!tags.Contains(tag))
+                        tags.Add(tag);
+                }
+            }
+            tags.Sort();
+            //Adding an '[Empty]' string to list for displaying in Custom Filter List Control
+            tags.Insert(0, "Tag [Empty]");
+            bTags = true;
+            this.Tags = tags;
+        }
+
+        public void UpdateListStoreLabels()
+        {
+            List<string> stores = new List<string>(); 
+            
+            foreach (ShoppingListStore store in this._listStores) 
+            { 
+                stores.Add(store.StoreName); 
+            }                
+            //Adding an '[Empty]' string to list for displaying in Custom Filter List Control
+            stores.Insert(0, "Store [Empty]");
+
+            this._storeLabels = stores;
+        }
+
+        /// <summary>
+        /// Filter existing ListItems collection with corresponding application settings.
         /// If you filter your collection with this method - collection will be sorted automatically.
         /// To prevent doubling of sorting DON'T call SortItemsCollection method after it.
         /// </summary>
@@ -433,28 +491,32 @@ namespace OIShoppingListWinPhone.DataModel
         {
             IEnumerable<ShoppingListItem> collection = new ObservableCollection<ShoppingListItem>();
             //Select all NOT picked items from list items collection
-            collection = from item in this.ListItems
-                         where item.Status < 2
-                         select item;
+            if (App.Settings.HideCheckedItemsSettings)
+                collection = from item in this.ListItems
+                             where item.Status == 0
+                             select item;
+            else
+                collection = from item in this.ListItems
+                             where item.Status != 2
+                             select item;
 
             //Filtering collection
-            if (FilterTag != "Tag [Empty]")
+            if (_filterTag != "Tag [Empty]")
                 //Selecting list items that contains current tag
                 collection = from item in collection
                              where item.Tags.Contains(this._filterTag)
                              select item;
 
-            if (FilterStore != "Store [Empty]")
+            if (_filterStore != "Store [Empty]")
                 //Selecting list items that contains current store
                 collection = from item in collection
                              from item_store in item.ItemsStores
-                             where item_store.Store.StoreName == FilterStore
+                             where item_store.Store.StoreName == this._filterStore
                              select item;
 
-            this._sortedItemsCollection = collection;
             this.bFiltered = true;
-            //If items collection has just filtered - it is necessary to sort this
-            //collection.
+            this._sortedItemsCollection = collection;
+            //If items collection has just filtered - it is necessary to sort this collection.
             //Sort items collection
             this.SortItemsCollection();
         }
@@ -465,10 +527,10 @@ namespace OIShoppingListWinPhone.DataModel
         public void SortItemsCollection()
         {
             //Collection of list items occur if current sort order does not match with
-            //applicaion settings sort order (actually, after settings chenging)
+            //applicaion settings sort order (actually, after settings chenging)            
+            IEnumerable<ShoppingListItem> collection = this._sortedItemsCollection;
 
             //Collection sorting
-            IEnumerable<ShoppingListItem> collection = this._sortedItemsCollection;
             switch (App.Settings.SortOrderSetting)
             {
                 case (int)ApplicationSettings.SortOrderSettings.Alphabetical:
@@ -513,7 +575,6 @@ namespace OIShoppingListWinPhone.DataModel
         {
             _listItems = new EntitySet<ShoppingListItem>();
             _listStores = new EntitySet<ShoppingListStore>();
-            _sortedItemsCollection = new ObservableCollection<ShoppingListItem>();
 
             CheckedCount = 0;
             CheckedPrice = 0.0F;
@@ -640,9 +701,12 @@ namespace OIShoppingListWinPhone.DataModel
                     NotifyPropertyChanging("Status");
                     this._status = value;
                     NotifyPropertyChanged("Status");
-                    //Updating list CheckedCount, CheckedPrice and TotalPrice fields
+
                     if (this.List != null)
+                    {
+                        //Updating list CheckedCount, CheckedPrice and TotalPrice fields
                         this.List.UpdatePrice();
+                    }
                 }
             }
         }
@@ -664,7 +728,27 @@ namespace OIShoppingListWinPhone.DataModel
         [Column(DbType = "FLOAT")]
         public float Price
         {
-            get { return this._price; }
+            get
+            {
+                if (App.Settings.TrackPerStorePricesSettings)
+                {
+                    if (this._itemsStores != null)
+                    {
+                        IEnumerable<float> prices = from store in this._itemsStores
+                                                    select store.StorePrice;
+                        float minPrice = prices.ElementAt(0);
+                        foreach (float price in prices)
+                        {
+                            if (price < minPrice)
+                                minPrice = price;
+                        }
+                        return minPrice;
+                    }
+                    return 0.00F;
+                }
+                else
+                    return this._price; 
+            }
             set
             {
                 if (this._price != value)
@@ -672,9 +756,12 @@ namespace OIShoppingListWinPhone.DataModel
                     NotifyPropertyChanging("Price");
                     this._price = value;
                     NotifyPropertyChanged("Price");
-                    //Updating list CheckedCount, CheckedPrice and TotalPrice fields
+
                     if (this.List != null)
+                    {
+                        //Updating list CheckedCount, CheckedPrice and TotalPrice fields
                         this.List.UpdatePrice();
+                    }
                 }
             }
         }
@@ -759,6 +846,8 @@ namespace OIShoppingListWinPhone.DataModel
                     NotifyPropertyChanging("Tag");
                     this._tag = value;
 
+                    //If item Tag property was chnaged -> update list
+                    //of parsed unique item tags
                     List<string> tags = new List<string>();
                     string[] tags_array = this.Tag.Split(',');
                     foreach (string tag in tags_array)
@@ -848,6 +937,14 @@ namespace OIShoppingListWinPhone.DataModel
             {
                 NotifyPropertyChanging("Tags");
                 this._Tags = value;
+
+                if (this.List != null)
+                {
+                    //When the list of parsed unique item tags was seted
+                    // -> update shopping list (the owner of current item) unique tags
+                    this.List.UpdateListTags();
+                }
+
                 NotifyPropertyChanged("Tags");
             }
         }
@@ -867,10 +964,9 @@ namespace OIShoppingListWinPhone.DataModel
                 this._list.Entity = value;
                 if (value != null)
                 {
+                    NotifyPropertyChanging("ListID");
                     this._listId = value.ListID;
-                    //Updating list CheckedCount, CheckedPrice and TotalPrice fields
-                    //with adding new item to list
-                    this.List.UpdatePrice();                    
+                    NotifyPropertyChanged("ListID");
                 }
             }
         }
@@ -1162,6 +1258,48 @@ namespace OIShoppingListWinPhone.DataModel
                     NotifyPropertyChanging("StoreID");
                     this._storeId = value;
                     NotifyPropertyChanged("StoreID");
+                }
+            }
+        }
+
+        //Item per-store price private field
+        private float _storePrice;
+
+        /// <summary>
+        /// Item price
+        /// </summary>
+        [Column(DbType = "FLOAT")]
+        public float StorePrice
+        {
+            get { return this._storePrice; }
+            set
+            {
+                if (this._storePrice != value)
+                {
+                    NotifyPropertyChanging("StorePrice");
+                    this._storePrice = value;
+                    NotifyPropertyChanged("StorePrice");
+                }
+            }
+        }
+
+        //Item units private field
+        private string _aisle;
+
+        /// <summary>
+        /// Item units (string with maximum length = 100 characters)
+        /// </summary>
+        [Column(DbType = "NVARCHAR(100)")]
+        public string Aisle
+        {
+            get { return this._aisle; }
+            set
+            {
+                if (this._aisle != value)
+                {
+                    NotifyPropertyChanging("Aisle");
+                    this._aisle = value;
+                    NotifyPropertyChanged("Aisle");
                 }
             }
         }

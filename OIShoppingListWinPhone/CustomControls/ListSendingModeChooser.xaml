@@ -124,9 +124,8 @@
     		BorderBrush="{StaticResource PhoneForegroundBrush}"
     		BorderThickness="2"
     		CornerRadius="4"
-    		Margin="0,140,0,0"
     		HorizontalAlignment="Center"
-    		VerticalAlignment="Top"
+    		VerticalAlignment="Center"
             RenderTransformOrigin="0.5,0.5"
             Height="315">
         	<Border.RenderTransform>

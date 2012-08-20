@@ -5,6 +5,10 @@
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:custom="clr-namespace:OIShoppingListWinPhone"
+    xmlns:settings="clr-namespace:OIShoppingListWinPhone.Settings"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:effects="clr-namespace:OIShoppingListWinPhone.Effects"
+    xmlns:utils="clr-namespace:OIShoppingListWinPhone.Utils"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
@@ -12,55 +16,126 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="PortraitOrLandscape"  Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
-    shell:SystemTray.IsVisible="True">
+    shell:SystemTray.IsVisible="True"
+    effects:TiltEffect.IsTiltEnabled="True">
+
+    <!--Implementation for Page navigation transitions-->
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:SlideTransition Mode="SlideRightFadeIn"/>
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:SlideTransition Mode="SlideLeftFadeIn"/>
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:SlideTransition Mode="SlideRightFadeOut"/>
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:SlideTransition Mode="SlideLeftFadeOut"/>
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
+
+    <UserControl.Resources>
+        <settings:ApplicationSettings x:Key="Settings"/>
+    </UserControl.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="ApplicationTitle" Text="OI SHOPPING LIST" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text=" @ ..." Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
-        </StackPanel>
-
-        <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
             <Grid.Resources>
-                <custom:ItemsStoresCollection x:Key="collection"/>
+                <utils:BoolToVisibilityPositiveConverter x:Key="boolToVisibility"/>
+                <utils:PriceToTextConverter x:Key="priceToText"/>
             </Grid.Resources>
-            <ListBox Name="StoreList" ItemsSource="{StaticResource collection}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>                            
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <CheckBox Grid.Column="0" Grid.Row="0" Name="StoreCheck" IsChecked="{Binding IsChecked}" Width="60" RenderTransformOrigin="0,0"  Margin="-5,-7,0,10">
-                                <CheckBox.RenderTransform>
-                                    <ScaleTransform ScaleX="1.3" ScaleY="1.3"/>
-                                </CheckBox.RenderTransform>
-                            </CheckBox>
-                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Name}" TextWrapping="Wrap"  Style="{StaticResource PhoneTextExtraLargeStyle}" VerticalAlignment="Center"/>
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-		</Grid>
+
+            <!--TitlePanel contains the name of the application and page title-->
+            <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+                <TextBlock x:Name="ApplicationTitle" Text="OI SHOPPING LIST" Style="{StaticResource PhoneTextNormalStyle}"/>
+                <TextBlock x:Name="PageTitle" Text=" @ ..." Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            </StackPanel>
+
+            <!--ContentPanel - place additional content here-->
+            <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+                <Grid.Resources>
+                    <custom:ItemsStoresCollection x:Key="collection"/>
+                </Grid.Resources>
+            
+                <ListBox Name="StoreList" >
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>                            
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <toolkit:ContextMenuService.ContextMenu>
+                                    <toolkit:ContextMenu>
+                                        <toolkit:MenuItem Header="rename store" Name="RenameStore" Click="RenameStore_Click"/>
+                                        <toolkit:MenuItem Header="delete store" Name="DeleteStore" Click="DeleteStore_Click"/>
+                                    </toolkit:ContextMenu>
+                                </toolkit:ContextMenuService.ContextMenu>
+                            
+                                <CheckBox Grid.Column="0" 
+                                          Name="StoreCheck"
+                                          IsChecked="{Binding IsChecked, Mode=TwoWay}" 
+                                          Width="60" 
+                                          RenderTransformOrigin="0,0"  
+                                          Margin="-5,-7,0,10">
+                                    <CheckBox.RenderTransform>
+                                        <ScaleTransform ScaleX="1.3" 
+                                                        ScaleY="1.3"/>
+                                    </CheckBox.RenderTransform>
+                                </CheckBox>
+                            
+                                <TextBlock Grid.Column="1" 
+                                           Text="{Binding Name}" 
+                                           TextWrapping="Wrap"  
+                                           Style="{StaticResource PhoneTextExtraLargeStyle}" 
+                                           VerticalAlignment="Center"/>
+                            
+                                <TextBox Name="StoreAisle"
+                                         Grid.Column="2"
+                                         Width="100"
+                                         Text="{Binding Aisle, Mode=TwoWay}"
+                                         Visibility="{Binding Source={StaticResource Settings}, Path=TrackPerStorePricesSettings, Converter={StaticResource boolToVisibility}}"
+                                         KeyUp="StoreAisle_KeyUp"/>
+                            
+                                <TextBox Name="PerStoreItemPrice"
+                                         Grid.Column="3"
+                                         Width="100"
+                                         InputScope="Number"
+                                         Text="{Binding StorePrice, Converter={StaticResource priceToText}, Mode=TwoWay}"
+                                         Visibility="{Binding Source={StaticResource Settings}, Path=TrackPerStorePricesSettings, Converter={StaticResource boolToVisibility}}"
+                                         KeyUp="PerStoreItemPrice_KeyUp"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            
+		    </Grid>
+        </Grid>
     </Grid>
  
     <!--Sample code showing usage of ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.check.rest.png" Text="ok" Click="ApplicationBarIconButtonOK_Click"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.cancel.rest.png" Text="cancel" Click="ApplicationBarIconButtonCancel_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.save.rest.png" Text="save" Click="ApplicationBarIconButtonSave_Click"/>
             <shell:ApplicationBarIconButton IconUri="/Images/appbar.new.rest.png" Text="add store" Click="ApplicationBarIconButtonAdd_Click"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>

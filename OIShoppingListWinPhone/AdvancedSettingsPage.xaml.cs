@@ -55,7 +55,7 @@ namespace OIShoppingListWinPhone
 
                 //Update UI after set Application Settings to default
                 this.HideCheckedItems.IsChecked = App.Settings.HideCheckedItemsSettings;
-                this.ShakeToCleanUp.IsChecked = App.Settings.ShakeToCleanUpSettings;
+                //this.ShakeToCleanUp.IsChecked = App.Settings.ShakeToCleanUpSettings;
                 this.TrackPerStorePrices.IsChecked = App.Settings.TrackPerStorePricesSettings;
                 this.QuickEditMode.IsChecked = App.Settings.QuickEditModeSettings;
                 this.Filters.IsChecked = App.Settings.FiltersSettings;
@@ -69,7 +69,6 @@ namespace OIShoppingListWinPhone
 
                 this.SameSortOrder.IsChecked = App.Settings.AlwaysSameSortOrderSetting;
                 this.PickItemsSortOrderSettings.SelectedIndex = App.Settings.SortOrderPickItemsSetting;
-                this.PickItemsDirectly.IsChecked = App.Settings.PickItemsDirectlyInListSetting;
 
                 MessageBox.Show("All settings nave been reset", "Done!", MessageBoxButton.OK);
             }

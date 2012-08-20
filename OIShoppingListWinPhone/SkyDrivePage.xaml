@@ -41,217 +41,216 @@
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="ApplicationTitle" Text="OI SHOPPING LIST" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="sky drive" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
-        </StackPanel>
-
-        <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" 
-              Grid.Row="1" 
-              Margin="12,0,12,0">
+        <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                
-                <TextBlock Grid.Column="0"
-                           HorizontalAlignment="Left" 
-                           TextAlignment="Center"
-                           Name="textBlock1"
-                           Margin="10,0,0,0"
-                           Text="You are not Signed In!"
-                           VerticalAlignment="Center"/>
 
-                <live:SignInButton Grid.Column="1"
-                                   Width="160"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Top" 
-                                   SessionChanged="signInButton1_SessionChanged"
-                                   ClientId="00000000480CEE37"
-                                   Scopes="wl.basic wl.signin wl.skydrive_update"
-                                   RedirectUri ="https://oauth.live.com/desktop"/>
-            </Grid>            
+            <!--TitlePanel contains the name of the application and page title-->
+            <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+                <TextBlock x:Name="ApplicationTitle" Text="OI SHOPPING LIST" Style="{StaticResource PhoneTextNormalStyle}"/>
+                <TextBlock x:Name="PageTitle" Text="sky drive" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            </StackPanel>
 
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                
-                <TextBlock Text="New file name:"
-                           VerticalAlignment="Top"
-                           HorizontalAlignment="Left"
-                           Margin="10,0,0,0"
-                           FontSize="24"
-                           FontWeight="SemiBold"/>
-                <TextBlock Name="FileName"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Left"
-                           TextWrapping="Wrap"
-                           Margin="10,10,0,0"/>
-                
-                <Button Grid.Column="1"
-                        Content="Upload" 
-                        Click="UploadButton_Click"
-                        IsEnabled="False" 
-                        Height="72" 
-                        HorizontalAlignment="Center" 
-                        Name="UploadButton" 
-                        VerticalAlignment="Top"
-                        Width="160"/>
-            </Grid>
-            
-            <Grid Grid.Row="2">
+            <!--ContentPanel - place additional content here-->
+            <Grid x:Name="ContentPanel" 
+                  Grid.Row="1" 
+                  Margin="12,0,12,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
+            
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
                 
-                <TextBlock Name="ListBoxLabel"
-                           Text="Lists in SkyDrive storage:"
-                           Margin="10,2,0,2"
-                           Opacity="0.5"/>
+                    <TextBlock Grid.Column="0"
+                               HorizontalAlignment="Left" 
+                               TextAlignment="Center"
+                               Name="textBlock1"
+                               Margin="10,0,0,0"
+                               Text="You are not Signed In!"
+                               VerticalAlignment="Center"/>
+
+                    <live:SignInButton Grid.Column="1"
+                                       Width="160"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Top" 
+                                       SessionChanged="signInButton1_SessionChanged"
+                                       ClientId="00000000480CEE37"
+                                       Scopes="wl.basic wl.signin wl.skydrive_update"
+                                       RedirectUri ="https://oauth.live.com/desktop"/>
+                </Grid>            
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
                 
-                <ProgressBar Grid.Row="1"
-                             IsIndeterminate="True"
-                             Name="ListBoxLoadingProgressBar"
-                             Visibility="Collapsed"/>
+                    <TextBlock Text="New file name:"
+                               VerticalAlignment="Top"
+                               HorizontalAlignment="Left"
+                               Margin="10,0,0,0"
+                               FontSize="24"
+                               FontWeight="SemiBold"/>
+                    <TextBlock Name="FileName"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Left"
+                               TextWrapping="Wrap"
+                               Margin="10,10,0,0"/>
                 
-                <ListBox Name="SkyDriveDataListBox"
-                         Grid.Row="1">
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="ListBoxItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Name="TemplateGrid"
-                                  Margin="0,5,0,0"
-                                  Background="{StaticResource PhoneBackgroundBrush}"
-                                  Tap="Grid_Tap">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                
-                                <toolkit:ContextMenuService.ContextMenu>
-                                    <toolkit:ContextMenu Name="ListBoxItemContextMenu">
-                                        <toolkit:MenuItem Name="RenameMenu" Header="rename" Click="RenameMenu_Click" Tag="{Binding ElementName=TemplateGrid}"/>
-                                        <toolkit:MenuItem Name="DeleteMenu" Header="delete" Click="DeleteMenu_Click" Tag="{Binding ElementName=TemplateGrid}"/>
-                                    </toolkit:ContextMenu>
-                                </toolkit:ContextMenuService.ContextMenu>
-                                
-                                <Image Grid.Column="0"
-                                       Grid.Row="0"
-                                       Grid.RowSpan="3"
-                                       Height="64"
-                                       Width="64"
-                                       Source="/Images/list.png"/>
-                                    
-                                <TextBlock Grid.Row="0"
-                                           Grid.Column="1"
-                                           Text="{Binding Name}"
-                                           HorizontalAlignment="Left"
-                                           Margin="5,0,0,0"
-                                           FontSize="28"
-                                           Foreground="{StaticResource PhoneForegroundBrush}"/>
-                                
-                                <Grid Grid.Column="1"
-                                      Grid.Row="1">
+                    <Button Grid.Column="1"
+                            Content="Upload" 
+                            Click="UploadButton_Click"
+                            IsEnabled="False" 
+                            Height="72" 
+                            HorizontalAlignment="Center" 
+                            Name="UploadButton" 
+                            VerticalAlignment="Top"
+                            Width="160"/>
+                </Grid>
+            
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                
+                    <TextBlock Name="ListBoxLabel"
+                               Text="Lists in SkyDrive storage:"
+                               Margin="10,2,0,2"
+                               Opacity="0.5"/>
+                
+                    <ProgressBar Grid.Row="1"
+                                 IsIndeterminate="True"
+                                 Name="ListBoxLoadingProgressBar"
+                                 Visibility="Collapsed"/>
+                
+                    <ListBox Name="SkyDriveDataListBox"
+                             Grid.Row="1">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Name="TemplateGrid"
+                                      Margin="0,5,0,0"
+                                      Background="{StaticResource PhoneBackgroundBrush}"
+                                      Tap="Grid_Tap">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-
-                                    <TextBlock Grid.Column="0"
-                                               Text="Uploaded by: "
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                
+                                    <toolkit:ContextMenuService.ContextMenu>
+                                        <toolkit:ContextMenu Name="ListBoxItemContextMenu">
+                                            <toolkit:MenuItem Name="RenameMenu" Header="rename" Click="RenameMenu_Click" Tag="{Binding ElementName=TemplateGrid}"/>
+                                            <toolkit:MenuItem Name="DeleteMenu" Header="delete" Click="DeleteMenu_Click" Tag="{Binding ElementName=TemplateGrid}"/>
+                                        </toolkit:ContextMenu>
+                                    </toolkit:ContextMenuService.ContextMenu>
+                                
+                                    <Image Grid.Column="0"
+                                           Grid.Row="0"
+                                           Grid.RowSpan="3"
+                                           Height="64"
+                                           Width="64"
+                                           Source="/Images/list.png"/>
+                                    
+                                    <TextBlock Grid.Row="0"
+                                               Grid.Column="1"
+                                               Text="{Binding Name}"
                                                HorizontalAlignment="Left"
                                                Margin="5,0,0,0"
-                                               FontSize="18"
-                                               FontWeight="SemiBold"
+                                               FontSize="28"
                                                Foreground="{StaticResource PhoneForegroundBrush}"/>
+                                
+                                    <Grid Grid.Column="1"
+                                          Grid.Row="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
 
-                                    <TextBlock Grid.Column="1"
-                                               Text="{Binding UserName}"
-                                               HorizontalAlignment="Center"
-                                               TextWrapping="Wrap"
+                                        <TextBlock Grid.Column="0"
+                                                   Text="Uploaded by: "
+                                                   HorizontalAlignment="Left"
+                                                   Margin="5,0,0,0"
+                                                   FontSize="18"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{StaticResource PhoneForegroundBrush}"/>
+
+                                        <TextBlock Grid.Column="1"
+                                                   Text="{Binding UserName}"
+                                                   HorizontalAlignment="Left"
+                                                   TextWrapping="Wrap"
+                                                   FontSize="18"
+                                                   FontWeight="Light"
+                                                   Margin="5,0,0,0"
+                                                   Foreground="{StaticResource PhoneForegroundBrush}"/>
+
+                                    </Grid>
+                                
+                                    <TextBlock Grid.Row="2"
+                                               Grid.Column="1"
+                                               Text="{Binding CreatedDate}"
+                                               HorizontalAlignment="Left"
                                                FontSize="18"
-                                               FontWeight="Light"
                                                Margin="5,0,0,0"
                                                Foreground="{StaticResource PhoneForegroundBrush}"/>
+                                
+                                    <!--<Button Grid.Row="0"
+                                            Grid.Column="2"
+                                            Grid.RowSpan="2"
+                                            BorderThickness="0"
+                                            Name="DownloadButton">
+                                        <Button.Content>
+                                            <Image Width="20"
+                                                   Height="20"
+                                                   Margin="-50,-50,-50,-50"
+                                                   Source="/Images/download.png"/>
+                                        </Button.Content>
+                                    </Button>-->
+                                
+                                    <!--<TextBlock Grid.Row="2"
+                                               Grid.Column="2"
+                                               Text="Download"
+                                               TextWrapping="Wrap"
+                                               FontSize="12"
+                                               VerticalAlignment="Bottom"
+                                               HorizontalAlignment="Center"
+                                               Foreground="{StaticResource PhoneForegroundBrush}"/>-->
 
                                 </Grid>
-                                
-                                <TextBlock Grid.Row="2"
-                                           Grid.Column="1"
-                                           Text="{Binding CreatedDate}"
-                                           HorizontalAlignment="Left"
-                                           FontSize="18"
-                                           Margin="5,0,0,0"
-                                           Foreground="{StaticResource PhoneForegroundBrush}"/>
-                                
-                                <Button Grid.Row="0"
-                                        Grid.Column="2"
-                                        Grid.RowSpan="2"
-                                        BorderThickness="0"
-                                        Name="DownloadButton"
-                                        Tap="DownloadButton_Tap"
-                                        Click="DownloadButton_Click">
-                                    <Button.Content>
-                                        <Image Width="20"
-                                               Height="20"
-                                               Margin="-50,-50,-50,-50"
-                                               Source="/Images/download.png"/>
-                                    </Button.Content>
-                                </Button>
-                                
-                                <TextBlock Grid.Row="2"
-                                           Grid.Column="2"
-                                           Text="Download"
-                                           TextWrapping="Wrap"
-                                           FontSize="12"
-                                           VerticalAlignment="Bottom"
-                                           HorizontalAlignment="Center"
-                                           Foreground="{StaticResource PhoneForegroundBrush}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
 
-                            </Grid>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-
-                <StackPanel Grid.Row="2">
-                    <TextBlock FontSize="16">
-                    * OI Shopping List saves its data in 'OI Shopping List' folder.
-                    </TextBlock>
-                    <TextBlock FontSize="16" Margin="0,0,0,2">
-                          Don't delete this folder and don't save another files to this folder
-                    </TextBlock>
-                </StackPanel>
+                    <StackPanel Grid.Row="2">
+                        <TextBlock FontSize="16">
+                        * OI Shopping List saves its data in 'OI Shopping List' folder.
+                        </TextBlock>
+                        <TextBlock FontSize="16" Margin="0,0,0,2">
+                              Don't delete this folder and don't save another files to this folder
+                        </TextBlock>
+                    </StackPanel>
                 
+                </Grid>
             </Grid>
-            
         </Grid>
     </Grid>
  

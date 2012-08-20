@@ -26,10 +26,10 @@ namespace OIShoppingListWinPhone.CustomLayout
         {
             InitializeComponent();
 
-            this.Loaded += new RoutedEventHandler(PivotItemControl_Loaded);
+            this.Loaded += new RoutedEventHandler(FilterItemControl_Loaded);
         }
 
-        void PivotItemControl_Loaded(object sender, RoutedEventArgs e)
+        void FilterItemControl_Loaded(object sender, RoutedEventArgs e)
         {
             //Set ListPickers selections according to all settings
             if (ListSelector.Items.Count > App.Settings.SelectedListIndexSetting)
@@ -44,7 +44,7 @@ namespace OIShoppingListWinPhone.CustomLayout
                 StoreSelector.ItemsSource = curList.ListStoreLabels;
                 StoreSelector.SelectedItem = curList.FilterStore;
             }
-            //Changing flag to 'true' -> the page is loaded
+            //Page is loaded -> change flag to 'true'
             this.bLoaded = true;
         }
 

@@ -5,7 +5,9 @@
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:settings="clr-namespace:OIShoppingListWinPhone.Settings"
     xmlns:effects="clr-namespace:OIShoppingListWinPhone.Effects"
+    xmlns:utils="clr-namespace:OIShoppingListWinPhone.Utils"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
@@ -38,6 +40,10 @@
         </toolkit:NavigationOutTransition>
     </toolkit:TransitionService.NavigationOutTransition>
 
+    <UserControl.Resources>
+        <settings:ApplicationSettings x:Key="Settings"/>
+    </UserControl.Resources>
+
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid>       
@@ -45,6 +51,10 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+            <Grid.Resources>
+                <utils:BoolToVisibilityPositiveConverter x:Key="boolToVisibility"/>
+                <utils:BoolToVisibilityNegativeConverter x:Key="boolToVisibilityNegative"/>
+            </Grid.Resources>
 
             <!--TitlePanel contains the name of the application and page title-->
             <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
@@ -135,12 +145,19 @@
                                 </StackPanel>
                             
                                 <TextBox Name="itemPrice"
-								     Grid.Row="1"
-								     Padding="10"                                     
-								     Margin="5,-7,5,5"
-								     InputScope="Number"
-                                     KeyUp="itemPrice_KeyUp"
-                                     TextChanged="itemPrice_TextChanged"/>
+								         Grid.Row="1"
+								         Padding="10"                                     
+								         Margin="5,-7,5,5"
+								         InputScope="Number"
+                                         KeyUp="itemPrice_KeyUp"
+                                         Visibility="{Binding Source={StaticResource Settings}, Path=TrackPerStorePricesSettings, Converter={StaticResource boolToVisibilityNegative}}"
+                                         TextChanged="itemPrice_TextChanged"/>
+                                <Button Name="PerStorePrices"
+                                        Content="Stores..."
+                                        Grid.Row="1"
+                                        Margin="5,-7,5,5"
+                                        Visibility="{Binding Source={StaticResource Settings}, Path=TrackPerStorePricesSettings, Converter={StaticResource boolToVisibility}}"
+                                        Click="PerStorePrices_Click"/>
                             </Grid>                        
 								 
 						    <TextBlock Grid.Row="2"

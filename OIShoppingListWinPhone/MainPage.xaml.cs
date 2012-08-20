@@ -26,6 +26,8 @@ namespace OIShoppingListWinPhone
         private EditNameDialog editNameDlg;
         //Private control for choosing list sending mode (SMS or E-mail)
         private ListSendingModeChooser sendModeChooser;
+        //Control for selecting list when move item from one list to another
+        private ListSelectorControl listSelector;
 
         // Constructor
         public MainPage()
@@ -214,6 +216,34 @@ namespace OIShoppingListWinPhone
 
         #endregion
 
+        #region Activate ListSelector Control
+
+        /// <summary>
+        /// Activate List Selector Control
+        /// </summary>
+        public void ActivateListSelector(ShoppingList list, ShoppingListItem item)
+        {
+            this.listSelector = new ListSelectorControl();
+            listSelector.list = list;
+            listSelector.item = item;
+            listSelector.CollapsedVisualState.Storyboard.Completed +=new EventHandler(ListSelect_Completed);
+
+            //Actually activating the dialog
+            LayoutRoot.Children.Add(listSelector);
+            listSelector.Activate();
+            ApplicationBar.IsVisible = false;
+        }
+
+        //Removing the dialog from the 'LayoutRoot' after the completing 'CollapsedVisualState'
+        //storyboard animation
+        void ListSelect_Completed(object sender, EventArgs e)
+        {
+            LayoutRoot.Children.Remove(listSelector);
+            ApplicationBar.IsVisible = true;
+        }
+
+        #endregion
+
         #region EditNameDialog Events
 
         //With EditNameGialog 'ok' button click will check 'new list name' TextBox
@@ -369,12 +399,13 @@ namespace OIShoppingListWinPhone
                             List = currentList,
                             Priority = null,
                             Price = 0F,
-                            Units = string.Empty,
                             Quantity = null,
+                            Units = string.Empty,
                             Tag = string.Empty,
-                            Status = (int)ShoppingListItem.StatusEnumerator.Unchecked,
+                            Status = 0,
                             Note = string.Empty,
                         };
+                        
                         //Adding new list item to the database and updating current list's entries
                         App.ViewModel.AddNewListItem(currentList, newListItem);
                     }
@@ -383,10 +414,14 @@ namespace OIShoppingListWinPhone
                     {
                         ShoppingListItem exItem = currentList.ListItems.FirstOrDefault(i => i.ItemName == newItemName);
                         if (exItem != null)
-                            App.ViewModel.UpdateItemStatus(currentList, exItem);
+                        {
+                            App.ViewModel.ChangeItemStatus(currentList, exItem);
+
+                            //Implementation 'ResetQuantity' Application Setting
+                            if (App.Settings.ResetQuantitySettings)
+                                App.ViewModel.UpdateItemQuantity(exItem, null);
+                        }
                     }
-                    //Filter list items collection with adding new item to list
-                    currentList.FilterItemsCollection();
                 }
                 //Erasing 'new item's name' TextBox
                 newListItemName.Text = "";
@@ -459,17 +494,40 @@ namespace OIShoppingListWinPhone
 
         private void ApplicationBarMenuMarkAllItems_Click(object sender, EventArgs e)
         {
-
+            //Creating query body for navigation to SkyDrive page
+            ShoppingList list = this.GetCurrentShoppingList();
+            if (list != null)
+            {
+                foreach (ShoppingListItem item in list.SortedItemsCollection)
+                {
+                    App.ViewModel.UpdateItemStatus(item, true);
+                }
+            }
         }
 
         private void ApplicationBarMenuCleanUpList_Click(object sender, EventArgs e)
         {
-            
+            //Creating query body for navigation to SkyDrive page
+            ShoppingList list = this.GetCurrentShoppingList();
+            if (list != null)
+            {
+                foreach (ShoppingListItem item in list.SortedItemsCollection)
+                {
+                    if (item.Status == 1)
+                        App.ViewModel.PickItem(item);
+                }
+            }
         }
 
         private void ApplicationBarMenuPickItems_Click(object sender, EventArgs e)
         {
-            
+            ShoppingList list = this.GetCurrentShoppingList();
+            //Get currently selected list item and Navigate to PickItemPage
+            if (list != null)
+            {
+                string queryBody = "/PickItemsPage.xaml?ListId=" + list.ListID;
+                NavigationService.Navigate(new Uri(queryBody, UriKind.Relative));
+            }
         }
 
         #endregion
@@ -490,13 +548,14 @@ namespace OIShoppingListWinPhone
                 sendModeChooser.CollapsedVisualState.Storyboard.Begin();
                 e.Cancel = true;
             }
+            //Deactivate ListSelectorControl and supress GoBack() navigation
+            if (LayoutRoot.Children.Contains(listSelector))
+            {
+                listSelector.Deactivate();
+                e.Cancel = true;
+            }
 
             base.OnBackKeyPress(e);
-        }
-
-        private void newListItemName_GotFocus(object sender, RoutedEventArgs e)
-        {
-            int y = 0;
         }
     }
 }

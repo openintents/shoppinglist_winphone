@@ -56,9 +56,8 @@
               VerticalAlignment="Bottom"
               Background="{StaticResource PhoneBackgroundBrush}">    
             
-            <TextBox x:Name="newListItemName" Margin="0,0,125,0" TextWrapping="NoWrap" FontSize="24"
-                     GotFocus="newListItemName_GotFocus"/>
-            <Button Content="add" HorizontalAlignment="Right" Width="130" Click="Button_Add_Click"/>
+            <TextBox x:Name="newListItemName" Margin="0,0,125,0" TextWrapping="NoWrap" FontSize="24" TabIndex="0"/>
+            <Button Content="add" TabIndex="1" HorizontalAlignment="Right" Width="130" Click="Button_Add_Click"/>
         </Grid>
 	
     </Grid>

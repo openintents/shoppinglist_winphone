@@ -73,6 +73,12 @@
     <Compile Include="AdvancedSettingsPage.xaml.cs">
       <DependentUpon>AdvancedSettingsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomControls\PickItemContainer.xaml.cs">
+      <DependentUpon>PickItemContainer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\PickItemsContainerControl.xaml.cs">
+      <DependentUpon>PickItemsContainerControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomControls\CustomFilterListContro.xaml.cs">
       <DependentUpon>CustomFilterListContro.xaml</DependentUpon>
     </Compile>
@@ -84,6 +90,9 @@
     </Compile>
     <Compile Include="CustomControls\ListItemsContainerControl.xaml.cs">
       <DependentUpon>ListItemsContainerControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\ListSelectorControl.xaml.cs">
+      <DependentUpon>ListSelectorControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="CustomControls\ListSendingModeChooser.xaml.cs">
       <DependentUpon>ListSendingModeChooser.xaml</DependentUpon>
@@ -102,6 +111,9 @@
     </Compile>
     <Compile Include="CustomControls\ListItemContainer.xaml.cs">
       <DependentUpon>ListItemContainer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PickItemsPage.xaml.cs">
+      <DependentUpon>PickItemsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataModel + ViewModel\ShoppingListDataModel.cs" />
@@ -143,6 +155,14 @@
       <Generator>MSBuild:MarkupCompilePass1</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="CustomControls\PickItemContainer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CustomControls\PickItemsContainerControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="CustomControls\CustomFilterListContro.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -156,6 +176,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="CustomControls\ListItemsContainerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\ListSelectorControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -176,6 +200,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CustomControls\ListItemContainer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PickItemsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -215,6 +243,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\download.png" />
+    <Content Include="Images\pick.png" />
     <Content Include="Images\list.png" />
     <Content Include="Images\appbar.new.rest.png" />
     <Content Include="Images\appbar.save.rest.png" />

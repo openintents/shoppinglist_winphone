@@ -18,6 +18,8 @@ namespace OIShoppingListWinPhone
 {
     public partial class AddNewListPage : PhoneApplicationPage
     {
+        //Bool flag for indicating whether the mode is 'Copy'
+        private bool bCopyMode = false;
         //Item ID of currently editing list item
         private int itemID;
         //List ID of currently editing list item
@@ -36,6 +38,11 @@ namespace OIShoppingListWinPhone
         {
             base.OnNavigatedTo(e);
 
+            if (NavigationContext.QueryString.ContainsKey("Mode"))
+            {
+                this.bCopyMode = true;
+                this.PageTitle.Text = "copy item";
+            }
             //If the navigation is MainPage -> EditItemPage, than QueryString
             //contain item's ID - ["ID"] key
             if (NavigationContext.QueryString.ContainsKey("ID"))
@@ -71,24 +78,39 @@ namespace OIShoppingListWinPhone
 
             float price = 0.00F;
             price = (float)Convert.ToDouble(this.itemPrice.Text);
-            //float.TryParse(this.itemPrice.Text, out price);
             if (totalItemsPrice.Visibility == System.Windows.Visibility.Visible)
                 price = (float)Convert.ToDouble(this.totalItemsPrice.Text);
-                //float.TryParse(this.totalItemsPrice.Text, out price);
 
-            App.ViewModel.UpdateListItem(this.listID,
-                this.itemID,
-                this.itemName.Text,
-                quantity,
-                this.itemUnits.Text,
-                price,
-                this.itemTag.Text,
-                priority,
-                this.itemNote);
-
-            //Filter list items collection with adding new item to list
-            ShoppingList list = App.ViewModel.ShoppingLists.Where(l => l.ListID == this.listID).FirstOrDefault();
-            list.FilterItemsCollection();
+            if (bCopyMode)
+            {
+                ShoppingList list = App.ViewModel.ShoppingLists.Where(l => l.ListID == this.listID).FirstOrDefault();
+                //Actually creating new list item
+                ShoppingListItem newListItem = new ShoppingListItem()
+                {
+                    ItemName = itemName.Text,
+                    List = list,
+                    Priority = priority,
+                    Price = price,
+                    Quantity = quantity,
+                    Units = itemUnits.Text,
+                    Tag = itemTag.Text,
+                    Status = 0,
+                    Note = itemNote,
+                };
+                App.ViewModel.AddNewListItem(list, newListItem);
+            }
+            else
+            {
+                App.ViewModel.UpdateListItem(this.listID,
+                    this.itemID,
+                    this.itemName.Text,
+                    quantity,
+                    this.itemUnits.Text,
+                    price,
+                    this.itemTag.Text,
+                    priority,
+                    this.itemNote);
+            }
 
             MessageBox.Show("Data was successfully saved", "Information", MessageBoxButton.OK);
             NavigationService.GoBack();
@@ -268,5 +290,12 @@ namespace OIShoppingListWinPhone
         }    
 
         #endregion
+
+        private void PerStorePrices_Click(object sender, RoutedEventArgs e)
+        {
+            string queryBody = "/StoreItemPage.xaml?ListId=" + listID
+                + "&ItemId=" + itemID;
+            (Application.Current.RootVisual as PhoneApplicationFrame).Navigate(new Uri(queryBody, UriKind.Relative));
+        }
     }
 }

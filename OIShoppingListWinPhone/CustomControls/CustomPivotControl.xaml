@@ -7,7 +7,7 @@
 	xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:custom="clr-namespace:OIShoppingListWinPhone.CustomLayout"
     xmlns:settings="clr-namespace:OIShoppingListWinPhone.Settings"
-    xmlns:utils="clr-namespace:OIShoppingListWinPhone.Utils"
+    xmlns:utils="clr-namespace:OIShoppingListWinPhone.Utils"    
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"

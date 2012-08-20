@@ -59,6 +59,7 @@
                 <settings:ApplicationSettings x:Key="Settings"/>
                 <utils:BoolToVisibilityPositiveConverter x:Key="BoolToVisibilityPositiveConverter"/>
                 <utils:BoolToVisibilityNegativeConverter x:Key="BoolToVisibilityNegativeConverter"/>
+                <utils:BoolInverter x:Key="boolInvertor"/>
             </Grid.Resources>
                 <ScrollViewer>
 				<StackPanel>
@@ -81,7 +82,7 @@
                         </toolkit:ToggleSwitch>
                     </Border>
                     
-					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">
+					<!--<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">
                         <toolkit:ToggleSwitch Name="ShakeToCleanUp"
                                               IsChecked="{Binding Source={StaticResource Settings}, Path=ShakeToCleanUpSettings, Mode=TwoWay}">
                             <toolkit:ToggleSwitch.HeaderTemplate>
@@ -93,7 +94,7 @@
                                 <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Shake the phone to clean up the list"/>
                             </toolkit:ToggleSwitch.Content>
                         </toolkit:ToggleSwitch>
-					</Border>
+					</Border>-->
                     
 					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">
                         <toolkit:ToggleSwitch Name="TrackPerStorePrices"
@@ -271,7 +272,7 @@
 						<toolkit:ListPicker x:Name="PickItemsSortOrderSettings"
                                             ExpansionMode="FullScreenOnly"
                                             FullModeHeader="Sort Orders"
-                                            IsEnabled="{Binding ElementName=SameSortOrder, Path=IsChecked}"
+                                            IsEnabled="{Binding ElementName=SameSortOrder, Path=IsChecked, Converter={StaticResource boolInvertor}}"
 											ItemsSource="{Binding Collection}"
                                             SelectionChanged="PickItemsSortOrderSettings_SelectionChanged">
 							<toolkit:ListPicker.HeaderTemplate>
@@ -293,25 +294,6 @@
 								</DataTemplate>
 							</toolkit:ListPicker.FullModeItemTemplate>
 						</toolkit:ListPicker>
-					</Border>
-                    
-					<Border BorderBrush="Gray" BorderThickness="1" Margin="-1,0,-1,0">
-                        <toolkit:ToggleSwitch Name="PickItemsDirectly"
-                                              IsChecked="{Binding Source={StaticResource Settings}, Path=sPickItemsDirectlyInListSetting, Mode=TwoWay}">
-                            <toolkit:ToggleSwitch.HeaderTemplate>
-                                <DataTemplate>
-                                    <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="27" TextWrapping="Wrap" Text="Pick items directly in list" FontWeight="Bold"/>
-                                </DataTemplate>
-                            </toolkit:ToggleSwitch.HeaderTemplate>
-                            <toolkit:ToggleSwitch.Content>
-                                <Grid>
-                                    <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Add items to list using a dedicated dialog"
-                                               Visibility="{Binding ElementName=QuickEditMode, Path=IsChecked, Converter={StaticResource BoolToVisibilityNegativeConverter}}"/>
-                                    <TextBlock Foreground="{StaticResource PhoneForegroundBrush}" FontSize="20" TextWrapping="Wrap" Text="Switch main list to edit mode to re-add existing item"
-                                               Visibility="{Binding ElementName=QuickEditMode, Path=IsChecked, Converter={StaticResource BoolToVisibilityPositiveConverter}}"/>
-                                </Grid>
-                            </toolkit:ToggleSwitch.Content>
-                        </toolkit:ToggleSwitch>                        
 					</Border>
 					
 				</StackPanel>

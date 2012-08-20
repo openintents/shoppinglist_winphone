@@ -204,12 +204,14 @@
                                    Grid.Column="0"/>
                         <TextBox Name="NewCommentTextBox"
                                  Grid.Column="0"
-                                 Grid.Row="1"/>
+                                 Grid.Row="1"
+                                 TabIndex="0"/>
                         <Button Name="AddNewComment"
                                 Content="add"
                                 Grid.Column="1"
                                 Grid.Row="1"
-                                Click="AddNewComment_Click"/>
+                                Click="AddNewComment_Click"
+                                TabIndex="1"/>
                     </Grid>
                 
                 </StackPanel>

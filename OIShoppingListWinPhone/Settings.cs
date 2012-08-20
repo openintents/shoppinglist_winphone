@@ -47,7 +47,6 @@ namespace OIShoppingListWinPhone.Settings
 
         private const string AlwaysSameSortOrderSettingKeyName = "AlwaysSameSortOrder";
         private const string SortOdrerPickItemsSettingKeyName = "SortOrderPickItems";
-        private const string PickItemsDirectlyInListSettingKeyName = "PickItemsDirectlyInList";
         //End of const fielвы for Settings Keys
 
         //Default Application Settings
@@ -69,9 +68,8 @@ namespace OIShoppingListWinPhone.Settings
         private const bool FiltersSettingDefault = false;
         private const bool ResetQuantitySettingDefault = false;
 
-        private const bool AlwaysSameSortOrderSettingDefault = false;
+        private const bool AlwaysSameSortOrderSettingDefault = true;
         private const int SortOrderPickItemsSettingDefault = (int)SortOrderSettings.Alphabetical;
-        private const bool PickItemsDirectlyInListSettingDefault = false;
         //End of default Application Settings
 
         /// <summary>
@@ -79,7 +77,7 @@ namespace OIShoppingListWinPhone.Settings
         /// </summary>
         public enum FontSizeSettings
         {
-            Tiny = 20,
+            Tiny = 25,
             Small = 30,
             Default = 45,
             Large = 64
@@ -147,7 +145,6 @@ namespace OIShoppingListWinPhone.Settings
 
             this.AlwaysSameSortOrderSetting = AlwaysSameSortOrderSettingDefault;
             this.SortOrderPickItemsSetting = SortOrderPickItemsSettingDefault;
-            this.PickItemsDirectlyInListSetting = PickItemsDirectlyInListSettingDefault;
         }
 
         /// <summary>
@@ -253,6 +250,8 @@ namespace OIShoppingListWinPhone.Settings
                 if (AddOrUpdateValue(SortOrderSettingKeyName, value))
                 {
                     Save();
+                    //When changing SortOrderSettings -> all ShoppingLists have to be
+                    //sorted with current NEW SortOrderSettings
                     foreach (ShoppingList list in App.ViewModel.ShoppingLists)
                     {
                         list.SortItemsCollection();
@@ -275,6 +274,12 @@ namespace OIShoppingListWinPhone.Settings
             {
                 if (AddOrUpdateValue(HideCheckedItemsSettingKeyName, value))
                     Save();
+                //When changing HideCheckedItemsSettings -> all ShoppingLists have to be
+                //filtered with current NEW HideCheckedItemsSettings
+                foreach (ShoppingList list in App.ViewModel.ShoppingLists)
+                {
+                    list.FilterItemsCollection();
+                }
             }
         }
 
@@ -438,20 +443,6 @@ namespace OIShoppingListWinPhone.Settings
             set
             {
                 if (AddOrUpdateValue(SortOdrerPickItemsSettingKeyName, value))
-                    Save();
-            }
-        }
-
-        /// <summary>
-        /// Property to get and set a PickItemsDirectlyInList Setting Key.
-        /// </summary>
-        public bool PickItemsDirectlyInListSetting
-        {
-            get { return GetValueOrDefault<bool>(PickItemsDirectlyInListSettingKeyName,
-                PickItemsDirectlyInListSettingDefault); }
-            set
-            {
-                if (AddOrUpdateValue(PickItemsDirectlyInListSettingKeyName, value))
                     Save();
             }
         }

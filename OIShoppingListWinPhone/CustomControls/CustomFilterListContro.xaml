@@ -14,10 +14,6 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     d:DesignHeight="800" d:DesignWidth="480">
 
-    <UserControl.Resources>
-        <settings:ApplicationSettings x:Key="Settings"/>
-    </UserControl.Resources>
-
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot"
           Grid.Row="1"

@@ -18,22 +18,108 @@ using OIShoppingListWinPhone.ViewModel;
 
 namespace OIShoppingListWinPhone.Utils
 {
+    #region Custom Value Converters. Uses for converting one particular parameter to another in correct way
+
+    /// <summary>
+    /// Priority to String converter.
+    /// Using for Formatting correct string with current integer ItemPriority.
+    /// </summary>
+    public sealed class PriorityToStringConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is int)
+                return String.Format("-{0}-", (int)value);
+
+            return String.Empty;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {            
+            return value;
+        }
+    }
+
+    /// <summary>
+    /// Price to Textconverter.
+    /// Using for Formatting correct string with current float ItemPrice.
+    /// </summary>
+    public sealed class PriceToTextConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is float)
+            {
+                if ((float)value > 0)
+                    return String.Format("{0:F2}", (float)value);
+                else
+                    return "0.00";
+            }
+
+            return String.Empty;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is string)
+            {
+                float f = 0.00F;
+                float.TryParse(value.ToString(), out f);
+                return f;
+            }
+
+            return 0.00F;
+        }
+    }
+
+    /// <summary>
+    /// Price to String converter.
+    /// Using for Formatting correct string with current float ItemPrice.
+    /// </summary>
+    public sealed class PriceToStringConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is float)
+            {
+                if ((float)value > 0)
+                    return String.Format("{0:F2}", (float)value);
+                else
+                    return String.Empty;
+            }
+
+            return String.Empty;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value;
+        }
+    }
+
+    /// <summary>
+    /// Int to Bool converter.
+    /// Using as Binding Converter for ItemStatus (in CheckBox UI context)
+    ///  - if item status == 0 => CheckBox.IsChecked = False, else if item status == 1 => CheckBox.IsChecked = True
+    /// </summary>
     public sealed class IntToBoolConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is int)
-                return (int)value == 1 ? true : false;
+            {
+                if ((int)value == 1)
+                    return true;
+                else
+                    return false;
+            }
 
-            return false;
+            return null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is bool)
-                return (bool)value ? 1 : 0;
-
-            return 0;
+            return value;
         }
     }
 
@@ -47,7 +133,7 @@ namespace OIShoppingListWinPhone.Utils
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is float)
-             return (float)value == 0.0F ? Visibility.Collapsed : Visibility.Visible;
+                return (float)value == 0.0F ? Visibility.Collapsed : Visibility.Visible;
 
             return Visibility.Collapsed;
         }
@@ -70,7 +156,7 @@ namespace OIShoppingListWinPhone.Utils
             if (value is float)
                 return (float)value == 0.0F ? 0 : 25;
 
-            return Visibility.Collapsed;
+            return 0;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -121,6 +207,58 @@ namespace OIShoppingListWinPhone.Utils
         }
     }
 
+    public sealed class StatusToVisibilityPositiveConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is int)
+                return (int)value == 2 ? Visibility.Visible : Visibility.Collapsed;
+
+            return Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value;
+        }
+    }
+
+    public sealed class StatusToVisibilityNegativeConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is int)
+                return (int)value != 2 ? Visibility.Visible : Visibility.Collapsed;
+
+            return Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value;
+        }
+    }
+
+    public sealed class BoolInverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is bool)
+                return !(bool)value;
+
+            return false;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value;
+        }
+    }
+
+#endregion
+
+    #region Custom Value Comparers. Uses for sorting list items collection
+
     public sealed class UncheckedFirst_Alphabetical : IComparer<ShoppingListItem>
     {
         public int Compare(ShoppingListItem first, ShoppingListItem second)
@@ -141,7 +279,7 @@ namespace OIShoppingListWinPhone.Utils
             return 0 - first.CreatedDate.CompareTo(second.CreatedDate);
         }
     }
-    
+
     public sealed class MostExpensiveFirst : IComparer<ShoppingListItem>
     {
         public int Compare(ShoppingListItem first, ShoppingListItem second)
@@ -159,7 +297,12 @@ namespace OIShoppingListWinPhone.Utils
             else if (first.Priority < second.Priority)
                 return -1;
             else
-                return first.Tag.CompareTo(second.Tag);
+            {
+                if (first.Tag.CompareTo(second.Tag) != 0)
+                    return first.Tag.CompareTo(second.Tag);
+                else
+                    return first.ItemName.CompareTo(second.ItemName);
+            }
         }
     }
 
@@ -172,7 +315,12 @@ namespace OIShoppingListWinPhone.Utils
             else if (first.Status < second.Status)
                 return -1;
             else
-                return first.Tag.CompareTo(second.Tag);
+            {
+                if (first.Tag.CompareTo(second.Tag) != 0)
+                    return first.Tag.CompareTo(second.Tag);
+                else
+                    return first.ItemName.CompareTo(second.ItemName);
+            }
         }
     }
 
@@ -195,7 +343,7 @@ namespace OIShoppingListWinPhone.Utils
             }
         }
     }
-        
+
     public sealed class UnckeckedFirst_Priority_TagsAlphabetical : IComparer<ShoppingListItem>
     {
         public int Compare(ShoppingListItem first, ShoppingListItem second)
@@ -211,13 +359,15 @@ namespace OIShoppingListWinPhone.Utils
                 else if (first.Priority < second.Priority)
                     return -1;
                 else
-                    return first.Tag.CompareTo(second.Tag);
+                {
+                    if (first.Tag.CompareTo(second.Tag) != 0)
+                        return first.Tag.CompareTo(second.Tag);
+                    else
+                        return first.ItemName.CompareTo(second.ItemName);
+                }
             }
         }
     }
 
-    public static class ShoppingUtils
-    {
-        
-    }    
+    #endregion
 }

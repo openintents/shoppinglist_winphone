@@ -28,7 +28,8 @@ namespace OIShoppingListWinPhone.CustomLayout
             AddingNewList,
             RenamingList,
             AddingNewStore,
-            RenamingStore
+            RenamingStore,
+            RenamingSkyDriveFile
         }
 
         public EditNameDialog()
@@ -70,6 +71,13 @@ namespace OIShoppingListWinPhone.CustomLayout
                     {
                         this.DialogMode = (int)mode;
                         this.DialogLabel.Text = "Enter new name of the store";
+                        this.DialogData.Text = dialogData;
+                    }
+                    break;
+                case EditNameDialogMode.RenamingSkyDriveFile:
+                    {
+                        this.DialogMode = (int)mode;
+                        this.DialogLabel.Text = "Enter new file name";
                         this.DialogData.Text = dialogData;
                     }
                     break;

@@ -17,6 +17,7 @@ using System.IO.IsolatedStorage;
 using OIShoppingListWinPhone.DataModel;
 using OIShoppingListWinPhone.ViewModel;
 using OIShoppingListWinPhone.Settings;
+using OIShoppingListWinPhone.CustomLayout;
 
 namespace OIShoppingListWinPhone
 {
