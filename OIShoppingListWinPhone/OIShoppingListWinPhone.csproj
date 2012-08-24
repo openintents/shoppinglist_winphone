@@ -97,6 +97,9 @@
     <Compile Include="CustomControls\ListSendingModeChooser.xaml.cs">
       <DependentUpon>ListSendingModeChooser.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomControls\PopupSplashScreen.xaml.cs">
+      <DependentUpon>PopupSplashScreen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EditItemPage.xaml.cs">
       <DependentUpon>EditItemPage.xaml</DependentUpon>
     </Compile>
@@ -187,6 +190,10 @@
       <Generator>MSBuild:MarkupCompilePass1</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="CustomControls\PopupSplashScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="EditItemPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -243,6 +250,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\download.png" />
+    <Content Include="Images\icon_200x200.png" />
     <Content Include="Images\pick.png" />
     <Content Include="Images\list.png" />
     <Content Include="Images\appbar.new.rest.png" />

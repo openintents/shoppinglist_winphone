@@ -9,7 +9,7 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="Portrait" Orientation="Portrait"
+    SupportedOrientations="PortraitOrLandscape"  Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True">
 
@@ -22,12 +22,30 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="ApplicationTitle" Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="page name" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock x:Name="ApplicationTitle" Text="OI SHOPPING LIST" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="PageTitle" Text="about" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
-        <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0"></Grid>
+        <ScrollViewer Grid.Row="1" Margin="12,0,12,0">
+            <!--ContentPanel - place additional content here-->
+            <Grid x:Name="ContentPanel">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Image Grid.Row="0"
+                       Source="/Images/icon_200x200.png"
+                       Width="216"
+                       Height="216"/>
+                <TextBlock Grid.Row="1" Text="OI Shopping List" Height="70" HorizontalAlignment="Center" FontSize="48" FontFamily="Segoe WP Black" VerticalAlignment="Top" d:LayoutOverrides="Height"/>
+                <TextBlock Grid.Row="2" Text="for Windows Phone" Height="70" HorizontalAlignment="Center" FontSize="32" FontFamily="Segoe WP Light"/>
+                <TextBlock Grid.Row="3" Text="Keep track of your shopping items with OI Shopping List" Height="91" HorizontalAlignment="Center" FontSize="29.333" FontFamily="Segoe WP" VerticalAlignment="Bottom" TextWrapping="Wrap"/>
+                <TextBlock Grid.Row="4" Text="Copyright © 2012 OpenIntents" Height="46" HorizontalAlignment="Center" FontSize="26.667" FontFamily="Segoe WP Light" VerticalAlignment="Bottom"/>
+            </Grid>
+        </ScrollViewer>
     </Grid>
  
     <!--Sample code showing usage of ApplicationBar-->

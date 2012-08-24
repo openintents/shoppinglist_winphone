@@ -13,6 +13,7 @@ using System.Windows.Controls.Primitives;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
+using System.Threading;
 
 using OIShoppingListWinPhone.DataModel;
 using OIShoppingListWinPhone.ViewModel;
@@ -28,11 +29,17 @@ namespace OIShoppingListWinPhone
         private ListSendingModeChooser sendModeChooser;
         //Control for selecting list when move item from one list to another
         private ListSelectorControl listSelector;
+        //Splash screen Popup
+        private Popup splashScreenPopup;
 
         // Constructor
         public MainPage()
         {
             InitializeComponent();
+
+            splashScreenPopup = new Popup();
+            splashScreenPopup.Child = new PopupSplashScreen();
+            splashScreenPopup.IsOpen = true;
             
             //Set the MainPage.Loaded handler
             this.Loaded += new RoutedEventHandler(MainPage_Loaded);
@@ -131,6 +138,11 @@ namespace OIShoppingListWinPhone
             {
                 throw new Exception("There is an exception in the page's layout");
             }
+
+            //Close splash screen
+            splashScreenPopup.IsOpen = false;
+            PopupSplashScreen screen = splashScreenPopup.Child as PopupSplashScreen;
+            screen.loadingProgress.IsIndeterminate = false;
         }       
         
         #region ApplicationBarIconButton's Click Events
@@ -554,6 +566,10 @@ namespace OIShoppingListWinPhone
                 listSelector.Deactivate();
                 e.Cancel = true;
             }
+
+            //SplashScreenPopup
+            if(splashScreenPopup.IsOpen)
+                e.Cancel = true;
 
             base.OnBackKeyPress(e);
         }
