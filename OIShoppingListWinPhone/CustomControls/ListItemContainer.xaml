@@ -29,7 +29,8 @@
             <utils:PriceToStringConverter x:Key="priceToStringConverter"/>
         </Grid.Resources>
 
-        <CheckBox Grid.Column="0"
+        <CheckBox Name="ItemStatus"
+                  Grid.Column="0"
                   Width="60"
                   RenderTransformOrigin="0,0"
                   Margin="-5,-12,10,15"

@@ -43,6 +43,9 @@ namespace OIShoppingListWinPhone
         //Private field for saving collection of SkyDrive files
         private ObservableCollection<SkyDriveFileInfo> SkyDriveFilesCollection
             = new ObservableCollection<SkyDriveFileInfo>();
+        
+        //Private field for saving amount of files containing in OI Shopping List folder
+        private int folderFilesAmount = 0;
 
         public SkyDrivePage()
         {
@@ -353,6 +356,7 @@ namespace OIShoppingListWinPhone
                 {
                     //Enumeration all 'OI Shopping List' folder files
                     //to get it's properties
+                    this.folderFilesAmount = folder_data.Count;
                     foreach (object data in folder_data)
                     {
                         IDictionary<string, object> data_set = (IDictionary<string, object>)data;
@@ -394,21 +398,40 @@ namespace OIShoppingListWinPhone
 
                 //Save file info properties
                 fileInfo.FileID = fileProperties["id"].ToString();
-                fileInfo.CommentEnabled = (bool)fileProperties["comments_enabled"];
+                fileInfo.CommentEnabled = true;
+                if (!(bool)fileProperties["comments_enabled"])
+                {
+                    //Get shared_read_link for current file
+                    client = new LiveConnectClient(LiveSession);
+                    client.GetCompleted += new EventHandler<LiveOperationCompletedEventArgs>(client_GetFileSharedReadLinkCompleted);
+                    client.GetAsync(fileInfo.FileID + "/shared_read_link");
+                }
 
                 IDictionary<string, object> user_data = (IDictionary<string, object>)fileProperties["from"];
                 fileInfo.UserName = user_data["name"].ToString();
 
                 //Add new SkyDriveFileInfo to ListBox collection
-                this.SkyDriveFilesCollection.Add(fileInfo);
-                
-                ListBoxLabel.Opacity = 1.0;
-                ListBoxLoadingProgressBar.Visibility = System.Windows.Visibility.Collapsed;
+                this.SkyDriveFilesCollection.Add(fileInfo);                
+
+                if (--folderFilesAmount == 0)
+                {
+                    ListBoxLabel.Opacity = 1.0;
+                    ListBoxLoadingProgressBar.Visibility = System.Windows.Visibility.Collapsed;
+                }
             }
             else
             {
                 MessageBox.Show("There is an error occur during loading data from SkyDrive: " + e.Error.Message, "Warning", MessageBoxButton.OK);
                 NavigationService.GoBack();
+            }
+        }
+
+        void client_GetFileSharedReadLinkCompleted(object sender, LiveOperationCompletedEventArgs e)
+        {
+            if (e.Error == null)
+            {
+                //Got the shared read_link to file
+                //Thus, comments will be enabled
             }
         }
         

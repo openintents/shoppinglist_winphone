@@ -260,6 +260,7 @@
     <Content Include="Images\edit_name.png" />
     <Content Include="Images\note.png" />
     <Content Include="Images\sms.png" />
+    <Content Include="Images\SplashScreen.png" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>

@@ -25,6 +25,12 @@ namespace OIShoppingListWinPhone.CustomLayout
         {
             InitializeComponent();
             this.Loaded += new RoutedEventHandler(ListItemContainer_Loaded);
+            this.Unloaded += new RoutedEventHandler(PickItemContainer_Unloaded);
+        }
+
+        void PickItemContainer_Unloaded(object sender, RoutedEventArgs e)
+        {
+            bLoaded = false;
         }
 
         void ListItemContainer_Loaded(object sender, RoutedEventArgs e)
@@ -51,6 +57,7 @@ namespace OIShoppingListWinPhone.CustomLayout
             {
                 //With checking the ItemStatus checkbox -> Save Item Status to local Database
                 ShoppingListItem item = this.DataContext as ShoppingListItem;
+                (sender as CheckBox).IsChecked = false;
                 App.ViewModel.PickItem(item);
             }
         }

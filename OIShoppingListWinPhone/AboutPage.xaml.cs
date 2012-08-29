@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
+using Microsoft.Phone.Tasks;
 
 namespace OIShoppingListWinPhone
 {
@@ -18,6 +19,13 @@ namespace OIShoppingListWinPhone
         public AboutPage()
         {
             InitializeComponent();
+        }
+
+        private void HyperlinkButton_Click(object sender, RoutedEventArgs e)
+        {
+            WebBrowserTask web = new WebBrowserTask();
+            web.Uri = new Uri("http://www.openintents.org/en/");
+            web.Show();
         }
     }
 }

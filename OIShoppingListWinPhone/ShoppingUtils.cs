@@ -114,7 +114,7 @@ namespace OIShoppingListWinPhone.Utils
                     return false;
             }
 
-            return null;
+            return false;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -255,7 +255,7 @@ namespace OIShoppingListWinPhone.Utils
         }
     }
 
-#endregion
+    #endregion
 
     #region Custom Value Comparers. Uses for sorting list items collection
 

@@ -13,14 +13,8 @@
           Background="Black"
           Width="480"
           Height="800">
-        <Image Source="/Images/icon_200x200.png"
-               Width="216"
-               Height="216" Margin="132,85,132,499"/>
-        <TextBlock Text="OI Shopping List" Height="70" HorizontalAlignment="Center" FontSize="48" Margin="0,314,0,0" FontFamily="Segoe WP Black" VerticalAlignment="Top" d:LayoutOverrides="Height"/>
-        <TextBlock Text="for Windows Phone" Height="70" HorizontalAlignment="Center" FontSize="32" Margin="0,380,0,350" FontFamily="Segoe WP Light"/>
-        <TextBlock Text="Keep track of your shopping items with OI Shopping List" Height="91" HorizontalAlignment="Center" FontSize="29.333" Margin="0,0,0,251" FontFamily="Segoe WP" VerticalAlignment="Bottom" TextWrapping="Wrap"/>
-        <TextBlock Text="Copyright © 2012 OpenIntents" Height="46" HorizontalAlignment="Center" FontSize="26.667" Margin="0,0,0,20" FontFamily="Segoe WP Light" VerticalAlignment="Bottom"/>
+        <Image Source="/Images/SplashScreen.png"/>        
 		<ProgressBar Name="loadingProgress" Height="20" Width="450" Margin="10,0,10,105" VerticalAlignment="Bottom" d:LayoutOverrides="Height"/>
-		<TextBlock Text="Loading..." Height="43" HorizontalAlignment="Center" FontSize="29.333" Margin="0,0,0,128" FontFamily="Segoe WP Light" VerticalAlignment="Bottom"/>
+		<TextBlock Text="Loading..." Height="43" HorizontalAlignment="Center" Foreground="Black" FontSize="29.333" Margin="0,0,0,128" FontFamily="Segoe WP Light" VerticalAlignment="Bottom"/>
     </Grid>
 </UserControl>

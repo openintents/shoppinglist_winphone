@@ -9,9 +9,9 @@ using System.Resources;
 [assembly: AssemblyTitle("OIShoppingListWinPhone")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("OpenIntents")]
 [assembly: AssemblyProduct("OIShoppingListWinPhone")]
-[assembly: AssemblyCopyright("Copyright ©  2012")]
+[assembly: AssemblyCopyright("Copyright © 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

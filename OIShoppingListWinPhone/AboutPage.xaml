@@ -41,9 +41,10 @@
                        Width="216"
                        Height="216"/>
                 <TextBlock Grid.Row="1" Text="OI Shopping List" Height="70" HorizontalAlignment="Center" FontSize="48" FontFamily="Segoe WP Black" VerticalAlignment="Top" d:LayoutOverrides="Height"/>
-                <TextBlock Grid.Row="2" Text="for Windows Phone" Height="70" HorizontalAlignment="Center" FontSize="32" FontFamily="Segoe WP Light"/>
+                <TextBlock Grid.Row="2" Text="for Windows Phone v.1.0.0" Height="70" HorizontalAlignment="Right"  FontSize="26"  FontFamily="Segoe WP Light" Margin="0,0,30,0" />
                 <TextBlock Grid.Row="3" Text="Keep track of your shopping items with OI Shopping List" Height="91" HorizontalAlignment="Center" FontSize="29.333" FontFamily="Segoe WP" VerticalAlignment="Bottom" TextWrapping="Wrap"/>
-                <TextBlock Grid.Row="4" Text="Copyright © 2012 OpenIntents" Height="46" HorizontalAlignment="Center" FontSize="26.667" FontFamily="Segoe WP Light" VerticalAlignment="Bottom"/>
+                <HyperlinkButton Grid.Row="4" Content="OpenIntents" FontSize="29.333" VerticalAlignment="Top" Margin="0,40,0,0"  Click="HyperlinkButton_Click"/>
+                <TextBlock Grid.Row="4" Text="Copyright © 2012 OpenIntents" HorizontalAlignment="Center" FontSize="20"  FontFamily="Segoe WP Light" VerticalAlignment="Bottom" Margin="0,0,0,5"/>
             </Grid>
         </ScrollViewer>
     </Grid>

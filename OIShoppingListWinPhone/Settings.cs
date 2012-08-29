@@ -305,7 +305,20 @@ namespace OIShoppingListWinPhone.Settings
             set
             {
                 if (AddOrUpdateValue(TrackPerStorePricesSettingKeyName, value))
+                {
                     Save();
+                    //When changing SortOrderSettings -> all ShoppingLists have to be
+                    //sorted with current NEW SortOrderSettings
+                    foreach (ShoppingList list in App.ViewModel.ShoppingLists)
+                    {                        
+                        foreach (ShoppingListItem item in list.ListItems)
+                        {
+                            item.UpdateItemPriceBindingTargets();
+                        }
+                        list.UpdatePrice();
+                        list.SortItemsCollection();
+                    }
+                }
             }
         }
 

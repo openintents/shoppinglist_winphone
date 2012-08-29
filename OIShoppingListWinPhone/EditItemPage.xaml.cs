@@ -55,14 +55,25 @@ namespace OIShoppingListWinPhone
                 ShoppingListItem item = list.ListItems.FirstOrDefault(i => i.ItemID == itemID);
 
                 this.itemNote = item.Note;
-                this.itemName.Text = item.ItemName;                
+                this.itemName.Text = item.ItemName;
                 this.itemTag.Text = item.Tag;
                 this.itemQuantity.Text = item.Quantity.ToString();
                 this.itemPrice.Text = String.Format("{0:F2}", item.Price);
                 if (item.Quantity != null)
                     this.itemPrice.Text = String.Format("{0:F2}", item.Price / item.Quantity);
+                if (App.Settings.TrackPerStorePricesSettings)
+                {
+                    colonTextBlock.Visibility = System.Windows.Visibility.Visible;
+                    totalItemsPrice.Visibility = System.Windows.Visibility.Visible;
+                    this.totalItemsPrice.Text = String.Format("{0:F2}", item.Price);
+                }
+                else
+                {
+                    colonTextBlock.Visibility = System.Windows.Visibility.Collapsed;
+                    totalItemsPrice.Visibility = System.Windows.Visibility.Collapsed;
+                }
                 this.itemUnits.Text = item.Units;
-                this.itemPriority.Text = item.Priority.ToString();                
+                this.itemPriority.Text = item.Priority.ToString();
             }
         }
 
@@ -112,14 +123,13 @@ namespace OIShoppingListWinPhone
                     this.itemNote);
             }
 
-            MessageBox.Show("Data was successfully saved", "Information", MessageBoxButton.OK);
             NavigationService.GoBack();
         }
 
         //Make float input scope for Price TextBox
         private void itemPrice_KeyUp(object sender, KeyEventArgs e)
         {
-            TextBox txt = sender as TextBox;       
+            TextBox txt = sender as TextBox;
             //Deleting all ',' symbols from the string
             if (txt.Text.Contains(','))
             {
@@ -141,10 +151,10 @@ namespace OIShoppingListWinPhone
             {
                 if (txt.Text.ElementAt(txt.Text.Length - 4) == '.')
                     txt.Text = txt.Text.Substring(0, txt.Text.Length - 1);
-            }                        
+            }
             //Parse input string to float variable
             float.TryParse(txt.Text, out f);
-            
+
             //If TextBox string does not contain '.' (it means that user deleted symbol '.')
             if (!txt.Text.Contains('.'))
                 //Reset '.' symbol within the string
@@ -154,7 +164,7 @@ namespace OIShoppingListWinPhone
                 txt.Text = String.Format("{0:F2}", f);
             //Set cursor in corresponding position
             txt.SelectionStart = pos;
-       
+
             //Update TextBlock 'TotalItemsPrice' text
             this.UpdatePriceDisplayingText();
         }
@@ -171,6 +181,7 @@ namespace OIShoppingListWinPhone
         {
             //Checking inputed information and update price text block's visibility
             //and actually text
+
             float f = 0.00F;
             float.TryParse(itemPrice.Text, out f);
             int q = 0;
@@ -179,7 +190,8 @@ namespace OIShoppingListWinPhone
             {
                 colonTextBlock.Visibility = System.Windows.Visibility.Visible;
                 totalItemsPrice.Visibility = System.Windows.Visibility.Visible;
-                totalItemsPrice.Text = String.Format("{0:F2}", f * Convert.ToInt32(itemQuantity.Text));
+                if (!App.Settings.TrackPerStorePricesSettings)
+                    totalItemsPrice.Text = String.Format("{0:F2}", f * Convert.ToInt32(itemQuantity.Text));
             }
             else
             {
@@ -262,7 +274,7 @@ namespace OIShoppingListWinPhone
 
             base.OnBackKeyPress(e);
         }
-        
+
         #region Note Dialog event handlers
 
         //Dialog button 'ok' click event
@@ -287,7 +299,7 @@ namespace OIShoppingListWinPhone
             //and making ApplicationBar visible
             ApplicationBar.IsVisible = true;
             LayoutRoot.Children.Remove(noteDialog);
-        }    
+        }
 
         #endregion
 

@@ -384,7 +384,7 @@ namespace OIShoppingListWinPhone.ViewModel
                 if (item_store != null)
                     listDB.ItemsStores.DeleteOnSubmit(item_store);
             }
-
+            item.UpdateItemPriceBindingTargets();
             listDB.SubmitChanges();
         }
 

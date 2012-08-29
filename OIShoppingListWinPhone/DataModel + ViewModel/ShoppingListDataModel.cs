@@ -470,12 +470,12 @@ namespace OIShoppingListWinPhone.DataModel
 
         public void UpdateListStoreLabels()
         {
-            List<string> stores = new List<string>(); 
-            
-            foreach (ShoppingListStore store in this._listStores) 
-            { 
-                stores.Add(store.StoreName); 
-            }                
+            List<string> stores = new List<string>();
+
+            foreach (ShoppingListStore store in this._listStores)
+            {
+                stores.Add(store.StoreName);
+            }
             //Adding an '[Empty]' string to list for displaying in Custom Filter List Control
             stores.Insert(0, "Store [Empty]");
 
@@ -530,44 +530,47 @@ namespace OIShoppingListWinPhone.DataModel
             //applicaion settings sort order (actually, after settings chenging)            
             IEnumerable<ShoppingListItem> collection = this._sortedItemsCollection;
 
-            //Collection sorting
-            switch (App.Settings.SortOrderSetting)
+            if (collection != null)
             {
-                case (int)ApplicationSettings.SortOrderSettings.Alphabetical:
-                    collection = collection.OrderBy(i => i.ItemName);
-                    break;
-                case (int)ApplicationSettings.SortOrderSettings.MostExpensiveFirst:
-                    collection = collection.OrderBy(i => i, new MostExpensiveFirst());
-                    break;
-                case (int)ApplicationSettings.SortOrderSettings.NewestFirst:
-                    collection = collection.OrderBy(i => i, new NewestFirst());
-                    break;
-                case (int)ApplicationSettings.SortOrderSettings.OldestFirst:
-                    collection = collection.OrderBy(i => i.CreatedDate);
-                    break;
-                case (int)ApplicationSettings.SortOrderSettings.Priority_TagsAlphabetical:
-                    collection = collection.OrderBy(i => i, new Priority_TagsAlphabetical());
-                    break;
-                case (int)ApplicationSettings.SortOrderSettings.TagsAlphabetical:
-                    collection = collection.OrderBy(i => i.Tag);
-                    break;
-                case (int)ApplicationSettings.SortOrderSettings.UncheckedFirst_Alphabetical:
-                    collection = collection.OrderBy(i => i, new UncheckedFirst_Alphabetical());
-                    break;
-                case (int)ApplicationSettings.SortOrderSettings.UncheckedFirst_Priority_Alphabetical:
-                    collection = collection.OrderBy(i => i, new UncheckedFirst_Priority_Alphabetical());
-                    break;
-                case (int)ApplicationSettings.SortOrderSettings.UncheckedFirst_TagsAlphabetical:
-                    collection = collection.OrderBy(i => i, new UncheckedFirst_TagsAlphabetical());
-                    break;
-                case (int)ApplicationSettings.SortOrderSettings.UnckeckedFirst_Priority_TagsAlphabetical:
-                    collection = collection.OrderBy(i => i, new UnckeckedFirst_Priority_TagsAlphabetical());
-                    break;
-                default:
-                    break;
+                //Collection sorting
+                switch (App.Settings.SortOrderSetting)
+                {
+                    case (int)ApplicationSettings.SortOrderSettings.Alphabetical:
+                        collection = collection.OrderBy(i => i.ItemName);
+                        break;
+                    case (int)ApplicationSettings.SortOrderSettings.MostExpensiveFirst:
+                        collection = collection.OrderBy(i => i, new MostExpensiveFirst());
+                        break;
+                    case (int)ApplicationSettings.SortOrderSettings.NewestFirst:
+                        collection = collection.OrderBy(i => i, new NewestFirst());
+                        break;
+                    case (int)ApplicationSettings.SortOrderSettings.OldestFirst:
+                        collection = collection.OrderBy(i => i.CreatedDate);
+                        break;
+                    case (int)ApplicationSettings.SortOrderSettings.Priority_TagsAlphabetical:
+                        collection = collection.OrderBy(i => i, new Priority_TagsAlphabetical());
+                        break;
+                    case (int)ApplicationSettings.SortOrderSettings.TagsAlphabetical:
+                        collection = collection.OrderBy(i => i.Tag);
+                        break;
+                    case (int)ApplicationSettings.SortOrderSettings.UncheckedFirst_Alphabetical:
+                        collection = collection.OrderBy(i => i, new UncheckedFirst_Alphabetical());
+                        break;
+                    case (int)ApplicationSettings.SortOrderSettings.UncheckedFirst_Priority_Alphabetical:
+                        collection = collection.OrderBy(i => i, new UncheckedFirst_Priority_Alphabetical());
+                        break;
+                    case (int)ApplicationSettings.SortOrderSettings.UncheckedFirst_TagsAlphabetical:
+                        collection = collection.OrderBy(i => i, new UncheckedFirst_TagsAlphabetical());
+                        break;
+                    case (int)ApplicationSettings.SortOrderSettings.UnckeckedFirst_Priority_TagsAlphabetical:
+                        collection = collection.OrderBy(i => i, new UnckeckedFirst_Priority_TagsAlphabetical());
+                        break;
+                    default:
+                        break;
+                }
+                this.bSorted = true;
+                this.SortedItemsCollection = collection;
             }
-            this.bSorted = true;
-            this.SortedItemsCollection = collection;
         }
 
         //Constructor of ShoppingList class
@@ -725,29 +728,17 @@ namespace OIShoppingListWinPhone.DataModel
         /// <summary>
         /// Item price
         /// </summary>
-        [Column(DbType = "FLOAT")]
+        //[Column(DbType = "FLOAT")]
         public float Price
         {
             get
             {
                 if (App.Settings.TrackPerStorePricesSettings)
                 {
-                    if (this._itemsStores != null)
-                    {
-                        IEnumerable<float> prices = from store in this._itemsStores
-                                                    select store.StorePrice;
-                        float minPrice = prices.ElementAt(0);
-                        foreach (float price in prices)
-                        {
-                            if (price < minPrice)
-                                minPrice = price;
-                        }
-                        return minPrice;
-                    }
-                    return 0.00F;
+                    UpdateItemPrice();
+                    return this._price;
                 }
-                else
-                    return this._price; 
+                return this.ItemPrice;
             }
             set
             {
@@ -755,6 +746,7 @@ namespace OIShoppingListWinPhone.DataModel
                 {
                     NotifyPropertyChanging("Price");
                     this._price = value;
+                    this.ItemPrice = value;
                     NotifyPropertyChanged("Price");
 
                     if (this.List != null)
@@ -765,6 +757,9 @@ namespace OIShoppingListWinPhone.DataModel
                 }
             }
         }
+
+        [Column(DbType = "FLOAT")]
+        private float ItemPrice { get; set; }
 
         //Item quantity private field
         private int? _quantity;
@@ -984,6 +979,35 @@ namespace OIShoppingListWinPhone.DataModel
         {
             get { return this._itemsStores; }
             set { this._itemsStores.Assign(value); }
+        }
+
+        /// <summary>
+        /// Method for updating item price
+        /// </summary>
+        private void UpdateItemPrice()
+        {
+            if (this._itemsStores != null && this._itemsStores.Count > 0)
+            {
+                IEnumerable<float> prices = from store in this._itemsStores
+                                            select store.StorePrice;
+                float minPrice = prices.FirstOrDefault();
+                foreach (float price in prices)
+                {
+                    if (price < minPrice)
+                        minPrice = price;
+                }
+                this._price = minPrice;
+            }
+            else
+                this._price = 0.00F;
+        }
+
+        /// <summary>
+        /// Method for updating item price binding targets
+        /// </summary>
+        public void UpdateItemPriceBindingTargets()
+        {
+            NotifyPropertyChanged("Price");
         }
 
         public ShoppingListItem()

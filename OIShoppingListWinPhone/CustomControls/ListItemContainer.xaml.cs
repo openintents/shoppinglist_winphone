@@ -29,6 +29,11 @@ namespace OIShoppingListWinPhone.CustomLayout
 
         void ListItemContainer_Loaded(object sender, RoutedEventArgs e)
         {
+            //if ((this.DataContext as ShoppingListItem).Status == 1)
+            //    this.ItemStatus.IsChecked = true;
+            //else
+            //    this.ItemStatus.IsChecked = false;
+
             //Set UI elements text font size according to Application Settings
             this.ItemQuantity.FontSize = App.Settings.FontSizeSetting;
             this.ItemName.FontSize = App.Settings.FontSizeSetting;
@@ -345,7 +350,10 @@ namespace OIShoppingListWinPhone.CustomLayout
             //Get currently selected (or actually taped) list item
             ShoppingListItem listItem = menuItem.DataContext as ShoppingListItem;
             if (listItem != null)
+            {
                 App.ViewModel.ChangeItemStatus(listItem.List, listItem);
+                //this.ItemStatus.IsChecked = !this.ItemStatus.IsChecked;
+            }
         }
 
         void element_OnMenuStoresClick(object sender, RoutedEventArgs e)
